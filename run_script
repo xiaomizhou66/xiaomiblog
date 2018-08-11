@@ -1,0 +1,7 @@
+#!/bin/sh
+set -ex
+if docker inspect xiaomiblog 2>&1 > /dev/null; then
+	docker rm -f xiaomiblog
+fi
+
+docker run -d -p 9009:80 --name xiaomiblog xiaomizhou/blog
