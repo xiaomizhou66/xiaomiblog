@@ -1,0 +1,22 @@
+#footer
+  .footer-info
+    p
+      //- span 联系博主：
+      //-   a.fa.fa-email(href="mailto:#{theme.about.email}",target="_blank") 
+      //-   a.fa.fa-weibo(href="#{theme.about.weibo_url}",target="_blank")
+      //-   a.fa.fa-github(href="#{theme.about.github_url}",target="_blank") 
+    //-if theme.busuanzi == true
+    //-  p 访问量：
+    //-    i#busuanzi_container_site_pv
+    //-      i#busuanzi_value_site_pv
+    //-    | 次
+    p
+      span  &nbsp;&nbsp;Copyright &copy;2018&nbsp;
+        a(href=url_for('.'), rel='nofollow')= (config.author || config.title) + '.'
+      span  
+        a(rel='nofollow', target='_blank', href='https://github.com/chaooo/hexo-theme-BlueLake')  
+      if theme.busuanzi == true
+        span  
+          a(href="http://busuanzi.ibruce.info/")  
+      span  
+        a(rel='nofollow', target='_blank', href='https://hexo.io')  
