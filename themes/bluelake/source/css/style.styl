@@ -225,7 +225,8 @@ body
       border-bottom: 1px solid #d8e2eb
       display: block
       font-weight: normal
-    .tagcloud /* 标签*/
+      /* 标签*/
+    .tagcloud 
       margin-top: 10px     
       a
         display:inline-block
@@ -237,38 +238,27 @@ body
     ul,ol
       list-style: none
       padding: 0
-      // li
-      //   list-style: none
-      //   margin: 5px 0
-      //   line-height: 1.5
-      //   overflow: hidden
-      //   white-space: nowrap
-      //   text-overflow: ellipsis
-      //   background:url(../img/wenjianjia.jpg) no-repeat 0px 6px 5px 5px
-        // border-bottom-style:double
-        /* 分类 */
-  .category-list
-    & >.category-list-item
-      list-style: none
-      margin: 5px 0
-      line-height: 1.5
-      overflow: hidden
-      white-space: nowrap
-      text-overflow: ellipsis
-      background:url(../img/wenjianjia.jpg) no-repeat 0px 6px 5px 5px
-      border-bottom-style:double
-      background-color: #FFE4E1
-      .category-list-child
-        & >.category-list-item
-          //margin: 0px 5px 0px 30px  !important
-          padding-left: 30px  !important
-          list-style: none
-          overflow: hidden
-          white-space: nowrap
-          text-overflow: ellipsis
-          //background:url(../img/wenjianjia.jpg) no-repeat 0px 6px 5px 5px
-          border-bottom-style:double
-          background-color:#FFF
+      & >li
+        list-style: none
+        //margin: 5px 0
+        line-height: 1.5
+        overflow: hidden
+        white-space: nowrap
+        text-overflow: ellipsis
+        background:url(../img/wenjianjia.jpg) no-repeat 0px 6px 5px 5px
+        border-bottom-style:double
+        background-color:#FFE4E1
+        /* 分类 */  
+    .category-list-child
+      & >li
+        padding-left: 30px
+        list-style: none
+        overflow: hidden
+        white-space: nowrap
+        text-overflow: ellipsis
+        //background:url(../img/wenjianjia.jpg) no-repeat 0px 6px 5px 5px
+        border-bottom-style:double
+        background-color:#fff
     .category-list-count
       padding-left: 5px
       color: #40759b
@@ -279,7 +269,8 @@ body
   .search-pla 
     display block 
     height:52px
-#search-form  /* 搜索框*/
+/* 搜索框*/    
+#search-form  
   position: absolute
   bottom: -52px
   right:0
@@ -388,7 +379,7 @@ body
         font-size 12px 
         &:before
           font-family: "iconfont" !important
-          content: '\e008'
+          content: '\e008' 
 
 /* post 文章样式 在div.content_container里面*/
 .post

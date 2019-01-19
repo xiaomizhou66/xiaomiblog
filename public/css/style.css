@@ -315,6 +315,7 @@ body {
   border-bottom: 1px solid #d8e2eb;
   display: block;
   font-weight: normal;
+/* 标签*/
 }
 #sidebar .widget .tagcloud {
   margin-top: 10px;
@@ -331,11 +332,10 @@ body {
 #sidebar .widget ol {
   list-style: none;
   padding: 0;
-/* 分类 */
 }
-.category-list >.category-list-item {
+#sidebar .widget ul >li,
+#sidebar .widget ol >li {
   list-style: none;
-  margin: 5px 0;
   line-height: 1.5;
   overflow: hidden;
   white-space: nowrap;
@@ -343,9 +343,10 @@ body {
   background: url("../img/wenjianjia.jpg") no-repeat 0px 6px 5px 5px;
   border-bottom-style: double;
   background-color: #ffe4e1;
+/* 分类 */
 }
-.category-list >.category-list-item .category-list-child >.category-list-item {
-  padding-left: 30px !important;
+#sidebar .widget .category-list-child >li {
+  padding-left: 30px;
   list-style: none;
   overflow: hidden;
   white-space: nowrap;
@@ -353,21 +354,22 @@ body {
   border-bottom-style: double;
   background-color: #fff;
 }
-.category-list .category-list-count {
+#sidebar .widget .category-list-count {
   padding-left: 5px;
   color: #40759b;
 }
-.category-list .category-list-count:before {
+#sidebar .widget .category-list-count:before {
   content: "(";
 }
-.category-list .category-list-count:after {
+#sidebar .widget .category-list-count:after {
   content: ")";
 }
-.search-pla {
+#sidebar .search-pla {
   display: block;
   height: 52px;
 }
-#search-form  /* 搜索框*/ {
+/* 搜索框*/
+#search-form {
   position: absolute;
   bottom: -52px;
   right: 0;
@@ -375,21 +377,21 @@ body {
   color: #333;
   width: 25%;
 }
-#search-form  /* 搜索框*/ label {
+#search-form label {
   position: relative;
   display: block;
   margin: 0;
   width: 100%;
   height: 100%;
 }
-#search-form  /* 搜索框*/ label:before {
+#search-form label:before {
   font-family: "iconfont" !important;
   content: '\e007';
   position: absolute;
   left: 15px;
   top: 9px;
 }
-#search-form  /* 搜索框*/ input {
+#search-form input {
   box-sizing: border-box;
   height: 32px;
   padding: 7px 11px 7px 35px;
