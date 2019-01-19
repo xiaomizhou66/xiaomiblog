@@ -331,9 +331,9 @@ body {
 #sidebar .widget ol {
   list-style: none;
   padding: 0;
+/* 分类 */
 }
-#sidebar .widget ul li,
-#sidebar .widget ol li {
+#sidebar .category-list .category-list-item {
   list-style: none;
   margin: 5px 0;
   line-height: 1.5;
@@ -342,22 +342,27 @@ body {
   text-overflow: ellipsis;
   background: url("../img/wenjianjia.jpg") no-repeat 0px 6px 5px 5px;
   border-bottom-style: double;
-/* 分类 */
 }
-#sidebar .widget .category-list .category-list-child .category-list-item {
+#sidebar .category-list .category-list-child .category-list-item {
   margin-left: 30px !important;
+  list-style: none;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  background: url("../img/wenjianjia.jpg") no-repeat 0px 6px 5px 5px;
+  border-bottom-style: double;
 }
-#sidebar .widget .category-list-count {
+#sidebar .category-list .category-list-count {
   padding-left: 5px;
   color: #40759b;
 }
-#sidebar .widget .category-list-count:before {
+#sidebar .category-list .category-list-count:before {
   content: "(";
 }
-#sidebar .widget .category-list-count:after {
+#sidebar .category-list .category-list-count:after {
   content: ")";
 }
-#sidebar .search-pla {
+.search-pla {
   display: block;
   height: 52px;
 }
