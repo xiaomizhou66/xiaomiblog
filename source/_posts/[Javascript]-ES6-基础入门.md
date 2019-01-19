@@ -2,7 +2,7 @@
 title: 'ES6【1】--[ECMAScript 6 入门]'
 date: '2018/8/19 23:57:28'
 categories:
-  - 二、Javascript-ES6-Typescript
+  - ② Javascript-ES6-Typescript
   - ES6
 abbrlink: a68ec929
 updated:

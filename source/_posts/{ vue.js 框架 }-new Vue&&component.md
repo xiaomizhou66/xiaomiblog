@@ -2,7 +2,7 @@
 title: 'new Vue({}) 与 export default{} 选项的写法区分'
 date: '2018/8/19 23:57:28'
 categories:
-  - 四、vue.js
+  - ④  vue.js
   - vue.js 框架学习
 abbrlink: 33e8b3ae
 updated:

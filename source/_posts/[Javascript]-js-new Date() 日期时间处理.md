@@ -4,7 +4,7 @@ date: '2018/8/19 23:57:28'
 tags:
   - 'cookie,session,token'
 categories:
-  - 二、Javascript-ES6-Typescript
+  - ② Javascript-ES6-Typescript
   - Javascript
 updated:
 comments:

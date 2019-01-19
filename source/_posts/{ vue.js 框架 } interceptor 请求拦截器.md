@@ -4,7 +4,7 @@ date: '2018/8/19 23:57:28'
 tags:
   - interceptor 请求拦截器
 categories:
-  - 四、vue.js
+  - ④  vue.js
   - axios 前后端数据交互
 abbrlink: 8a3b30d5
 updated:

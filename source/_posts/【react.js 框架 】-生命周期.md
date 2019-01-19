@@ -4,7 +4,7 @@ date: '2018/8/19 23:57:28'
 tags:
   - react.js 生命周期
 categories:
-  - 五、react.js
+  - ⑤ react.js
   - react.js 框架学习
 abbrlink: f1ee2f9d
 updated:

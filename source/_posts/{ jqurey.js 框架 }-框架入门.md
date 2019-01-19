@@ -1,9 +1,11 @@
 ---
-title: 'JQurey【1】--[小白入门篇]'
-date: '2018/8/21 21:57:25'
+title: 'JQurey-ui--[ui 组件库]'
+date: '2018/8/19 23:57:28'
 tags:
-categories: 2-【1】 JQurey.js
-abbrlink: c7498277
+  - Jquery->ajax
+categories:
+  - ③ Jquery.js
+  - Jquery.js 框架学习
 updated:
 comments:
 ---

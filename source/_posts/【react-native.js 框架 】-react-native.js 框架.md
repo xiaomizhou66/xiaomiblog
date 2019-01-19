@@ -2,14 +2,13 @@
 title: react-native.js--手机端框架-入门教程
 date: '2018/8/19 23:57:28'
 categories:
-  - 六、react-native.js
+  - ⑥ react-native.js
   - react-native 框架
 abbrlink: 8eeb0a8a
 updated:
 tags:
 comments:
 ---
-
 
 # 一、前言
 

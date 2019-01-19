@@ -2,7 +2,7 @@
 title: 'JavaScript -- [深拷贝与浅拷贝]'
 date: '2018/8/19 23:57:28'
 categories:
-  - 二、Javascript-ES6-Typescript
+  - ② Javascript-ES6-Typescript
   - Javascript
 abbrlink: e9e1d815
 updated:

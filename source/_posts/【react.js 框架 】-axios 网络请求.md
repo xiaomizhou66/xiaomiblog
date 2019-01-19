@@ -2,7 +2,7 @@
 title: 'react.js--[网络请求 axios,jquery-ajax，浏览器内置的 window.fetch]'
 date: '2018/8/19 23:57:28'
 categories:
-  - 五、react.js
+  - ⑤ react.js
   - axios 在 react.js 中使用
 abbrlink: 4b1cf527
 updated:

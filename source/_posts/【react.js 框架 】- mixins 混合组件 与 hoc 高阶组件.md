@@ -2,7 +2,7 @@
 title: 'react.js--[mixins 混合组件 与 hoc 高阶组件]'
 date: '2018/8/19 23:57:28'
 categories:
-  - 五、react.js
+  - ⑤ react.js
   - mixins 混合组件 与 hoc 高阶组件
 abbrlink: '53578e63'
 updated:

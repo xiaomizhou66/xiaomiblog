@@ -4,7 +4,7 @@ date: '2018/8/19 23:57:28'
 tags:
   - axios(使用于 vue.js react.js)
 categories:
-  - 四、vue.js
+  - ④  vue.js
   - axios 前后端数据交互
 abbrlink: 6f49cdfd
 updated:

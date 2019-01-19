@@ -2,7 +2,7 @@
 title: JS事件：e.target与e.currentTarget区别
 date: '2018/8/18 21:57:28'
 categories:
-  - 二、Javascript-ES6-Typescript
+  - ② Javascript-ES6-Typescript
   - Javascript
 abbrlink: 68d682e3
 updated:

@@ -1,11 +1,13 @@
 ---
 title: WeChat 微信小程序--wepy-redux 状态管理器
-date: '2018/9/08 03:00:01'
-categories: 9-② wepy 框架
-abbrlink: '77878780'
+date: '2018/8/18 21:57:28'
+categories:
+  - ⑦ 小程序
+  - wepy 框架
+abbrlink: 9007ddf0
 updated:
-comments:
 tags:
+comments:
 ---
 
 ## 一、前言

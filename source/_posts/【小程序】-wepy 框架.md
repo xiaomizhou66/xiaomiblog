@@ -2,7 +2,7 @@
 title: wepy-cli 框架 入门学习
 date: '2018/8/18 21:57:28'
 categories:
-  - 七、小程序
+  - ⑦ 小程序
   - wepy 框架
 abbrlink: '55118849'
 updated:

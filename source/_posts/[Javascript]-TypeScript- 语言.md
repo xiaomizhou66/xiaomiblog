@@ -4,7 +4,7 @@ date: '2018/8/19 23:57:28'
 tags:
   - 递归函数
 categories:
-  - 二、Javascript-ES6-Typescript
+  - ② Javascript-ES6-Typescript
   - TypeScript
 abbrlink: 4f7de2e4
 updated:

@@ -4,7 +4,7 @@ date: '2018/8/19 23:57:28'
 tags:
   - 立即执行函数
 categories:
-  - 二、Javascript-ES6-Typescript
+  - ② Javascript-ES6-Typescript
   - Javascript
 abbrlink: 1cec2ae7
 updated:

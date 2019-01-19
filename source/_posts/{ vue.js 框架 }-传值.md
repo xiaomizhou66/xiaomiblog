@@ -2,7 +2,7 @@
 title: 'vue.js--[ 父子组件传值，非父子组件传值]'
 date: '2018/8/19 23:57:28'
 categories:
-  - 四、vue.js
+  - ④  vue.js
   - vue.js 框架学习
 abbrlink: 925f5dfe
 updated:

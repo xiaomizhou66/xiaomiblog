@@ -2,7 +2,7 @@
 title: redux 状态容器 在 wepy 框架使用
 date: '2018/8/18 21:57:28'
 categories:
-  - 七、小程序
+  - ⑦ 小程序
   - wepy 框架
 abbrlink: 9007ddf0
 updated:

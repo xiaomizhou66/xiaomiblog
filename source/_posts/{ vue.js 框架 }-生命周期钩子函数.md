@@ -2,7 +2,7 @@
 title: 'vue--[ 生命周期钩子函数]'
 date: '2018/8/19 23:57:28'
 categories:
-  - 四、vue.js
+  - ④  vue.js
   - vue.js 框架学习
 abbrlink: cc72d61a
 updated:

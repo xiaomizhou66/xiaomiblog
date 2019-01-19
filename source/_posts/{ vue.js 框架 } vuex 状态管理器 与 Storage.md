@@ -1,11 +1,13 @@
 ---
 title: 'vuex 实际应用-web Storage全面认知与使用(localStorage,sessionStorage)'
-date: '2018/8/28 10:35:25'
-tags:
-categories: 3-④ vuex 状态管理
-abbrlink: b08890bf
+date: '2018/8/19 23:57:28'
+categories:
+  - ④  vue.js
+  - vuex 状态管理器
 updated:
+tags:
 comments:
+---
 ---
 
 ## 一、前言

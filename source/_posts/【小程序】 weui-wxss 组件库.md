@@ -2,7 +2,7 @@
 title: weui-wxss 组件库
 date: '2018/8/18 21:57:28'
 categories:
-  - 七、小程序
+  - ⑦ 小程序
   - MINA 框架
 abbrlink: 5c727ab9
 updated:

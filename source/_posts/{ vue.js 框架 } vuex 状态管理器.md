@@ -2,7 +2,7 @@
 title: vuex 状态管理器
 date: '2018/8/19 23:57:28'
 categories:
-  - 四、vue.js
+  - ④  vue.js
   - vuex 状态管理器
 abbrlink: 49c067f4
 updated:

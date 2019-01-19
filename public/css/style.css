@@ -1,4 +1,4 @@
-/* reset */
+/* reset 初始化值*/
 body,
 dl,
 dt,
@@ -99,7 +99,7 @@ em {
 .hidden1 {
   display: none;
 }
-/* iconfont */
+/* iconfont 字符实体 */
 @font-face {
   font-family: "iconfont";
   src: url("../iconfont/iconfont.eot?t=1478071541360");
@@ -114,6 +114,7 @@ em {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: auto;
+/*    text-rendering自动优化代码*/
 }
 .fa-home:before {
   content: "\e001";
@@ -178,9 +179,9 @@ em {
 .fa-email:before {
   content: "\e015";
 }
-/* layout */
+/* layout 布局"Source Code Pro",*/
 body {
-  font-family: "Source Code Pro", Tahoma, "Helvetica Neue", Helvetica, "Hiragino Sans GB", "Microsoft YaHei Light", "Microsoft YaHei", "Source Han Sans CN", "WenQuanYi Micro Hei", Arial, sans-serif;
+  font-family: Tahoma, "Helvetica Neue", Helvetica, "Hiragino Sans GB", "Microsoft YaHei Light", "Microsoft YaHei", "Source Han Sans CN", "WenQuanYi Micro Hei", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size: 14px;
@@ -201,6 +202,7 @@ body {
   -ms-flex-flow: row wrap;
   -ms-align-content: flex-start;
   -webkit-align-content: flex-start;
+/* layout-l 左边文章区域+左右间隔区，layout-r右边侧栏区域*/
 }
 .layout-l,
 .layout-r {
@@ -218,21 +220,22 @@ body {
 }
 .layout-r {
   width: 25%;
-  *width: 24.969%;
 }
 .body_container {
-  padding: 0 50px;
-  max-width: 1200px;
+  padding: 0 30px 0 50px !important;
+/* max-width: 1200px */
   margin: 0 auto;
+/* 文章区域大小,在.layout-l里面*/
 }
 .content_container {
-  padding-right: 40px;
+  padding-right: 20px;
 }
-/* header */
+/* header 头部*/
 #header {
   text-align: left;
   position: relative;
   min-height: 300px;
+/* 网站标题liuxmoo*/
 }
 #header .site-name {
   padding-top: 100px;
@@ -242,6 +245,7 @@ body {
   margin: 0;
   height: 0;
   overflow: hidden;
+/* 网站子标题，描述 慢慢来*/
 }
 #header .site-name .description {
   padding: 0.6em 0 0;
@@ -251,12 +255,14 @@ body {
   word-wrap: break-word;
   line-height: 26px;
 }
+/* logo图 在div.header 下*/
 #logo {
   font: bold 42px/1.2 "宋体";
   white-space: nowrap;
   color: #fff;
   text-shadow: 1px 3px 6px #113f6e;
 }
+/* 导航栏在div.header 下*/
 #nav-menu {
   margin: 20px 0;
   padding: 0;
@@ -278,7 +284,7 @@ body {
   -webkit-box-shadow: 0 0 10px #adc2d7 inset;
   box-shadow: 0 0 10px #adc2d7 inset;
 }
-/* sidebar */
+/* sidebar侧边栏 */
 #sidebar {
   word-wrap: break-word;
   -webkit-transition: all 0.6s ease-in-out;
@@ -314,8 +320,12 @@ body {
   margin-top: 10px;
 }
 #sidebar .widget .tagcloud a {
-  line-height: 1.5;
+  display: inline-block;
+  font-size: 10px !important;
+  background: #f2f4f4;
+  width: 100px;
   padding: 5px;
+  margin-top: 2px;
 }
 #sidebar .widget ul,
 #sidebar .widget ol {
@@ -330,6 +340,12 @@ body {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  background: url("../img/wenjianjia.jpg") no-repeat 0px 6px 5px 5px;
+  border-bottom-style: double;
+/* 分类 */
+}
+#sidebar .widget .category-list .category-list-child li {
+  margin-left: 30px;
 }
 #sidebar .widget .category-list-count {
   padding-left: 5px;
@@ -345,7 +361,7 @@ body {
   display: block;
   height: 52px;
 }
-#search-form {
+#search-form  /* 搜索框*/ {
   position: absolute;
   bottom: -52px;
   right: 0;
@@ -353,21 +369,21 @@ body {
   color: #333;
   width: 25%;
 }
-#search-form label {
+#search-form  /* 搜索框*/ label {
   position: relative;
   display: block;
   margin: 0;
   width: 100%;
   height: 100%;
 }
-#search-form label:before {
+#search-form  /* 搜索框*/ label:before {
   font-family: "iconfont" !important;
   content: '\e007';
   position: absolute;
   left: 15px;
   top: 9px;
 }
-#search-form input {
+#search-form  /* 搜索框*/ input {
   box-sizing: border-box;
   height: 32px;
   padding: 7px 11px 7px 35px;
@@ -442,6 +458,7 @@ body {
 }
 #search-result .item a:hover {
   text-decoration: none;
+/* 修改了颜色---------------- */
 }
 #search-result .item .title {
   white-space: nowrap;
@@ -450,7 +467,7 @@ body {
   white-space: nowrap;
   text-overflow: ellipsis;
   font-size: 14px;
-  color: #40759b;
+  color: #40759b !important;
 }
 #search-result .item .title:hover {
   text-decoration: underline;
@@ -473,7 +490,7 @@ body {
   font-family: "iconfont" !important;
   content: '\e008';
 }
-/* post */
+/* post 文章样式 在div.content_container里面*/
 .post {
   padding: 25px;
   background: #fff;
@@ -575,16 +592,20 @@ body {
   font-size: 15px;
   line-height: 1.77;
   color: #333;
-  padding-top: 15px;
+  padding-top: 5px;
   text-align: justify;
   text-justify: distribute;
   word-break: normal;
 }
 .post .post-content h2 {
   font-size: 18px;
+  padding-left: 3px;
+  background: #34495e;
+  color: #fff;
 }
 .post .post-content h3 {
   font-size: 16px;
+  color: #cb4335;
 }
 .post .post-content h4 {
   font-size: 14px;
@@ -597,6 +618,8 @@ body {
 }
 .post .post-content p {
   margin: 0 0 1.234em;
+/*text-indent:30px 这里会让参数，返回值这些文字前面有空格不好看*/
+/* 这里是段落里的代码而不是单独代码显示那里*/
 }
 .post .post-content p code {
   margin: 0 5px;
@@ -679,7 +702,7 @@ body {
   display: block;
   clear: both;
 }
-/* for archive page starts*/
+/* for archive page starts 文章归档*/
 .post-archive {
   font-size: 15px;
   line-height: 2;
@@ -867,7 +890,7 @@ body {
 #footer .footer-info p a {
   margin: 0;
 }
-/* page navigator */
+/* page navigator  头部中的页面导航*/
 .page-navigator {
   list-style: none;
   padding: 0 0 25px 0;
@@ -932,7 +955,7 @@ body {
   margin: 0 5px;
   font-size: 20px;
 }
-/* read more*/
+/* read more 阅读更多*/
 .readmore a {
   font-size: 14px;
   color: #40759b;
@@ -948,7 +971,7 @@ body {
   -webkit-box-shadow: 0 -1px 4px #5483b1 inset;
   box-shadow: 0 -1px 4px #5483b1 inset;
 }
-/* post navigator*/
+/* post navigator 上一篇/下一篇文章*/
 .post-nav {
   overflow: hidden;
   margin-top: 15px;
@@ -983,6 +1006,7 @@ body {
 }
 .post-nav a:hover {
   color: #40759b;
+  overflow: visible;
 }
 .post-nav a.next {
   float: right;
@@ -997,7 +1021,7 @@ body {
   content: "\e00e";
   padding-left: 0.3em;
 }
-/* back-to-top */
+/* back-to-top 回到顶部*/
 #totop {
   position: fixed;
   right: 50px;
@@ -1034,7 +1058,7 @@ body {
   visibility: visible;
   opacity: 1;
 }
-/* about page */
+/* about page 关于页面*/
 .author-page {
   padding: 40px 0 20px 0;
   text-align: center;
@@ -1074,16 +1098,22 @@ body {
 .author-page .author .fa:before {
   margin-right: 0.2em;
 }
-/* toc*/
+/* toc 文章目录*/
 #toc li {
   font-weight: bold;
+/* 整个一级标题li包括子代*/
 }
 #toc .toc-child {
-  margin-left: 0.6em;
+  margin-left: 1.5em;
   padding-left: 0;
+  overflow-x: hidden;
+}
+#toc .toc-child:hover {
+  overflow-x: visible;
 }
 #toc .toc-child li {
   font-weight: normal;
+  font-weight: 500;
 }
 #toc .toc-child li:first-of-type {
   margin-top: 0;
@@ -1099,7 +1129,7 @@ body {
   overflow-y: scroll;
   max-height: 100%;
 }
-/* table*/
+/* table 表格代码块都是表格做成的*/
 table,
 tbody,
 tr,
@@ -1147,7 +1177,7 @@ table td {
     padding: 20px;
   }
 }
-/* middle*/
+/* middle 做成响应式*/
 @media print, screen and (max-width: 48em) {
   .layout-l {
     width: 100%;
@@ -1157,6 +1187,7 @@ table td {
   }
   #toc {
     display: none;
+    overflow: auto;
   }
   #sidebar .search-pla {
     display: none;
@@ -1187,6 +1218,7 @@ table td {
   }
   #search-form input::-webkit-input-placeholder {
     color: #fff;
+/*页面切换导航*/
   }
   #nav-menu {
     position: relative;

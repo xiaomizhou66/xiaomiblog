@@ -1,11 +1,11 @@
 ---
 title: 'HTTP--[状态码]'
-date: '2018/9/02 01:00:01'
-categories: 1-(3) http 协议
-abbrlink: '5644389'
+date: '2018/8/19 23:57:28'
+categories:
+  - ⑨ HTTP
 updated:
-comments:
 tags:
+comments:
 ---
 # 一、前言
 

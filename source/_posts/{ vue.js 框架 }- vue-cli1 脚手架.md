@@ -2,7 +2,7 @@
 title: 'vue-cli1--[小白入门篇、速学篇]'
 date: '2018/8/19 23:57:28'
 categories:
-  - 四、vue.js
+  - ④  vue.js
   - vue-cli 脚手架
 abbrlink: cd55770d
 updated:

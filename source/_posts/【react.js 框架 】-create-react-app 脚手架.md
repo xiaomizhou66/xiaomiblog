@@ -2,7 +2,7 @@
 title: 'react.js--[create-react-app 脚手架]'
 date: '2018/8/19 23:57:28'
 categories:
-  - 五、react.js
+  - ⑤ react.js
   - create-react-app 脚手架
 abbrlink: beb63676
 updated:

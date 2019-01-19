@@ -2,7 +2,7 @@
 title: react.js 中使用 interceptor 请求拦截器
 date: '2018/8/19 23:57:28'
 categories:
-  - 五、react.js
+  - ⑤ react.js
   - axios 在 react.js 中使用
 abbrlink: 21672bde
 updated:

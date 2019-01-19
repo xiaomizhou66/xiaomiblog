@@ -2,7 +2,7 @@
 title: 'react.js----[React Router Redux 状态管理器]'
 date: '2018/8/19 23:57:28'
 categories:
-  - 五、react.js
+  - ⑤ react.js
   - 状态管理器
 abbrlink: 5200c947
 updated:
