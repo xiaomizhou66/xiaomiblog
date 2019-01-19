@@ -1,0 +1,456 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.8.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description" content="小米粥e博客"><meta name="keywords" content="html, css, vue, JavaScript,js,vuex,element-ui,iveiw-ui,axios"><title>HTTP--[小白入门版、速学版] | liuxmoo</title><link rel="stylesheet" type="text/css" href="//fonts.neworld.org/css?family=Source+Code+Pro"><link rel="stylesheet" type="text/css" href="/css/style.css?v=2.0.1"><link rel="stylesheet" type="text/css" href="/css/highlight.css?v=2.0.1"><link rel="Shortcut Icon" href="/favicon.ico"><link rel="bookmark" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">HTTP--[小白入门版、速学版]</h1><a id="logo" href="/.">liuxmoo</a><p class="description">半路被拎来的前端。(*^▽^*)。学习最快的方法→慢慢来</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a><a href="/about/"><i class="fa fa-user"> 关于</i></a></div><div id="search-form"><div id="result-mask" class="hide"></div><label><input id="search-key" type="text" autocomplete="off" placeholder="Arama"></label><div id="result-wrap" class="hide"><div id="search-result"></div></div><div class="hide"><template id="search-tpl"><div class="item"><a href="/{path}" title="{title}"><div class="title">{title}</div><div class="time">{date}</div><div class="tags">{tags}</div></a></div></template></div></div></div><div id="layout" class="layout-g"><div class="layout-l"><div class="content_container"><div class="post"><h1 class="post-title">HTTP--[小白入门版、速学版]</h1><div class="post-meta"><a href="/2018/08/19/⑨-【HTTP】-HTTP-网络请求-入门/#comments" class="comment-count"></a><p><span class="date">Aug 19, 2018</span><span><a href="/categories/⑨-HTTP/" class="category">⑨ HTTP</a></span><span><i id="busuanzi_container_page_pv"><i id="busuanzi_value_page_pv"></i><i>点击</i></i></span></p></div><div class="post-content"><h2 id="一、前言"><a href="#一、前言" class="headerlink" title="一、前言"></a>一、前言</h2><p>在公司合作项目，前后端都是分开的，主打前端可以不知道怎么写后端，但是后端提供的 API 接口文件需要知道如何调用、获取数据展现在前端。<br>后端会提供类似以下格式的 api 接口文件：</p>
+<p>发送登录请求 API 示例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">POST /v1/login Http/1.1  </span><br><span class="line">Content-Type: application/json</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">&quot;username&quot;:&lt;username&gt;,</span><br><span class="line">&quot;password&quot;:&lt;password&gt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里的前后端通信就需要通过 http 协议进行，要理解就要掌握 http 协议是如何工作的。两本高手级别的书 《HTTP权威指南》，《TCP/IP详解，卷I》，内容艰涩难懂，学习难度大。对于像我这种门外汉来说，直接学习两本圣经书，我是没法看下去的，好在日本 上野宣 著有一书 《图解HTTP》 ，本书全书几乎全以图片讲解，让人易于学习。</p>
+<h2 id="二、HTTP-工作原理"><a href="#二、HTTP-工作原理" class="headerlink" title="二、HTTP 工作原理"></a>二、HTTP 工作原理</h2><p>在学习如何使用 http 之前，首先要知道它的工作原理。 HTTP 协议工作于客户端-服务端架构上。用于客户端和服务端的通信。请求访问文本或图像等资源的一段被称为客户端：例如浏览器，桌面应用，手机浏览器，手机 APP 应用等。提供资源相应的一端称为服务器。</p>
+<p>客户端通过URL向服务端发送所有请求消息（请求报文），服务器根据接收到的请求后，向客户端发送响应消息（相应报文）。例如上面写的代码，前端发送这段代码给后端以获取信息。</p>
+<p><strong> 请求与相应的消息都称为报文，包括报文首部+空行+报文主体 </strong><br><img src="http://liuxmoo.foryung.com/baowen.jpg" alt="报文"></p>
+<h2 id="三、HTTP协议使用"><a href="#三、HTTP协议使用" class="headerlink" title="三、HTTP协议使用"></a>三、HTTP协议使用</h2><h3 id="3-1-客户端发送请求"><a href="#3-1-客户端发送请求" class="headerlink" title="3.1 客户端发送请求"></a>3.1 客户端发送请求</h3><p>HTTP报文结构<br><img src="http://liuxmoo.foryung.com/qingqiubaowen.jpg" alt="请求报文"><br>客户端发送一个HTTP请求(请求报文)到服务器的请求。</p>
+<p>请求消息包括以下格式：</p>
+<blockquote>
+<p>请求行：请求方法，请求 URI/URL，HTTP 协议版本<br>&nbsp;&nbsp;&nbsp;HTTP首部字段：（可选）<br>&nbsp;&nbsp;&nbsp;空行<br>&nbsp;&nbsp;&nbsp;请求数据/请求内容实体：（可选）</p>
+</blockquote>
+<p>以下为新增文件夹的接口示例：（后端提供的API文件）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">POST /v1/account/storage/folder Http/1.1     请求行</span><br><span class="line">Authorization: &lt;token&gt;                       首部字段-(postman中的headers)</span><br><span class="line">                                             空行</span><br><span class="line">&#123;</span><br><span class="line">&quot;label&quot;:&quot;folder&quot;,                            请求实体--(postman中的body)</span><br><span class="line">&quot;name&quot;:&quot;?????&quot;,</span><br><span class="line">&quot;parentID&quot;:&quot;5aa14f9f8e1a0be97ee9abe3&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="3-1-1请求行"><a href="#3-1-1请求行" class="headerlink" title="3.1.1请求行"></a>3.1.1请求行</h4><p><strong> 请求行：POST /v1/account/storage/folder Http/1.1 </strong><br>请求—-方法：POST（请求访问服务器的类型），<br>请求—-URL：/v1/account/storage/folder（指明访问的资源对象），<br>http 版本号：Http/1.1（提示客户端用的 http 协议功能）</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">序号</th>
+<th style="text-align:center">请求方法</th>
+<th style="text-align:left">说明</th>
+<th style="text-align:center">支持的 HTTP 协议版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">1</td>
+<td style="text-align:center">GET</td>
+<td style="text-align:left">获取资源</td>
+<td style="text-align:center">-1.1</td>
+</tr>
+<tr>
+<td style="text-align:center">2</td>
+<td style="text-align:center">POST</td>
+<td style="text-align:left">传输实体主体：向指定资源提交数据进行处理请求（例如提交表单或者上传文件）。数据被包含在请求体中。POST请求可能会导致新的资源的建立和/或已有资源的修改。</td>
+<td style="text-align:center">-1.1</td>
+</tr>
+<tr>
+<td style="text-align:center">3</td>
+<td style="text-align:center">PUT</td>
+<td style="text-align:left">传输文件：从客户端向服务器传送的数据取代指定的文档的内容。</td>
+<td style="text-align:center">-1.1</td>
+</tr>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:center">HEAD</td>
+<td style="text-align:left">获取报文首部：类似于get请求，只不过返回的响应中没有具体的内容，用于获取报头</td>
+<td style="text-align:center">-1.1</td>
+</tr>
+<tr>
+<td style="text-align:center">5</td>
+<td style="text-align:center">DELETE</td>
+<td style="text-align:left">删除文件：请求服务器删除指定的页面。</td>
+<td style="text-align:center">-1.1</td>
+</tr>
+<tr>
+<td style="text-align:center">6</td>
+<td style="text-align:center">link</td>
+<td style="text-align:left">建立和资源的联系</td>
+<td style="text-align:center">仅支持1.0</td>
+</tr>
+<tr>
+<td style="text-align:center">7</td>
+<td style="text-align:center">unlink</td>
+<td style="text-align:left">断开连接关系</td>
+<td style="text-align:center">仅支持1.0</td>
+</tr>
+<tr>
+<td style="text-align:center">8</td>
+<td style="text-align:center">TRACE</td>
+<td style="text-align:left">追踪路径：回显服务器收到的请求，主要用于测试或诊断。</td>
+<td style="text-align:center">1.1</td>
+</tr>
+<tr>
+<td style="text-align:center">9</td>
+<td style="text-align:center">OPTIONS</td>
+<td style="text-align:left">询问支持的方法：允许客户端查看服务器的性能。</td>
+<td style="text-align:center">1.1</td>
+</tr>
+<tr>
+<td style="text-align:center">10</td>
+<td style="text-align:center">CONNECT</td>
+<td style="text-align:left">要求用隧道协议链接代理：HTTP/1.1协议中预留给能够将连接改为管道方式的代理服务器。</td>
+<td style="text-align:center">1.1</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3-1-2-首部字段"><a href="#3-1-2-首部字段" class="headerlink" title="3.1.2 首部字段"></a>3.1.2 首部字段</h4><p><strong> Authorization: token </strong><br>具体学习见第四章:<a href="#id4" target="_self">HTTP 报文首部</a></p>
+<h3 id="3-2-服务器相应信息反馈"><a href="#3-2-服务器相应信息反馈" class="headerlink" title="3.2 服务器相应信息反馈"></a>3.2 服务器相应信息反馈</h3><p><img src="http://liuxmoo.foryung.com/xiangyingbaowen.jpg" alt="响应报文"></p>
+<p>响应消息包括以下格式：</p>
+<blockquote>
+<p>状态行：HTTP 协议版本,状态码,原因短语<br>&nbsp;&nbsp;&nbsp;HTTP 首部字段：（可选）<br>&nbsp;&nbsp;&nbsp;空行<br>&nbsp;&nbsp;&nbsp;响应数据/响应内容实体：（可选）</p>
+</blockquote>
+<p>以下为新增文件夹的接口示例：（后端提供的 API 文件）</p>
+<p>HTTP 响应(相应报文)也由四个部分组成，分别是：状态行、消息报头、空行和响应正文。<br>以下为相应示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 200 OK                                     状态行</span><br><span class="line">Date: Mon, 27 Jul 2018 12:28:53 GMT                 HTTP首部字段</span><br><span class="line">Content-Length: 724</span><br><span class="line">Content-Type: text/html</span><br><span class="line"></span><br><span class="line">&lt;html&gt;                                             响应内容实体</span><br><span class="line">...</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="3-2-1-状态行"><a href="#3-2-1-状态行" class="headerlink" title="3.2.1 状态行"></a>3.2.1 状态行</h4><p><strong> 状态行：TTP/1.1 200 OK </strong><br>http版本号：Http/1.1<br>状态—-码：200<br>原因–短语：ok</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 状态码       类别                     原因短语</span></span><br><span class="line"><span class="comment">#  1..     informational(信息状态码)    服务器收到请求，需要请求者继续执行操作，正在处理请求</span></span><br><span class="line"><span class="comment">#  2..     success（成功状态码）        请求正常处理完毕，操作被成功接收并处理         (成功)</span></span><br><span class="line"><span class="comment">#  3..     Redirction（重定向）         需要进一步的操作以完成请求  </span></span><br><span class="line"><span class="comment">#  4..     Client（客户端错误）         客户端错误，请求包含语法错误或无法完成请求      (前端错误/后端错误)</span></span><br><span class="line"><span class="comment">#  5..     Server Error（服务端错误）   服务器错误，服务器在处理请求的过程中发生了错误  (后端错误)</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#  1..     informational(信息状态码)   服务器收到请求，需要请求者继续执行操作，正在处理请求</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#  100     Continue  继续。</span></span><br><span class="line"><span class="comment">#                    客户端应继续其请求，需要请求者继续执行操作|  </span></span><br><span class="line"><span class="comment">#  102     Switching Protocols（成功状态码）切换协议。</span></span><br><span class="line"><span class="comment">#                    服务器根据客户端的请求切换协议。只能切换到更高级的协议，例如，切换到 HTTP 的新版本协议</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#  2..     success（成功状态码）        请求正常处理完毕，操作被成功接收并处理         (成功)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#  200     OK  请求成功。</span></span><br><span class="line"><span class="comment">#              一般用于 GET 与 POST 请求</span></span><br><span class="line"><span class="comment">#  201     Created  已创建。</span></span><br><span class="line"><span class="comment">#                   成功请求并创建了新的资源</span></span><br><span class="line"><span class="comment">#  202     Accepted 已接受</span></span><br><span class="line"><span class="comment">#                   已经接受请求但未处理完成</span></span><br><span class="line"><span class="comment">#  203     Non-Authoritative Information 非授权信息</span></span><br><span class="line"><span class="comment">#                                         请求成功。但返回的 meta 信息不在原始的服务器，而是一个副本</span></span><br><span class="line"><span class="comment">#  204     No Content  无内容</span></span><br><span class="line"><span class="comment">#                      服务器成功处理，但未返回内容。在未更新网页的情况下，可确保浏览器继续显示当前文档</span></span><br><span class="line"><span class="comment">#  205     Reset Content 重置内容</span></span><br><span class="line"><span class="comment">#                        服务器处理成功，用户终端（例如：浏览器）应重置文档视图。可通过此返回码清除浏览器的表单域|</span></span><br><span class="line"><span class="comment">#  206     Partial Content 部分内容</span></span><br><span class="line"><span class="comment">#                          服务器成功处理了部分GET请求|</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#  3..     Redirction（重定向）         需要进一步的操作以完成请求  </span></span><br><span class="line"></span><br><span class="line"><span class="comment">#  300    Multiple Choices  =&gt;多种选择</span></span><br><span class="line"><span class="comment">#                             请求的资源可包括多个位置，相应可返回一个资源特征与地址的列表用于用户终端（例如：浏览器）选择</span></span><br><span class="line"><span class="comment">#  301    Moved Permanently  =&gt;永久移动，请求的资源已被永久的移动到新URI，返回信息会包括新的URI，浏览器会自动定向到新URI。</span></span><br><span class="line"><span class="comment">#                             今后任何新的请求都应使用新的URI代替</span></span><br><span class="line"><span class="comment">#  302    Found  =&gt; 临时移动。与 301 类似。但资源只是临时被移动。客户端应继续使用原有URI</span></span><br><span class="line"><span class="comment">#  303    See Other =&gt; 查看其它地址。 与301类似。使用GET和POST请求查看</span></span><br><span class="line"><span class="comment">#  304    Not Modified =&gt; 未修改。 所请求的资源未修改，服务器返回此状态码时，不会返回任何资源。</span></span><br><span class="line"><span class="comment">#                         客户端通常会缓存访问过的资源，通过提供一个头信息指出客户端希望只返回在指定日期之后修改的资源</span></span><br><span class="line"><span class="comment">#  305    Use Proxy  =&gt; 使用代理。 所请求的资源必须通过代理访问</span></span><br><span class="line"><span class="comment">#  306    Unused xxxxx  =&gt; 已经被废弃的HTTP状态码</span></span><br><span class="line"><span class="comment">#  307    Temporary Redirect  =&gt; 临时重定向。与302类似。使用GET请求重定向</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#  4..     Client（客户端错误）         客户端错误，请求包含语法错误或无法完成请求      (前端错误/后端错误)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#  400      Bad Request  =&gt; 客户端请求的语法错误，服务器无法理解</span></span><br><span class="line"><span class="comment">#  401      Unauthorized =&gt; 请求要求用户的身份认证</span></span><br><span class="line"><span class="comment">#  402      Payment Required =&gt; 保留。将来使用</span></span><br><span class="line"><span class="comment">#  403      Forbidden =&gt; 服务器理解请求客户端的请求，但是拒绝执行此请求</span></span><br><span class="line"><span class="comment">#  404      Not Found =&gt; 服务器无法根据客户端的请求找到资源（网页）                    【前端错误/后端错误】</span></span><br><span class="line"><span class="comment">#                        通过此代码，网站设计人员可设置 "您所请求的资源无法找到" 的个性页面</span></span><br><span class="line"><span class="comment">#  405      Method Not Allowed  =&gt;  客户端请求中的方法被禁止</span></span><br><span class="line"><span class="comment">#  406      Not Acceptable  =&gt; 服务器无法根据客户端请求的内容特性完成请求</span></span><br><span class="line"><span class="comment">#  407      Proxy Authentication Required =&gt; 请求要求代理的身份认证</span></span><br><span class="line"><span class="comment">#                                         与 401 类似，但请求者应当使用代理进行授权</span></span><br><span class="line"><span class="comment">#  408      Request Time-out =&gt; 服务器等待客户端发送的请求时间过长，超时</span></span><br><span class="line"><span class="comment">#  409      Conflict   =&gt; 服务器完成客户端的 PUT 请求是可能返回此代码，服务器处理请求时发生了冲突</span></span><br><span class="line"><span class="comment">#  410      Gone   =&gt; 客户端请求的资源已经不存在</span></span><br><span class="line"><span class="comment">#                     410 不同于 404，如果资源以前有现在被永久删除了可使用 410 代码，网站设计人员可通过 301 代码指定资源的新位置</span></span><br><span class="line"><span class="comment">#  411      Length Required  =&gt; 服务器无法处理客户端发送的不带 Content-Length 的请求信息</span></span><br><span class="line"><span class="comment">#  412      Precondition Failed  =&gt; 客户端请求信息的先决条件错误</span></span><br><span class="line"><span class="comment">#  413      Request Entity Too Large =&gt; 由于请求的实体过大，服务器无法处理，因此拒绝请求。</span></span><br><span class="line"><span class="comment">#                                       为防止客户端的连续请求，服务器可能会关闭连接。</span></span><br><span class="line"><span class="comment">#                                       如果只是服务器暂时无法处理，则会包含一个 Retry-After 的响应信息</span></span><br><span class="line"><span class="comment">#  414      Request-URI Too Large  =&gt;  请求的 URI 过长（ URI 通常为网址），服务器无法处理</span></span><br><span class="line"><span class="comment">#  415      Unsupported Media Type =&gt; 服务器无法处理请求附带的媒体格式</span></span><br><span class="line"><span class="comment">#  416      Requested range not satisfiable =&gt; 客户端请求的范围无效</span></span><br><span class="line"><span class="comment">#  417      Expectation Failed =&gt; 服务器无法满足 Expect 的请求头信息</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#  5..     Server Error（服务端错误）   服务器错误，服务器在处理请求的过程中发生了错误  (后端错误)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#  500      Internal Server Error  =&gt; 服务器内部错误，无法完成请求</span></span><br><span class="line"><span class="comment">#  501      Not Implemented  =&gt;   服务器不支持请求的功能，无法完成请求</span></span><br><span class="line"><span class="comment">#  502      Bad Gateway    =&gt;   充当网关或代理的服务器，从远端服务器接收到了一个无效的请求</span></span><br><span class="line"><span class="comment">#  503      Service Unavailable =&gt;  由于超载或系统维护，服务器暂时的无法处理客户端的请求。</span></span><br><span class="line"><span class="comment">#                                   延时的长度可包含在服务器的Retry-After头信息中</span></span><br><span class="line"><span class="comment">#  504      Gateway Time-out =&gt;  充当网关或代理的服务器，未及时从远端服务器获取请求</span></span><br><span class="line"><span class="comment">#  505      HTTP Version not supported  =&gt; 服务器不支持请求的HTTP协议的版本，无法完成处理</span></span><br></pre></td></tr></table></figure>
+<h4 id="3-2-2-首部字段"><a href="#3-2-2-首部字段" class="headerlink" title="3.2.2 首部字段"></a>3.2.2 首部字段</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Date: Mon, 27 Jul 2018 12:28:53 GMT</span><br><span class="line">Content-Length: 724</span><br><span class="line">Content-Type: text/html</span><br></pre></td></tr></table></figure>
+<p>具体学习见第四章:<a href="#id4" target="_self">HTTP报文首部</a></p>
+<h2 id="四、HTTP-报文首部"><a href="#四、HTTP-报文首部" class="headerlink" title="四、HTTP 报文首部"></a>四、HTTP 报文首部</h2><p id="id4"></p>
+
+<p><img src="http://liuxmoo.foryung.com/qingqiubaowen50.jpg" alt="请求报文首部"><img src="http://liuxmoo.foryung.com/xiangyingbaowen50.jpg" alt="响应报文首部"></p>
+<h3 id="4-1-HTTP-报文分类"><a href="#4-1-HTTP-报文分类" class="headerlink" title="4.1 HTTP 报文分类"></a>4.1 HTTP 报文分类</h3><ul>
+<li>请求报文</li>
+<li>响应报文</li>
+</ul>
+<h3 id="4-2-HTTP-首部字段类型"><a href="#4-2-HTTP-首部字段类型" class="headerlink" title="4.2 HTTP 首部字段类型"></a>4.2 HTTP 首部字段类型</h3><ul>
+<li>通用首部字段：请求报文和响应报文两方都会使用的首部</li>
+<li>请求首部字段：从客户端向服务器发送请求报文时使用的首部。补充了请求的附加内容、客户端信息、响应内容相关 优先级等信息</li>
+<li>响应首部字段：从服务器向客户端返回响应报文时使用的首部。补充了响应的附加内容，也会要求客户端附加额外的内容信息</li>
+<li>实体首部字段：针对请求报文和响应报文的实体部分使用的首部。补充了资源内容更新时间等实体有关的信息</li>
+</ul>
+<blockquote>
+<p>HTTP首部字段由 <strong>首部字段名</strong> : <strong>字段值</strong> 构成，字段值可以有多个，如：Keep-Alive：timeout=15，max=100</p>
+</blockquote>
+<p>   ——————-<strong>通用首部字段</strong> —————————————————————————————————————————————<strong>实体首部字段</strong>—————–</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">序号</th>
+<th style="text-align:left"><em>通用首部字段名</em></th>
+<th style="text-align:left">说明</th>
+<th style="text-align:left"></th>
+<th style="text-align:left"></th>
+<th style="text-align:left">序号</th>
+<th style="text-align:left"><em>实体首部字段名</em></th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">1</td>
+<td style="text-align:left">Cache-Control</td>
+<td style="text-align:left">控制缓存的行为</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left">1</td>
+<td style="text-align:left">Allow</td>
+<td style="text-align:left">资源可支持的HTTP方法</td>
+</tr>
+<tr>
+<td style="text-align:left">2</td>
+<td style="text-align:left">Connection</td>
+<td style="text-align:left">逐跳首部、连接的管理</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left">2</td>
+<td style="text-align:left">Content-Encoding</td>
+<td style="text-align:left">实体主体的适用的编码方式</td>
+</tr>
+<tr>
+<td style="text-align:left">3</td>
+<td style="text-align:left">Date</td>
+<td style="text-align:left">创建报文的日期时间</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left">3</td>
+<td style="text-align:left">Content-Language</td>
+<td style="text-align:left">实体主体的自然语言</td>
+</tr>
+<tr>
+<td style="text-align:left">4</td>
+<td style="text-align:left">Pragma</td>
+<td style="text-align:left">报文指令</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left">4</td>
+<td style="text-align:left">Content-Length</td>
+<td style="text-align:left">实体主体的大小（单位：字节）</td>
+</tr>
+<tr>
+<td style="text-align:left">5</td>
+<td style="text-align:left">Trailer</td>
+<td style="text-align:left">报文末端的首部一览</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left">5</td>
+<td style="text-align:left">Content-Location</td>
+<td style="text-align:left">替代对应资源的URI</td>
+</tr>
+<tr>
+<td style="text-align:left">6</td>
+<td style="text-align:left">Transfer-Encoding</td>
+<td style="text-align:left">指定报文主体的传输编码方式</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left">6</td>
+<td style="text-align:left">Content-MD5</td>
+<td style="text-align:left">实体主体的报文摘要</td>
+</tr>
+<tr>
+<td style="text-align:left">7</td>
+<td style="text-align:left">Upgrade</td>
+<td style="text-align:left">升级为其他协议</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left">7</td>
+<td style="text-align:left">Content-MD5</td>
+<td style="text-align:left">实体主体的报文摘要</td>
+</tr>
+<tr>
+<td style="text-align:left">8</td>
+<td style="text-align:left">Via</td>
+<td style="text-align:left">代理服务器的相关信息</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left">8</td>
+<td style="text-align:left">Content-Range</td>
+<td style="text-align:left">实体主体的位置范围</td>
+</tr>
+<tr>
+<td style="text-align:left">9</td>
+<td style="text-align:left">Warning</td>
+<td style="text-align:left">错误通知</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left">9</td>
+<td style="text-align:left">Content-Type</td>
+<td style="text-align:left">实体主体的媒体类型</td>
+</tr>
+<tr>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left">10</td>
+<td style="text-align:left">Expires</td>
+<td style="text-align:left">实体主体过期的日期时间</td>
+</tr>
+</tbody>
+</table>
+<p>   ——————-<strong>请求首部字段</strong> —————————————————————————————————————————————<strong>响应首部字段</strong>—————–</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">序号</th>
+<th style="text-align:left"><em>请求首部字段名</em></th>
+<th style="text-align:left">说明</th>
+<th style="text-align:left"></th>
+<th style="text-align:left"></th>
+<th style="text-align:left">序号</th>
+<th style="text-align:left"><em>响应首部字段名</em></th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">1</td>
+<td style="text-align:left">Accept</td>
+<td style="text-align:left">用户代理可处理的媒体类型</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left">1</td>
+<td style="text-align:left">Accept-Ranges</td>
+<td style="text-align:left">是否接受字节范围请求</td>
+</tr>
+<tr>
+<td style="text-align:left">2</td>
+<td style="text-align:left">Accept-Charset</td>
+<td style="text-align:left">优先的字符集</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left">2</td>
+<td style="text-align:left">Age</td>
+<td style="text-align:left">推算资源创建经过时间</td>
+</tr>
+<tr>
+<td style="text-align:left">3</td>
+<td style="text-align:left">Accept-Encoding</td>
+<td style="text-align:left">优先的内容编码</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left">3</td>
+<td style="text-align:left">ETag</td>
+<td style="text-align:left">资源的匹配信息</td>
+</tr>
+<tr>
+<td style="text-align:left">4</td>
+<td style="text-align:left">Accept-Language</td>
+<td style="text-align:left">优先的语言（自然语言）</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left">4</td>
+<td style="text-align:left">Location</td>
+<td style="text-align:left">令客户端重定向至指定的URI</td>
+</tr>
+<tr>
+<td style="text-align:left">5</td>
+<td style="text-align:left">Authorization</td>
+<td style="text-align:left">Web认证信息</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left">5</td>
+<td style="text-align:left">Proxy-Authenticate</td>
+<td style="text-align:left">代理服务器对客户端的认证信息</td>
+</tr>
+<tr>
+<td style="text-align:left">6</td>
+<td style="text-align:left">Expect</td>
+<td style="text-align:left">期待服务器的特定行为</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left">6</td>
+<td style="text-align:left">Reter-After</td>
+<td style="text-align:left">对再次发起请求的时机要求</td>
+</tr>
+<tr>
+<td style="text-align:left">7</td>
+<td style="text-align:left">From</td>
+<td style="text-align:left">用户的电子邮箱地址</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left">7</td>
+<td style="text-align:left">Server</td>
+<td style="text-align:left">HTTP服务器的安装信息</td>
+</tr>
+<tr>
+<td style="text-align:left">8</td>
+<td style="text-align:left">Host</td>
+<td style="text-align:left">请求资源所在服务器</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left">8</td>
+<td style="text-align:left">Vary</td>
+<td style="text-align:left">代理服务器缓存的管理信息</td>
+</tr>
+<tr>
+<td style="text-align:left">9</td>
+<td style="text-align:left">if-Match</td>
+<td style="text-align:left">比较实体标记（ETag）</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left">9</td>
+<td style="text-align:left">WWW-Authenticate</td>
+<td style="text-align:left">服务器对客户端的认证信息</td>
+</tr>
+<tr>
+<td style="text-align:left">10</td>
+<td style="text-align:left">if-Modified-Since</td>
+<td style="text-align:left">比较资源的更新时间</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">11</td>
+<td style="text-align:left">if-None-Match</td>
+<td style="text-align:left">比较实体标记（与if-Match相反）</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">12</td>
+<td style="text-align:left">if-Range</td>
+<td style="text-align:left">资源未更新时发送实体Byte的范围请求</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">13</td>
+<td style="text-align:left">if-Unmodified-Since</td>
+<td style="text-align:left">比较资源的更新时间（与if-Modified-Since相反）</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">14</td>
+<td style="text-align:left">Max-Forwards</td>
+<td style="text-align:left">最大传输逐跳数</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">15</td>
+<td style="text-align:left">Proxy-Authorization</td>
+<td style="text-align:left">代理服务器要求客户端的认证信息</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">16</td>
+<td style="text-align:left">Proxy-Authorization</td>
+<td style="text-align:left">代理服务器要求客户端的认证信息</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">17</td>
+<td style="text-align:left">Referer</td>
+<td style="text-align:left">对请求中URI的原始获取方法</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">18</td>
+<td style="text-align:left">TE</td>
+<td style="text-align:left">传输编码的优先级</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+</tr>
+<tr>
+<td style="text-align:left">19</td>
+<td style="text-align:left">User-Agent</td>
+<td style="text-align:left">HTTP客户端程序的信息</td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+<td style="text-align:left"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="4-3-HTTP-请求报文首部、-HTTP-响应报文首部"><a href="#4-3-HTTP-请求报文首部、-HTTP-响应报文首部" class="headerlink" title="4.3 HTTP 请求报文首部、 HTTP 响应报文首部"></a>4.3 HTTP 请求报文首部、 HTTP 响应报文首部</h3><p>HTTP请求报文首部</p>
+<ul>
+<li><strong>请求行</strong></li>
+<li><strong>请求首部字段</strong></li>
+<li>通用首部字段</li>
+<li>实体首部字段</li>
+</ul>
+<p>HTTP响应报文首部</p>
+<ul>
+<li><strong>状态行</strong></li>
+<li><strong>响应首部字段</strong></li>
+<li>通用首部字段</li>
+<li>实体首部字段</li>
+</ul>
+<h2 id="五、HTTP-背景，web、网络基础-TCP-IP"><a href="#五、HTTP-背景，web、网络基础-TCP-IP" class="headerlink" title="五、HTTP 背景，web、网络基础 TCP/IP"></a>五、HTTP 背景，web、网络基础 TCP/IP</h2></div><div class="tags"></div><div class="post-share"><div class="bdsharebuttonbox"><span style="float:left;line-height: 28px;height: 28px;font-size:16px;font-weight:blod">分享到：</span><a href="#" data-cmd="more" class="bds_more"></a><a href="#" data-cmd="mshare" title="分享到一键分享" class="bds_mshare"></a><a href="#" data-cmd="fbook" title="分享到Facebook" class="bds_fbook"></a><a href="#" data-cmd="twi" title="分享到Twitter" class="bds_twi"></a><a href="#" data-cmd="linkedin" title="分享到linkedin" class="bds_linkedin"></a><a href="#" data-cmd="youdao" title="分享到有道云笔记" class="bds_youdao"></a><a href="#" data-cmd="evernotecn" title="分享到印象笔记" class="bds_evernotecn"></a><a href="#" data-cmd="weixin" title="分享到微信" class="bds_weixin"></a><a href="#" data-cmd="qzone" title="分享到QQ空间" class="bds_qzone"></a><a href="#" data-cmd="tsina" title="分享到新浪微博" class="bds_tsina"></a></div></div><div class="post-nav"><a href="/2018/08/19/[html-css]-css3-视差滚动设计/" class="pre">CSS3 深入理解--[视差滚动]</a><a href="/2018/08/19/==【命令-工具】github== 命令全解/" class="next">git 命令行全解-详解</a></div><div id="comments"></div></div></div></div><div class="layout-r"><div id="sidebar"><div class="search-pla"></div><div id="toc" class="widget"><div class="widget-title"><i class="fa fa-fei">文章目录</i></div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#一、前言"><span class="toc-text">一、前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#二、HTTP-工作原理"><span class="toc-text">二、HTTP 工作原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#三、HTTP协议使用"><span class="toc-text">三、HTTP协议使用</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#3-1-客户端发送请求"><span class="toc-text">3.1 客户端发送请求</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-1请求行"><span class="toc-text">3.1.1请求行</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-2-首部字段"><span class="toc-text">3.1.2 首部字段</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-2-服务器相应信息反馈"><span class="toc-text">3.2 服务器相应信息反馈</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-1-状态行"><span class="toc-text">3.2.1 状态行</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-2-首部字段"><span class="toc-text">3.2.2 首部字段</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#四、HTTP-报文首部"><span class="toc-text">四、HTTP 报文首部</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#4-1-HTTP-报文分类"><span class="toc-text">4.1 HTTP 报文分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-2-HTTP-首部字段类型"><span class="toc-text">4.2 HTTP 首部字段类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-3-HTTP-请求报文首部、-HTTP-响应报文首部"><span class="toc-text">4.3 HTTP 请求报文首部、 HTTP 响应报文首部</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#五、HTTP-背景，web、网络基础-TCP-IP"><span class="toc-text">五、HTTP 背景，web、网络基础 TCP/IP</span></a></li></ol></div><div class="widget"><div class="widget-title"><i class="fa fa-gui"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/0-②-css-css3/">0-② css/css3</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/1-3-http-协议/">1-(3) http 协议</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/2-【1】-JQurey-js/">2-【1】 JQurey.js</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/3-④-vuex-状态管理/">3-④ vuex 状态管理</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/9-②-wepy-框架/">9-② wepy 框架</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/⑨-HTTP/">⑨ HTTP</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/一、html-css/">一、html-css</a><span class="category-list-count">13</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/一、html-css/Normalize-css/">Normalize.css</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/一、html-css/css1/">css1</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/一、html-css/css3/">css3</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/一、html-css/html1/">html1</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/一、html-css/html5/">html5</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/一、html-css/less/">less</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/七、小程序/">七、小程序</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/七、小程序/MINA-框架/">MINA 框架</a><span class="category-list-count">6</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/七、小程序/mpvue-框架/">mpvue 框架</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/七、小程序/wepy-框架/">wepy 框架</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/三、Jquery-js/">三、Jquery.js</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/三、Jquery-js/JQurey-UI/">JQurey-UI</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/三、Jquery-js/ajax-前后端数据交互/">ajax 前后端数据交互</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/二、Javascript-ES6-Typescript/">二、Javascript-ES6-Typescript</a><span class="category-list-count">9</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/二、Javascript-ES6-Typescript/ES6/">ES6</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/二、Javascript-ES6-Typescript/Javascript/">Javascript</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/二、Javascript-ES6-Typescript/TypeScript/">TypeScript</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/五、react-js/">五、react.js</a><span class="category-list-count">15</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/五、react-js/axios-在-react-js-中使用/">axios 在 react.js 中使用</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/五、react-js/create-react-app-脚手架/">create-react-app 脚手架</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/五、react-js/less-scss/">less/scss</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/五、react-js/mixins-混合组件-与-hoc-高阶组件/">mixins 混合组件 与 hoc 高阶组件</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/五、react-js/react-router-v4-路由管理器/">react-router v4 路由管理器</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/五、react-js/react-js-框架学习/">react.js 框架学习</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/五、react-js/react-js-的-UI-组件库/">react.js 的 UI 组件库</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/五、react-js/taro-js-多终端框架-京东/">taro.js 多终端框架(京东)</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/五、react-js/状态管理器/">状态管理器</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/八、JS-工具集-JS拓展语言/">八、JS 工具集/ JS拓展语言</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/八、JS-工具集-JS拓展语言/JSL-拓展语言/">JSL 拓展语言</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/八、JS-工具集-JS拓展语言/day-js-框架/">day.js 框架</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/八、JS-工具集-JS拓展语言/node-js-语言/">node.js 语言</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/八、JS-工具集-JS拓展语言/render-函数/">render 函数</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/八、JS-工具集-JS拓展语言/阿里矢量图用法（字符实体）/">阿里矢量图用法（字符实体）</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/六、react-native-js/">六、react-native.js</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/六、react-native-js/react-native-框架/">react-native 框架</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/四、vue-js/">四、vue.js</a><span class="category-list-count">20</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/四、vue-js/axios-前后端数据交互/">axios 前后端数据交互</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/四、vue-js/vue-中使用-less-scss-等预处理器/">vue 中使用 less/scss 等预处理器</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/四、vue-js/vue-cli-脚手架/">vue-cli 脚手架</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/四、vue-js/vue-router-路由设置/">vue-router 路由设置</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/四、vue-js/vue-js-框架学习/">vue.js 框架学习</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/四、vue-js/vue-js-的-UI-组件库/">vue.js 的 UI 组件库</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/四、vue-js/vuex-状态管理器/">vuex 状态管理器</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/打包工具-命令行工具-包管理器-github上传下载工具/">打包工具-命令行工具-包管理器-github上传下载工具</a><span class="category-list-count">6</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/打包工具-命令行工具-包管理器-github上传下载工具/github/">github</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/打包工具-命令行工具-包管理器-github上传下载工具/npm-yarn/">npm & yarn</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/打包工具-命令行工具-包管理器-github上传下载工具/webpack/">webpack</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/打包工具-命令行工具-包管理器-github上传下载工具/编辑器/">编辑器</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据结构与算法/">数据结构与算法</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/无关编程/">无关编程</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/综合实战项目/">综合实战项目</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/综合实战项目/jQuery/">jQuery</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/综合实战项目/vue/">vue</a><span class="category-list-count">2</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/网站部署/">网站部署</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/静态网页生成器/">静态网页生成器</a><span class="category-list-count">1</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/静态网页生成器/hexo/">hexo</a><span class="category-list-count">1</span></li></ul></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-biao"> 标签</i></div><div class="tagcloud"><a href="/tags/flex/" style="font-size: 15px;">flex</a> <a href="/tags/animation-动画/" style="font-size: 15px;">animation 动画</a> <a href="/tags/cookie-session-token/" style="font-size: 15px;">cookie,session,token</a> <a href="/tags/gradients-线性/" style="font-size: 15px;">gradients 线性</a> <a href="/tags/transition-过渡/" style="font-size: 15px;">transition 过渡</a> <a href="/tags/ESlint之坑/" style="font-size: 15px;">ESlint之坑</a> <a href="/tags/transform-转换-变形/" style="font-size: 15px;">transform 转换/变形</a> <a href="/tags/立即执行函数/" style="font-size: 15px;">立即执行函数</a> <a href="/tags/递归函数/" style="font-size: 15px;">递归函数</a> <a href="/tags/Jquery-ajax/" style="font-size: 15px;">Jquery->ajax</a> <a href="/tags/interceptor-请求拦截器/" style="font-size: 15px;">interceptor 请求拦截器</a> <a href="/tags/v-charts-图标库/" style="font-size: 15px;">v-charts 图标库</a> <a href="/tags/axios-使用于-vue-js-react-js/" style="font-size: 15px;">axios(使用于 vue.js react.js)</a> <a href="/tags/react-js事件处理/" style="font-size: 15px;">react.js事件处理</a> <a href="/tags/react-js-生命周期/" style="font-size: 15px;">react.js 生命周期</a> <a href="/tags/react-js-组件传值/" style="font-size: 15px;">react.js 组件传值</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-xie"> 最新文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2019/08/15/[html-css]-css-float 浮动/">css--[盒状模型：display:inline-block + position 属性 + float 属性]</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/08/【小程序】-状态管理器==-vuex && redux && wepy-redux/">WeChat 微信小程序--wepy-redux 状态管理器</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/06/八-【JS 工具集-拓展语言】-node.js- 爬虫/">node.js--爬虫</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/09/02/⑨-【HTTP】-HTTP 状态码/">HTTP--[状态码]</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/28/{ vue.js 框架 } vuex 状态管理器 与 Storage/">vuex 实际应用-web Storage全面认知与使用(localStorage,sessionStorage)</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/21/{ jqurey.js 框架 }-框架入门/">JQurey【1】--[小白入门篇]</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/19/[Javascript]-TypeScript- 语言/">TypeScript--[入门</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/19/==【命令-工具】node包管理器==npm && yarn  && cnpm && pnpm/">【npm & yarn 】-安装工具的工具</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/19/==【命令-工具】编辑器== 编辑器/">去除 webstorm 编辑器代码的波浪线 & 下划线警示/提示</a></li><li class="post-list-item"><a class="post-list-link" href="/2018/08/19/[Javascript]-ES6-基础入门/">ES6【1】--[ECMAScript 6 入门]</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-you"> 友情链接</i></div><ul></ul><a href="https://blog.foryung.com/" title="Gofoer" target="_blank">Gofoer</a></div></div></div></div><a id="totop" href="#top"></a><div id="footer"><div class="footer-info"><p></p><p><span> &nbsp;&nbsp;Copyright &copy;2018&nbsp;<a href="/." rel="nofollow">小米粥.</a></span><span> <a rel="nofollow" target="_blank" href="https://github.com/chaooo/hexo-theme-BlueLake"> </a></span><span> <a href="http://busuanzi.ibruce.info/"> </a></span><span> <a rel="nofollow" target="_blank" href="https://hexo.io"> </a></span></p></div></div></div><script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script type="text/javascript" src="/js/search.json.js?v=2.0.1"></script><script type="text/javascript" src="/js/toctotop.js?v=2.0.1" async></script><script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["mshare","weixin","tsina","qzone","linkedin","fbook","twi","print","renren","sqq","evernotecn","bdysc","tqq","tqf","bdxc","kaixin001","tieba","douban","bdhome","thx","ibaidu","meilishuo","mogujie","diandian","huaban","duitang","hx","fx","youdao","sdo","qingbiji","people","xinhua","mail","isohu","yaolan","wealink","ty","iguba","h163","copy"],"bdPic":"","bdStyle":"1","bdSize":"16"},"share":{},"image":{"viewList":["tsina","qzone","weixin","fbook","twi","linkedin","youdao","evernotecn","mshare"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["tsina","qzone","weixin","fbook","twi","linkedin","youdao","evernotecn","mshare"]}};with(document)0[(getElementsByTagName('head')[0]||head).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+</script></body></html>
