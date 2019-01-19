@@ -344,8 +344,8 @@ body {
   border-bottom-style: double;
 /* 分类 */
 }
-#sidebar .widget .category-list .category-list-child li {
-  margin-left: 30px;
+#sidebar .widget .category-list .category-list-child .category-list-item {
+  margin-left: 30px !important;
 }
 #sidebar .widget .category-list-count {
   padding-left: 5px;
