@@ -1,38 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="12293ce3-c519-47cc-80c6-4a3cd99319b2" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/source/_posts/==【命令-工具】github== 命令全解.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/⑩ -【命令-工具】github== 命令全解.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/==【命令-工具】github==简单使用教程.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/==【命令-工具】node包管理器==npm &amp;&amp; yarn  &amp;&amp; cnpm &amp;&amp; pnpm.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/==【命令-工具】webpack== 打包工具-构建工具.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/==【命令-工具】编辑器== 编辑器.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/==【命令-工具】编辑器==ESlint-vscode㉖.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/{ vue.js 框架 }- vue-cli3 脚手架.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/{ vue.js 框架 }- vue-cli3 脚手架.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/【react-native.js 框架 】-react-native.js 框架.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/【react.js 框架 】- Design ui 组件库.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/【react.js 框架 】-API.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/【react.js 框架 】-React Router Redux 状态管理器.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/【react.js 框架 】-axios 网络请求.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/【react.js 框架 】-create-react-app 脚手架.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/【react.js 框架 】-react-router v4 【react router dom】 路由.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/【react.js 框架 】-redeux mobx 状态管理器.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/【react.js 框架 】-taro.js 框架 .md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/【react.js 框架 】-事件处理.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/【react.js 框架 】-入门.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/【react.js 框架 】-生命周期.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/【react.js 框架 】-组件传值.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/【react.js 框架】-less-scss 在 react中使用.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/【小程序】 weui-wxss 组件库.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/【小程序】-MINA 框架-iview-weapp 组件库.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/【小程序】-MINA-原生框架.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/【小程序】-mpvue-vue-cli 框架.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/【小程序】-wepy 框架.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/【小程序】-wx.huancun.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/【小程序】-状态管理器==-redux.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/【小程序】-状态管理器==-vuex &amp;&amp; redux &amp;&amp; wepy-redux.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/【小程序】wx-API 接口.md" beforeDir="false" />
-    </list>
+    <list default="true" id="12293ce3-c519-47cc-80c6-4a3cd99319b2" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -112,12 +81,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1547964783483</updated>
-      <workItem from="1547964784859" duration="685000" />
+      <workItem from="1547964784859" duration="1284000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="685000" />
+    <option name="totallyTimeSpent" value="1284000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="68" y="20" width="1400" height="794" extended-state="0" />

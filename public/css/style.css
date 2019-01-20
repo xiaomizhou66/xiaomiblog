@@ -328,37 +328,19 @@ body {
   padding: 5px;
   margin-top: 2px;
 }
-#sidebar .widget ul,
-#sidebar .widget ol {
-  list-style: none;
+#sidebar .widget .category-list {
+  margin: 0;
   padding: 0;
-}
-#sidebar .widget ul >li,
-#sidebar .widget ol >li {
-  list-style: none;
-  line-height: 1.5;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  background: url("../img/wenjianjia.jpg") no-repeat 0px 6px 5px 5px;
-  border-bottom-style: double;
   background-color: #ffe4e1;
-/* 分类 */
-}
-#sidebar .widget .category-list-child >li {
-  display: list-item;
-  padding-left: 30px;
   list-style: none;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  border-bottom-style: double;
-  background-color: #fff;
 }
-#sidebar .widget .category-list-child >li:before {
-  content: '> ';
-  font-size: 10px;
-  padding-right: 5px;
+#sidebar .widget .category-list-item {
+  margin: 5px 0;
+}
+#sidebar .widget .category-list-child {
+  margin: 0;
+  padding-left: 50px;
+  background-color: #fff;
 }
 #sidebar .widget .category-list-count {
   padding-left: 5px;

@@ -236,38 +236,54 @@ body
         width:100px
         padding: 5px
         margin-top: 2px 
-    ul,ol
-      list-style: none
+
+    // ul,ol
+    //   list-style: none
+    //   padding: 0
+    //   // li:before
+    //   // content '> '
+    //   & >li
+    //     list-style: none
+    //     //margin: 5px 0
+    //     display: list-item
+    //     line-height: 1.5
+    //     overflow: hidden
+    //     white-space: nowrap
+    //     text-overflow: ellipsis
+    //     background:url(../img/wenjianjia.jpg) no-repeat 0px 6px 5px 5px
+    //     border-bottom-style:double
+    //     background-color:#FFE4E1
+    //     /* 分类 */  
+    // .category-list-child
+    //   & >li
+    //     display: list-item
+    //     padding-left: 30px
+    //     list-style: none
+    //     overflow: hidden
+    //     white-space: nowrap
+    //     text-overflow: ellipsis
+    //     //background:url(../img/wenjianjia.jpg) no-repeat 0px 6px 5px 5px
+    //     border-bottom-style:double
+    //     background-color:#fff
+    //     &:before
+    //       content '> '
+    //       font-size: 10px
+    //       padding-right: 5px
+    .category-list 
+      margin: 0
       padding: 0
-      // li:before
-      // content '> '
-      & >li
-        list-style: none
-        //margin: 5px 0
-        display: list-item
-        line-height: 1.5
-        overflow: hidden
-        white-space: nowrap
-        text-overflow: ellipsis
-        background:url(../img/wenjianjia.jpg) no-repeat 0px 6px 5px 5px
-        border-bottom-style:double
-        background-color:#FFE4E1
-        /* 分类 */  
+      background-color:#FFE4E1
+      list-style: none
+      // 一级分类
+    .category-list-item
+      //margin: 5px 10px
+      margin: 5px 0
+      //二级分类
     .category-list-child
-      & >li
-        display: list-item
-        padding-left: 30px
-        list-style: none
-        overflow: hidden
-        white-space: nowrap
-        text-overflow: ellipsis
-        //background:url(../img/wenjianjia.jpg) no-repeat 0px 6px 5px 5px
-        border-bottom-style:double
-        background-color:#fff
-        &:before
-          content '> '
-          font-size: 10px
-          padding-right: 5px
+      margin:0
+      padding-left: 50px
+      background-color:#fff
+    // 分类文章分类  
     .category-list-count
       padding-left: 5px
       color: #40759b

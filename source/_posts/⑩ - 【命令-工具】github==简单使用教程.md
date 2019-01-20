@@ -2,7 +2,7 @@
 title: git 使用教程-常用的操作
 date: '2018/8/19 23:57:28'
 categories:
-  - ⑩ 打包工具-命令行工具-包管理器-github上传下载工具
+  - ⑩ 打包工具-命令行工具-包管理器-github
   - github
 abbrlink: 94add265
 updated:
