@@ -39,6 +39,9 @@ $ vue --version # 查看 vue-cli 的版本
 
 [可以参考网上的教程来做](https://www.cnblogs.com/wisewrong/p/9740173.html)
 
+- 命令行搭建
+- ui 交互式搭建
+
 ## 3.1 命令行搭建项目
 
 ```BASH
@@ -67,9 +70,21 @@ $ vue create my-app # my-app 是项目名称
 #  ( ) E2E Testing  测试单元
 
 
-# 可以看出上面已经可以选择安装很多东西了， Router 路由， Vuex 状态管理器，scss 等，这些都可以不需要额外的安装了。如果之前没有选择安装的话也可以现在安装这些个插件 ，使用的是 `vue add` 命令，当然也可以使用 ui 界面来搜索添加组件
-$ vue add router
-$ vue add vuex
+# 可以看出上面已经可以选择安装很多东西了， Router 路由， Vuex 状态管理器，scss 等，这些都可以不需要额外的安装了。如果之前没有选择安装的话也可以现在安装这些个插件 ，使用的是 `yarn add` 命令，当然也可以使用 ui 界面来搜索添加组件
+$ yarn add router # 创建项目的时候已经安装了其实，如果没有安装，后面需要用到就这样安装
+$ yarn add vuex   # 创建项目的时候已经 选择安装了其实，如果没有安装，后面需要用到就这样安装
+$ vue add router  # 官网还这样来添加，是什么骚操作
+$ vue add vuex    # 官网还这样来添加，是什么骚操作
+
+$ yarn add element-ui # 下载饿了么 ui 框架，这个框架是 PC 端的
+$ yarn add iview # 下载 iview 这个 ui 框架，框架都是选择的，选择其一即可。
+
+$ cnpm install axios        # 下载前后端数据交互应用
+$ yarn add axios            # 使用 yarn
+
+$ npm install normalize.css # 浏览器兼容 css 文件
+$ npm i v-charts echarts -S # 图表 ui 组件库
+$ npm install --save dayjs  # 日期时间处理，dayjs 库
 
 $  yarn serve # 开启服务，运行
 $  yarn build # 打包
@@ -93,7 +108,7 @@ $color: red;
 </style>
 ```
 
-## 3.2 可以执行的命令
+### 3.1.2 可以执行的命令
 
 ```BASH
 $ vue create --help # 用这个帮助查看可执行的命令
@@ -114,7 +129,7 @@ Options:
   -h, --help                      output usage information
 ```
 
-## 3.2 ui 界面搭建项目
+## 3.2 ui 交互式界面搭建项目
 
 ```BASH
 $ vue-ui # 在浏览器打开一个页面
@@ -665,7 +680,24 @@ module.exports = {
 }
  ```
 
-## 5.5
+## 5.5 webpack 的问题
+
+```BASH
+liuxm@me ~/work/vue/freegit/code/freeui (import-iview-ui)
+λ yarn add iview
+yarn add v1.13.0
+[1/4] Resolving packages...
+[2/4] Fetching packages...
+info fsevents@1.2.7: The platform "win32" is incompatible with this module.
+info "fsevents@1.2.7" is an optional dependency and failed compatibility check. Excluding it from installation.
+[3/4] Linking dependencies...
+`warning "@vue/cli-plugin-babel > babel-loader@8.0.5" has unmet peer dependency "webpack@>=2".`
+`warning "@vue/cli-plugin-eslint > eslint-loader@2.1.1" has unmet peer dependency "webpack@>=2.0.0 <5.0.0".`
+`warning " > sass-loader@7.1.0" has unmet peer dependency "webpack@^3.0.0 || ^4.0.0".`
+```
+
+问题：
+  cli3 中 对 webpack 进行了封装，[CLI 服务](https://cli.vuejs.org/zh/guide/cli-service.html#%E4%BD%BF%E7%94%A8%E5%91%BD%E4%BB%A4),上面的只是警告，不用理会，react 的 create-react-app 2.0 中好像也是这样的问题。
 
 # 六、插件 和 Preset
 

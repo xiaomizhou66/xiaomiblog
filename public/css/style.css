@@ -346,6 +346,7 @@ body {
 /* 分类 */
 }
 #sidebar .widget .category-list-child >li {
+  display: list-item;
   padding-left: 30px;
   list-style: none;
   overflow: hidden;
@@ -353,6 +354,11 @@ body {
   text-overflow: ellipsis;
   border-bottom-style: double;
   background-color: #fff;
+}
+#sidebar .widget .category-list-child >li:before {
+  content: '> ';
+  font-size: 10px;
+  padding-right: 5px;
 }
 #sidebar .widget .category-list-count {
   padding-left: 5px;
