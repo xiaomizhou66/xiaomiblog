@@ -217,12 +217,14 @@ let app = new Vue({
 ## 4.2 父组件 给 子组件标签插入内容（子组件中的 slot 的内容将被替换）
 
 ```HTML
+<!-- 父组件 -->
 <div id="app">
   <alert>
     <p>您好啊！</p>
   </alert>
 </div>
 
+<!-- 子组件 -->
 <template id="alert">
   <div class="alert info">
     <button class="close">&times;</button>

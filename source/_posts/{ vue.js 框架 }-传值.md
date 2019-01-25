@@ -291,7 +291,7 @@ export default {
 // A 组件
 this.$router.push({ path: '/conponentsB', query: { orderId: 123 } })// 跳转到B
 this.$router.push({  name:'/conponentsB',params: { id: status ,id2: status3},query: { orderId:  status2 }}); // 跳转到B
-//编程跳转写在一个函数里面，通过click等方法来触发
+//编程跳转写在一个函数里面，通过 click 等方法来触发
 ```
 
 ```JS

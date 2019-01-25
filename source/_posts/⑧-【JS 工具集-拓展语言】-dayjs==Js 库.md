@@ -47,6 +47,9 @@ Day.js 有很多 API 来解析、处理、校验、增减、展示时间和日�
 ```JS
 // 解析：当前时间
 var now = dayjs() // 获取当前时间
+等价于
+var now = dayjs(Date.now())
+
 var now = dayjs(new Date())// 获取当前时间
 dayjs(Date.now() - 24 * 60 * 60 * 1000) // 昨天
 
@@ -60,6 +63,12 @@ var day = dayjs('2018-08-08') // 2018-08-08
 
 //格式化
 dayjs().format('YYYY年MM月DD日 HH:mm:ss') // 2018年08月08日 00:00:00
+等价于
+dayjs(Date.now()).format('YYYY年MM月DD日 HH:mm:ss') // 2018年08月08日 00:00:00
+
+从后端获取到的时间 time 格式化
+dayjs(time).format('YYYY年MM月DD日 HH:mm:ss') // 2018年08月08日 00:00:00
+
 dayjs().format('[YYYY]') // "[2018]"。     [] 里的会原样输出。
 dayjs().format('{YYYY} MM-DDTHH:mm:ss SSS [Z] A') //
 

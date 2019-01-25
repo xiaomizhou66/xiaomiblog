@@ -1,10 +1,9 @@
 ---
-title: render 函数 在 vue ，wepy，mpvue 双向绑定中 js 代码中的使用
+title: render 渲染函数
 date: '2018/8/19 23:57:28'
 categories:
   - ⑧ JS 工具集/ JS拓展语言
   - render 函数
-abbrlink: b4c68634
 updated:
 tags:
 comments:
@@ -128,7 +127,8 @@ vue.component('ele',{
           'show':this.show
         },
         attrs:{
-          'id':'element'
+          'id':'element',
+          style: "margin-bottom:10px"
         },
         on:{
           click:this.handleClick

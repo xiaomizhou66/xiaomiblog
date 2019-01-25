@@ -11,41 +11,18 @@ comments:
 ---
 ## 一、前言
 
-iView 是一套基于 Vue.js 的开源 UI 组件库，主要服务于 PC 界面的中后台产品。面向中后台业务的一整套前端解决方案，包含了工程构建、主题定制、多语言等功能，极大提升了开发效率。
+iView 是一套基于 Vue.js 的开源 UI 组件库，主要服务于 PC 界面的中后台产品。面向中后台业务的一整套前端解决方案，包含了工程构建、主题定制、多语言等功能，极大提升了开发效率。官网：[网址](https://www.iviewui.com/components/form)。
 
-官网：[网址](https://www.iviewui.com/components/form)。
+由于官网对各个组件的使用并没有详细的使用方法，有个的属性或者方法的使用还是有比较大的坑的，这里的文章就是用来填补这些坑的。
+使用的时候查阅官网即可，本文写一些注意的地方，以及自己经常犯的错。对官网各个组件的使用的补充
 
-使用的时候查阅官网即可，本文写一些注意的地方，以及自己经常犯的错。
+## 二、安装过程的坑
 
-## 二、安装
-
-### 2.1  方法①：npm安装
-
-```bash
-  $ npm install iview --save
-```
-
-### 2.2 方法②：独立版本
-
-```js
-  <script type="text/javascript" src="iview.min.js"></script>
-```
-
-### 2.3 方法③：CDN安装
-
-[CDN链接](https://www.bootcdn.cn/iview/)
-
-```js
-  <script src="https://cdn.bootcss.com/iview/2.14.0/iview.js"></script>
-```
-
-### 2.4 安装过程的坑
-
-**坑1**
+### 2.1 cnpm 的问题
 
 ```BASH
 λ cnpm install iveiw --save
-× Install fail! Error: GET https://registry.npm.taobao.org/iveiw response 404 status
+`× Install fail! Error: GET https://registry.npm.taobao.org/iveiw response 404 status`
 Error: GET https://registry.npm.taobao.org/iveiw response 404 status
     at get (C:\Users\Administrator\AppData\Roaming\npm\node_modules\cnpm\node_modules\npminstall\lib\get.js:57:17)
     at get.next (<anonymous>)
@@ -56,13 +33,11 @@ npminstall version: 3.10.0
 npminstall args: C:\Program Files\nodejs\node.exe C:\Users\Administrator\AppData\Roaming\npm\node_modules\cnpm\node_modules\npminstall\bin\install.js --fix-bug-versions --china --userconfig=C:\Users\Administrator\.cnpmrc --disturl=https://npm.taobao.org/mirrors/node --registry=https://registry.npm.taobao.org iveiw --save
 ```
 
-**填坑**
-
-**坑2**
+### 2.2
 
 ```BASH
 λ npm install iview --save
-npm WARN checkPermissions Missing write access to F:\qianduan_dir\00program\todolist1\node_modules\ajv\node_modules\fast-json-stable-stringify
+`npm WARN checkPermissions Missing write access to F:\qianduan_dir\00program\todolist1\node_modules\ajv\node_modules\fast-json-stable-stringify`  
 npm WARN checkPermissions Missing write access to F:\qianduan_dir\00program\todolist1\node_modules\ajv\node_modules\fast-deep-equal
 npm WARN checkPermissions Missing write access to F:\qianduan_dir\00program\todolist1\node_modules\pinkie-promise\node_modules\pinkie
 npm WARN checkPermissions Missing write access to F:\qianduan_dir\00program\todolist1\node_modules\ajv\node_modules
@@ -82,17 +57,18 @@ npm ERR! A complete log of this run can be found in:
 npm ERR!     C:\Users\Administrator\AppData\Roaming\npm-cache\_logs\2018-08-21T07_18_57_459Z-debug.log
 ```
 
-**填坑**
+## 三、vue 项目中使用 iview-ui 组件引用方法！！！！！！！！！！！！！！！！！！！！！！！！！！重点，重点，重点，重点
 
-## 三、vue 项目中使用 iview-ui 组件引用方法
+**官网中引用，它使用的并不是 vue-cli 脚手架来搭建的，因此它的引用跟我们使用 vue-cli 的有些区别**，如果完全安装官网来操作，会发现自己的项目无法运行.
+官网中是使用 iview-cli 脚手架生成的，通常我是使用 vue-cli 脚手架来搭建框架的，因此  main.js 文件与 iview-ui 组件库的官网有出入， vue-cli 以下面的文件为准。
 
 ### 3.1 全局引用
 
-官网中是使用 iview-cli 脚手架生成的，通常我是使用 vue-cli 脚手架来搭建框架的，因此  main.js 文件与 iview-ui 组件库的官网有出入， vue-cli 以下面的文件为准。
-
-**步骤①：main.js 文件中引入**
+- main.js 中引入 iview 与 iview.css
+- .vue 文件中使用组件
 
 ```js
+//main.js
 import Vue from 'vue'
 import App from './App'
 import router from './router'
@@ -100,10 +76,8 @@ import iView from 'iview'        //导入iview-ui
 import 'iview/dist/styles/iview.css'//导入iview.css
 
 Vue.config.productionTip = false
-
 Vue.use(iView);     //全局使用iview
 
-/* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
@@ -112,19 +86,18 @@ new Vue({
 })
 ```
 
-**步骤②：在 .vue 文件中使用 iview 组件**
-
 ### 3.2 按需引用
 
-**步骤①：安装 babel-plugin-import 插件**
+- babel-plugin-import插件安装
+- 配置  .babelrc  文件（引入 iview）
+- main.js 中引入 iview.css
+- .vue 文件中使用组件
 
 [babel-plugin-import插件挂网:](https://github.com/ant-design/babel-plugin-import)
 
 ```BASH
  npm install babel-plugin-import --save-dev
 ```
-
-**步骤②：在文件 .babelrc 中配置：**
 
 ```JSON
 // .babelrc
@@ -136,13 +109,10 @@ new Vue({
 }
 ```
 
-**步骤③：在文件 .main.js 或者 APP.vue 文件引入样式：**
-
 ```JS
+//main.js
 import 'iview/dist/styles/iview.css'; //按需引用还需要引如 css 样式
 ```
-
-**步骤④：在 .vue 文件中使用 iview 组件**
 
 ## 四、iview-ui 组件使用规范
 
@@ -204,12 +174,6 @@ Vue.use(iView, {
 });
 ```
 
-## 六、国际化
-
-### 6.1
-
-### 6.2
-
 ## 七、定制主题
 
 iView 默认提供了一套 UI 主题，并且可以在一定程度上定制新主题，以满足业务和品牌上的多样化视觉需求。
@@ -241,34 +205,6 @@ Vue.use(iView);
 **步骤④：修改 index.less 文件内容以修改主题颜色**
 
 ### 7.1 vue-cli 脚手架床架的项目中修改主题！！！
-
-
-## 八、使用 iview-ui 组件示例：
-
-### 8.1 巩固 vue-cli 理解
-
-可以在：[vue-cli](http://liuxmoo.gofoer.com/2018/08/12/6-vue-cli1/)分类学习
-
-- index.html 是项目入口文件，
-- main.js 是 index.html 对应的 js 文件
-    在 main.js 导入 vue，ui 组件， router 路由组件，路由 index.js 文件插件，组件的等等的引入
-- APP.vue 就是 main.js 导入的第一个组件（所有 .vue 组件的终极父组件）
-
-后续的页面设计与这 3 个根文件无关
-
-- components 下的 .vue 设计子组件/各个页面的组件
-- index.js 设置路由/各个子路由
-
-### 8.2 使用 iveiw 组件的前期工作
-
-在一个 vue-cli 脚手架创建好，且引入了 iveiw-ui 组件的项目。设计好页面，本文以主页为很路径页面。
-
-- 将框架 src/components 下的 HelloWorld.vue 组件更名为 home.vue 组件。
-- 相应的要在路由设置文件 index.js 文件中改写引入的组件/路由的设置
-
-### 8.3 使用 iveiw 组件的布局
-
-- 改写home.vue文件
 
 ## 九、使用 iveiw-ui 遇到的坑/自己犯的错
 
@@ -354,8 +290,7 @@ iview 框架中，不能使用 css 写样式直接修改，这里用到主题。
 
 ###  
 
-```
-TEXT
+```TEXT
 These dependencies were not found:
 
 * iview in ./src/main.js
@@ -371,6 +306,109 @@ e,"id":"data-v-5e4cad4c","scoped":true,"hasInlineConfig":false}!less-loader?{"so
 /../node_modules/vue-loader/lib/selector?type=styles&index=0!./home.vue
 ```
 
-``bash
+```bash
 npm install style-loader --save
+```
+
+## 十、各个组件的使用补充
+
+官网没有对每个组件的，每个属性，时间，或者方法进行完善，对于一些组件使用起来会遇到各种坑，因此这章就是对组件的补充的。
+
+### 10.1 Modal 对话框
+
+#### 10.1.1 Modal instance 对话框实例的 config 对象使用（这个是在 js 代码中写的）
+
+通过直接调用以下方法来使用：
+
+```JS
+this.$Modal.info(config)
+this.$Modal.success(config)
+this.$Modal.warning(config)
+this.$Modal.error(config)
+this.$Modal.confirm(config)
+//以上方法隐式地创建及维护 Vue 组件。参数 config 为对象，具体说明如下：
+
+methods:{
+  edit(index) {
+    this.$Modal.confirm({
+      title: '提示',
+      content: '确认要删除这条记录么?一旦删除将无法恢复!',//注意，如果有render 函数，那么这个 content 就没有用了
+      render: h => {
+        return h(//)
+      },
+      width:900,// 单位是 px 值是 number，或者 string，默认值是 416px
+      width:'10%',// 问题？？？？？？？？？？？？？？？？？？？？？？？如果这个字符串是这样的，有百分百的吧？？？？？
+      okText: '删除',//默认值是 确定
+      cancelText: '取消',//默认值是 取消（this.$Modal.confirm 中有效，其他无效）
+      onOk: () => {
+         alert('你赢了！');
+         this.changeDesc();
+      },
+      onCancel:()=>{
+        alert('取消！');//这个事件，是在（this.$Modal.confirm 中有效，其他无效）
+      }
+    })
+  },
+  changeDesc(){
+    //
+  }
+}
+```
+
+### 10.2 menu 导航栏
+
+#### 10.2.1 Menu methods 导航栏的方法
+
+updateOpened      手动更新展开的子目录，注意要在 $nextTick 里调用
+updateActiveName  手动更新当前选择项，注意要在 $nextTick 里调用
+
+```HTML
+<Menu ref="left_menu" theme="dark" :active-name="activeName" @on-select="selectMenu">
+  <MenuItem name="project">
+    <Icon type="md-git-branch"/>
+    <span class="menu-text">项目管理</span>
+  </MenuItem>
+  <MenuItem name="organization">
+    <Icon type="ios-people"/>
+    <span class="menu-text">组织管理</span>
+  </MenuItem>
+  <MenuItem name="notice">
+    <Icon type="ios-notifications"/>
+    <span class="menu-text">消息通知</span>
+  </MenuItem>
+  <MenuItem name="profile">
+    <Icon type="logo-snapchat"/>
+    <span class="menu-text">个人中心</span>
+  </MenuItem>
+</Menu>
+<script>
+data() {
+    return {
+      activeName: "project"
+    };
+  },
+  watch: {
+    //监听路由器变化，使得 header 点击的时候，侧边菜单栏的 active 值跟着改变，并且渲染 head 的中部！！！！！
+    // 监听这里需要设置变化，还有 点击函数  noticeFunc() profileFunc() 这里还是要设置变化的，为什么呀？？
+    // 完全看不明白，这个是个什么鬼东西噢噢噢噢哦哦哦哦哦哦
+    $route() {
+      this.$nextTick(() => {
+        this.initMenuActive();
+        this.activeName = this.$route.name;
+        this.$refs.left_menu.updateActiveName();
+      });
+    }
+  },
+  methods:{
+    noticeFunc() {
+      const that = this;
+      that.$nextTick(() => {
+        that.activeName = "notice";
+        that.$refs.left_menu.updateActiveName();// 注意到他们只是一个调用函数，我们根据更新激活的 :active-name="activeName"
+        // 通过改变绑定的激活 name 值来更新展开的 menu 项
+      });
+      that.$router.push("/notice");
+    }
+  }
+</script>
 ```
