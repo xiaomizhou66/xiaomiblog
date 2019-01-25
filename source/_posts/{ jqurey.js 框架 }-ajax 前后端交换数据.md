@@ -6,7 +6,6 @@ tags:
 categories:
   - ③ Jquery.js
   - ajax 前后端数据交互
-abbrlink: 25bbadda
 updated:
 comments:
 ---

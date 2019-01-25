@@ -3,7 +3,6 @@ title: 'HTTP--[小白入门版、速学版]'
 date: '2018/8/19 23:57:28'
 categories:
   - ⑨ HTTP
-abbrlink: f123f869
 updated:
 tags:
 comments:

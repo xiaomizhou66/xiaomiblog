@@ -4,7 +4,6 @@ date: '2018/8/19 23:57:28'
 categories:
   - ② Javascript-ES6-Typescript
   - ES6
-abbrlink: a68ec929
 updated:
 tags:
 comments:

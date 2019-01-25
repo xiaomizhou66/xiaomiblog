@@ -6,7 +6,6 @@ tags:
 categories:
   - ② Javascript-ES6-Typescript
   - Javascript
-abbrlink: 1d679b7b
 updated:
 comments:
 ---

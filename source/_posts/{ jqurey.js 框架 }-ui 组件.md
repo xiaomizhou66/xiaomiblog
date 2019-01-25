@@ -6,7 +6,6 @@ tags:
 categories:
   - ③ Jquery.js
   - JQurey-UI
-abbrlink: b9f741ef
 updated:
 comments:
 ---
