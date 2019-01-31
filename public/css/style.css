@@ -1095,6 +1095,10 @@ body {
   margin-right: 0.2em;
 }
 /* toc 文章目录*/
+#toc ol,
+#toc ul {
+  list-style: none;
+}
 #toc li {
   font-weight: bold;
 /* 整个一级标题li包括子代*/

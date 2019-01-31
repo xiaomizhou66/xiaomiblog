@@ -61,7 +61,7 @@ $ npm install --save react-router-dom   # 这样安装时候也已经包含了 r
 
 ## 2.3 create-react-app 2.0 项目示例!!!!!!!!!!!!!!!!！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
 
-### 2.3.1 React Router 4.0 之前
+### 2.3.1 React Router 4.0 之前 （现在不是这样用了.......）
 
 ```JS
 // src/App.js！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
@@ -82,7 +82,7 @@ $ npm install --save react-router-dom   # 这样安装时候也已经包含了 r
 </Router>
 ```
 
-### 2.3.1 React Router 4.0+
+### 2.3.1 React Router 4.0+（现在这样用）
 
 4.0以后，嵌套的路由 与 之前 的就完全不同了，需要单独放置在嵌套的根 component 中去处理路由，否则会一直有警告。
 

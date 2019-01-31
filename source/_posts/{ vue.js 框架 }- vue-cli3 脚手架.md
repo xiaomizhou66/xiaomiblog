@@ -69,6 +69,9 @@ $ vue create my-app # my-app 是项目名称
 #  ( ) E2E Testing  测试单元
 
 
+# 上面可以选择 css 预处理器，但是貌似没有做好啊！！！！！！！！！！！！！node-scss 老是出 bug！！！！！！！！！！！！！！！！！！！
+
+
 # 可以看出上面已经可以选择安装很多东西了， Router 路由， Vuex 状态管理器，scss 等，这些都可以不需要额外的安装了。如果之前没有选择安装的话也可以现在安装这些个插件 ，使用的是 `yarn add` 命令，当然也可以使用 ui 界面来搜索添加组件
 $ yarn add router # 创建项目的时候已经安装了其实，如果没有安装，后面需要用到就这样安装
 $ yarn add vuex   # 创建项目的时候已经 选择安装了其实，如果没有安装，后面需要用到就这样安装
@@ -368,7 +371,53 @@ module.exports = {
 }
 ```
 
-# 五、安装过程遇到的问题
+# 六、插件 和 Preset
+
+## 6.1 插件
+
+**插件**一些重要的插件可以在 vue create my-app 的时候就手动选择安装了，有的后续安装 vue add xxxx，或者是 vue ui 界面去安装。
+
+## 6.2 preset 预设置
+
+**Preset**vue create 的时候回有很多 yes/no 的选择就是 Preset，其实它还在 home 目录生成了一个 .vuerc 文件，通过直接编辑这个文件来调整、添加、删除保存好的 preset。下次创建项目就会默认按照这个配置来了。
+
+### 6.2.1 预设置 文件
+
+Preset 的数据会被插件生成器用来生成相应的项目文件
+
+```JSON
+// 对于官方插件来说 下面的配置 不是必须的——当被忽略时，CLI 会自动使用 registry 中最新的版本。
+// 不过我们推荐为 preset 列出的所有第三方插件提供显式的版本范围。
+{
+  "useTaobaoRegistry": false,//默认是为 true 的，因为 vue create 出错所以这里改为 false
+  "packageManager": "yarn",//默认是 yarn 的，可以改成其他的，但是算了吧，这个是默认配置啊!!!!
+  "presets": {
+    "vue-cli3-preset": {
+      "useConfigFiles": true,//被合并到 package.json 或相应的配置文件中
+      "configs": {
+        "vue": {},
+        "postcss": {},
+        "eslintConfig": {},
+        "jest": {}
+      },
+      "plugins": {
+        "@vue/cli-plugin-babel": {},
+        "@vue/cli-plugin-eslint": {
+          "version": "^3.0.0",// 插件的版本管理
+          "config": "airbnb",
+          "lintOn": ["save", "commit"],
+        }
+      },
+      "router": true,
+      "routerHistoryMode": true,
+      "vuex": true,
+      "cssPreprocessor": "sass"// css 预处理器 scss 比 less 还是其他都好，就默认这个好了
+    }
+  }
+}
+```
+
+# 十、一些 bug ，安装过程 、使用遇到的问题
 
 ## 5.1 ERROR  command failed: yarn --registry=https://registry.npm.taobao.org --disturl=https://npm.taobao.org/dist
 
@@ -472,10 +521,10 @@ info fsevents@1.2.4: The platform "win32" is incompatible with this module.
 info "fsevents@1.2.4" is an optional dependency and failed compatibility check. Excluding it from installation.
 [3/4] Linking dependencies...
 [4/4] Building fresh packages...
-infoerror Visit  F:\qianduan_dir\00program\web-vue-cli3\hello-world-js\node_modules\node-sass: Command failed.
+`infoerror Visit  F:\qianduan_dir\00program\web-vue-cli3\hello-world-js\node_modules\node-sass: Command failed.`
 # 这句就爆红了，不知道是什么错误，为什么 ts 版本的就没有这个错误
 Exit code: 1
-Command: node scripts/build.js
+`Command: node scripts/build.js`
 https://yarnpkg.com/en/docs/cli/installArguments:
 Directory: F:\qianduan_dir\00program\web-vue-cli3\hello-world-js\node_modules\node-sass
 Output:
@@ -570,6 +619,69 @@ $ sudo npm install -g vue
 $ sudo npm install -g @vue/cli
 ```
 
+## 5.1 （yarn install 还原依赖错误）node-sass 的问题
+
+```BASH
+liuxm@me ~/work/vue/freegit/code/freeui (develop)
+λ yarn install
+yarn install v1.13.0
+[1/4] Resolving packages...
+[2/4] Fetching packages...
+info fsevents@1.2.7: The platform "win32" is incompatible with this module.
+info "fsevents@1.2.7" is an optional dependency and failed compatibility check. Excluding it from installation.
+[3/4] Linking dependencies...
+warning "@vue/cli-plugin-babel > babel-loader@8.0.5" has unmet peer dependency "webpack@>=2".
+warning "@vue/cli-plugin-eslint > eslint-loader@2.1.1" has unmet peer dependency "webpack@>=2.0.0 <5.0.0".
+warning " > sass-loader@7.1.0" has unmet peer dependency "webpack@^3.0.0 || ^4.0.0".
+[4/4] Building fresh packages...
+[1/2] ⠄ yorkie
+`error C:\Users\liuxm\work\vue\freegit\code\freeui\node_modules\node-sass: Command failed.` # node-sass 有错误：命令错误
+Exit code: 1
+`Command: node scripts/build.js`                                                            # 命令 node scripts/build.js
+Arguments:
+`Directory: C:\Users\liuxm\work\vue\freegit\code\freeui\node_modules\node-sass`             # 目录
+Output:
+Building: C:\Program Files\nodejs\node.exe C:\Users\liuxm\work\vue\freegit\code\freeui\node_modules\node-gyp\bin\node-gyp.js rebuild --verbose --libsass_ext= --libsass_cflags= --libsass_ldflags= --libsass_library=
+gyp info it worked if it ends with ok
+gyp verb cli [ 'C:\\Program Files\\nodejs\\node.exe',
+gyp verb cli   'C:\\Users\\liuxm\\work\\vue\\freegit\\code\\freeui\\node_modules\\node-gyp\\bin\\node-gyp.js',
+.............................
+gyp ERR! node -v v10.15.0
+gyp ERR! node-gyp -v v3.8.0
+gyp ERR! not ok
+Build failed with error code: 1
+
+
+# 解决这个问题就是 删除 node_modal 文件夹，重新的还原依赖！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+# 其他的问题也是一样的，没有正确，就删除重装一下看看是不是网络问题没有下载好，重装一次试一下啦！！！！！！！！！！！！！！！！！！
+
+
+# 在下载来的项目中还原依赖，但是不成功，不知道是因为什么，删除 node_modal 文件之后，重新还原，居然已经出好的了。
+# 删除之后重新下载如下操作
+liuxm@me ~/work/vue/freegit/code/freeui (develop)
+λ yarn install
+yarn install v1.13.0
+[1/4] Resolving packages...
+info There appears to be trouble with your network connection. Retrying...
+info There appears to be trouble with your network connection. Retrying...
+info There appears to be trouble with your network connection. Retrying...
+[2/4] Fetching packages...
+info fsevents@1.2.7: The platform "win32" is incompatible with this module.
+info "fsevents@1.2.7" is an optional dependency and failed compatibility check. Excluding it from installation.
+[3/4] Linking dependencies...
+warning "@vue/cli-plugin-babel > babel-loader@8.0.5" has unmet peer dependency "webpack@>=2".
+warning "@vue/cli-plugin-eslint > eslint-loader@2.1.1" has unmet peer dependency "webpack@>=2.0.0 <5.0.0".
+warning " > sass-loader@7.1.0" has unmet peer dependency "webpack@^3.0.0 || ^4.0.0".
+[4/4] Building fresh packages...
+success Saved lockfile.
+Done in 239.96s.
+```
+
+网上的一堆人都遇到这个问题，看不懂是什么鬼问题，下次遇到就直接删除重装就ok了！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+
+[github](https://github.com/sass/node-sass/issues/1781)
+[laravel](https://learnku.com/laravel/t/10094/node-sass-command-failed-to-ask-the-god-help-answer-to-see-thank-you-very-much)
+
 ## 5.2  npm install -g @vue/cli 的错误
 
 ```BASH
@@ -619,6 +731,8 @@ npm WARN qianduan_dir No license field.
  ```
 
 ## 5.4 λ yarn serve：Unknown option: .polyfills.
+
+运行不成功，首选看下是不是下载别人的项目，没有还原依赖啊
 
 ```BASH
 yarn run v1.12.3
@@ -739,7 +853,7 @@ devServer: {
     }
  ```
  
- ### 5.6.2 使用 eslint
+### 5.6.2 使用 eslint
  
  ```BASH
   "rules": {},
@@ -931,49 +1045,3 @@ devServer: {
   "yoda": [2, "never"]//禁止尤达条件
  ```
  
-
-# 六、插件 和 Preset
-
-## 6.1 插件
-
-**插件**一些重要的插件可以在 vue create my-app 的时候就手动选择安装了，有的后续安装 vue add xxxx，或者是 vue ui 界面去安装。
-
-## 6.2 preset 预设置
-
-**Preset**vue create 的时候回有很多 yes/no 的选择就是 Preset，其实它还在 home 目录生成了一个 .vuerc 文件，通过直接编辑这个文件来调整、添加、删除保存好的 preset。下次创建项目就会默认按照这个配置来了。
-
-### 6.2.1 预设置 文件
-
-Preset 的数据会被插件生成器用来生成相应的项目文件
-
-```JSON
-// 对于官方插件来说 下面的配置 不是必须的——当被忽略时，CLI 会自动使用 registry 中最新的版本。
-// 不过我们推荐为 preset 列出的所有第三方插件提供显式的版本范围。
-{
-  "useTaobaoRegistry": false,//默认是为 true 的，因为 vue create 出错所以这里改为 false
-  "packageManager": "yarn",//默认是 yarn 的，可以改成其他的，但是算了吧，这个是默认配置啊!!!!
-  "presets": {
-    "vue-cli3-preset": {
-      "useConfigFiles": true,//被合并到 package.json 或相应的配置文件中
-      "configs": {
-        "vue": {},
-        "postcss": {},
-        "eslintConfig": {},
-        "jest": {}
-      },
-      "plugins": {
-        "@vue/cli-plugin-babel": {},
-        "@vue/cli-plugin-eslint": {
-          "version": "^3.0.0",// 插件的版本管理
-          "config": "airbnb",
-          "lintOn": ["save", "commit"],
-        }
-      },
-      "router": true,
-      "routerHistoryMode": true,
-      "vuex": true,
-      "cssPreprocessor": "sass"// css 预处理器 scss 比 less 还是其他都好，就默认这个好了
-    }
-  }
-}
-```
