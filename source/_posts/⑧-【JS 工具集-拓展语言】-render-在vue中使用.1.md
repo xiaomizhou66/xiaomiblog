@@ -829,7 +829,7 @@ Vue.js 提供了 1 个 functional 的布尔值选项，设置为 true 可以使�
 
 
 
-## 十二、vue.js 中 的 render
+## 十二、vue.js 中 的 render  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ```JS
 // 直接使用 h() 方法构建 虚拟 DOM
@@ -904,4 +904,29 @@ onClick={() => {
   this.handleClickEditRobot(params.row)
 }} */
 // 通过一对花括号来写一个函数片段在里面!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!值得学习。
+```
+
+## 10.2 上传
+
+```JS
+'h('Upload', {
+  props: {
+    action: 'http://hete-api.gofoer.com/v1/file?sid=' + this.data1[params.index].id,
+    showUploadList: false,
+    onSuccess: () => {
+      this.$Message.success("数据文件添加成功！")
+    },
+    onError: () => {
+      this.$Message.error("添加失败！")
+    }
+  }
+}, [
+  h('Button', {
+    props: {
+      type: 'success',
+      size: 'small'
+    },
+    style: {}
+  }, '添加文件')
+])
 ```

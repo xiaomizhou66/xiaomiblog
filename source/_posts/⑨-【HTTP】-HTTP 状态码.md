@@ -310,7 +310,7 @@ comments:
     ① 因为 request 中没有包含 Authorization header，服务器会返回一个 401 Unauthozied 给客户端，
       并且在 Response 的 header      “www-authentivate”中添加信息。当客户端把用户名密码用 Base64 加密后编码，放在 Authorization header 中发送给服务器，那么就会认证成功了。
     ② 如果是开放的服务器资源, 需要考虑的是是否有防御性的安全策略;请求头没有带上 token,带上的 token 是否正确，是否过期页面需刷新，重新登录
-    ③ 外链，跨域是否设置 cookie 携带 为 withCredentials: true，需要进行跨域请求的资源（api），当服务端检测到是 OPTONS 请求时候统统放行，给出HTTP.OK(200)的状态和必要的响应头，哪怕它是不带身份信息的 
+    ③ 外链，跨域是否设置 cookie 携带 为 withCredentials: true，需要进行跨域请求的资源（api），当服务端检测到是 OPTONS 请求时候统统放行，给出HTTP.OK(200)的状态和必要的响应头，哪怕它是不带身份信息的
     ③ 优先考虑是否是需要验证,也就是是否需要授权账号和密码信息。
     ④ 网络错误啊，等等
 

@@ -13,11 +13,11 @@ comments:
 
 react.js 中前后端数据请求交换，可以使用 axios，jquery-ajax，浏览器内置的 window.fetch 中的认可一种的。
 
-# 二、axios 
+# 二、axios
 
 去看 vue 中的就好了。
 
-# 三、jquery-ajax 
+# 三、jquery-ajax
 
 去看 jquery 中的就好了。
 

@@ -695,7 +695,7 @@ methods: {
 
 注意：即使已经在 main.js 中引入了 axios，并改写了原型链，也无法在 store.js 中直接使用 axios 命令.换言之，这两种方案是相互独立的
 
-### 10.2 上传例子
+### 10.2 上传请求例子？？？？？？具体是要怎么做的
 
 ```HTML
 <!-- iview-ui : Upload 组件-->
@@ -878,7 +878,9 @@ methods: {
       }
 ```
 
-### 10.3 下载例子
+### 10.3 下载 触发浏览器的下载功能 来下载文件（后端保存的是文件路径）
+
+#### 10.3.1 下载
 
 ![文件流](https://user-gold-cdn.xitu.io/2018/10/17/16680f13447e4d8c?imageView2/0/w/1280/h/960/format/webp/ignore-error/1)
 
@@ -952,3 +954,65 @@ methods:{
   }
 }
 ```
+
+#### 10.3.2 button
+
+```JS
+h('Button', {
+  props: {
+    type: 'success',
+    size: 'small'
+  },
+  on: {
+    click: () => {
+      console.log("点击详情", params)
+      this.download(params.index)
+    }
+  }
+}, '导出')
+
+
+
+download(index) {
+  let text, id;
+  text = '任务名称：' + this.data1[index].task_name + '\n运行结果：' + (this.data1[index].success === true ? '成功' : '失败') + '\n错误信息：' + this.data1[index].err_message + '\n标准输出：' + this.data1[index].std_output + '\n错误输出：' + this.data1[index].err_output + '\n程序返回值：' + this.data1[index].return_code;
+  axios({
+    url: 'http://hete-api.gofoer.com/v1/cost',//这个通常不要这样写的，应该弄个全局默认 url 的！！
+    method: 'get'
+  }).then((res) => {
+    if (res.data.code === 200) {
+      for (let i = 0; i < res.data.data.length; i++) {
+        if (res.data.data[i].task_id === this.data1[index].task_id) {
+          id = res.data.data[i].id
+        }
+      }
+      axios({
+        url: 'http://hete-api.gofoer.com/v1/cost/' + id,
+        method: 'get'
+      }).then((res) => {
+        if (res.data.code === 200) {
+          text += '\n运行时间(秒)：' + res.data.data.duration + '\n资源消耗：\n\tCPU(个)：' + res.data.data.cpu + '\n\tGPU(个)：' + res.data.data.gpu + '\n\tFPGA(个)：' + res.data.data.fpga + '\n\t内存(M)：' + res.data.data.mem + '\n最终费用(元)：' + res.data.data.money;
+          console.log(text)
+          download(text, this.data1[index].task_name + '导出结果.txt', "text/plain");
+          this.$Message.success("导出成功！")
+        } else {
+          this.$Message.error("导出失败");
+        }
+      })
+    }
+  })
+}
+```
+
+#### 10.3.3
+
+```BASH
+# 下载请求的过程
+# 1、发送请求
+# 2、获得 response
+# 3、通过 response 判断返回是否为文件
+# 4、如果是文件则在页面中插入 frame
+# 5、利用 frame 实现浏览器的 get 下载
+```
+
+### 10.4 下导出 导出内容，导出页面的内容（当然这个是不请求的）

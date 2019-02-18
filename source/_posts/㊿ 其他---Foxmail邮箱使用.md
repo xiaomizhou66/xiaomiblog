@@ -16,9 +16,7 @@ comments:
 
 直接新建邮箱登录出错，手动设置添加服务器地址端口还是错误。而且提示也不搭调，说是账号或者密码错误，不然。这是因为有没有开启 POP,MAP 服务。
 
-
 ![出错](http://liuxmoo.foryung.com/Foxmail%E6%B7%BB%E5%8A%A0%E9%82%AE%E7%AE%B1%E5%87%BA%E9%94%99.png)
-
 
 
 **具体步骤：**
@@ -44,5 +42,8 @@ comments:
 **输入邮箱地址与授权码**
 ![4](http://liuxmoo.foryung.com/%E6%B3%A8%E5%86%8C%E6%88%90%E5%8A%9F.png)
 
-
 其他第三方客户端也是一样的道理，不只是 foxmai。Foxmail 比较简单，界面清洁，用户友好（可以设置收件人备注）
+
+## 三、Foxmail 添加 gmail 邮箱
+
+[方法](https://www.imhunk.com/how-to-add-gmail-to-foxmail/)，需要科学上网才能使用的，
