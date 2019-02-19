@@ -23,7 +23,8 @@ comments:
 
 [github 网址 we-ui](https://github.com/Tencent/weui/blob/master/README_cn.md)
 [github 网址 we-ui 文档](https://github.com/Tencent/weui/wiki)
-[we-ui 效果图](https://weui.io/)
+[we-ui 效果图 web](https://weui.io/)
+![we-ui 效果图小程序](https://cloud.githubusercontent.com/assets/4652816/15662614/178efd46-2725-11e6-8952-09d7836e968d.png)
 
 **MINA 项目框架中使用 weui-wxss 组件库**：小程序端
 
@@ -300,9 +301,9 @@ Page({
 });
 ```
 
-#### 3.2.4 Gallery 画廊
+#### 3.2.4 Gallery 画廊(就是展示图片用的)
 
-建议采用小程序原生的 wx.previewImage 来实现。详情请看小程序文档。
+建议采用小程序原生的 [wx.previewImage](https://developers.weixin.qq.com/miniprogram/dev/api/wx.previewImage.html) 来实现。
 
 #### 3.2.5 List 列表
 
@@ -406,7 +407,7 @@ Page({
 });
 ```
 
-Card 卡片
+#### 3.2.6 Card 卡片
 
 #### 3.2.6 底部链接copyright
 
@@ -506,7 +507,7 @@ Card 卡片
 
 <div style="width:29%; float:left;margin:5px 0;">
 预览图
-![img](http://liuxmoo.foryung.com/buttun.png)
+![img](http://liuxmoo.foryung.com/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20190219154646.jpg)
 </div>
 <div style="clear:both;height:0;overflow:hidden;"></div>
 
@@ -1076,6 +1077,8 @@ Page({
 });
 ```
 
+![i](http://liuxmoo.foryung.com/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20190219160240.png)
+
 #### 3.5.8 toast 弹出式提示
 
 ```HTML
@@ -1227,6 +1230,9 @@ Page({
 }
 ```
 
+<div style="width:45%; float:left;margin:5px 0;">
+
+
 ```JS
 function _next(){
     var that = this;
@@ -1260,6 +1266,13 @@ Page({
     }
 });
 ```
+
+</div>
+
+<div style="width:45%; float:left;margin:5px 0;">
+![img](http://liuxmoo.foryung.com/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20190219160622.png)
+</div>
+<div style="clear:both;height:0;overflow:hidden;"></div>
 
 #### 3.6.5 Avatar 头像
 
@@ -1833,4 +1846,4 @@ image{
 }
 ```
 
-
+![E](http://liuxmoo.foryung.com/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20190219160900.jpg)

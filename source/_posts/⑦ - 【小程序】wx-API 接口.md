@@ -1117,6 +1117,27 @@ wx.chooseImage({
           path:'',//本地临时文件路径
           size:200//本地临时文件大小，单位 B
         } */
+        //网络图片需先配置 download 域名才能生效。！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+    wx.getImageInfo({
+      src: res.tempFilePaths[0],//'images/a.jpg',//图片的路径，可以是相对路径、临时文件路径、存储文件路径、网络图片路径  必填
+      success (res) {
+        console.log(res.width)//number 图片原始宽度，单位px。不考虑旋转。
+        console.log(res.height)//number 图片原始高度，单位px。不考虑旋转。
+        res.path//''  图片的本地路径
+        res.orientation//''     拍照时设备方向
+            //'up'              默认方向（手机横持拍照），对应 Exif 中的 1。或无 orientation 信息。
+            //'up-mirrored'     同 up，但镜像翻转，对应 Exif 中的 2
+            //'down'            旋转180度，对应 Exif 中的 3
+            //'down-mirrored'   同 down，但镜像翻转，对应 Exif 中的 4
+            //'left-mirrored'   同 left，但镜像翻转，对应 Exif 中的 5
+            //'right'           顺时针旋转90度，对应 Exif 中的 6
+            //'right-mirrored'  同 right，但镜像翻转，对应 Exif 中的 7
+            //'left'            逆时针旋转90度，对应 Exif 中的 8
+        re.type//'' 图片格式
+      },
+      fail(res){},
+      complete(res){}
+    })
   },
   fail(res){
     //
@@ -1126,28 +1147,8 @@ wx.chooseImage({
   }
 })
 
-wx.getImageInfo({
-  src: 'images/a.jpg',//图片的路径，可以是相对路径、临时文件路径、存储文件路径、网络图片路径  必填
-  success (res) {
-    console.log(res.width)//number 图片原始宽度，单位px。不考虑旋转。
-    console.log(res.height)//number 图片原始高度，单位px。不考虑旋转。
-    res.path//''  图片的本地路径
-    res.orientation//''     拍照时设备方向
-        //'up'              默认方向（手机横持拍照），对应 Exif 中的 1。或无 orientation 信息。
-        //'up-mirrored'     同 up，但镜像翻转，对应 Exif 中的 2
-        //'down'            旋转180度，对应 Exif 中的 3
-        //'down-mirrored'   同 down，但镜像翻转，对应 Exif 中的 4
-        //'left-mirrored'   同 left，但镜像翻转，对应 Exif 中的 5
-        //'right'           顺时针旋转90度，对应 Exif 中的 6
-        //'right-mirrored'  同 right，但镜像翻转，对应 Exif 中的 7
-        //'left'            逆时针旋转90度，对应 Exif 中的 8
-    re.type//'' 图片格式
-  },
-  fail(res){},
-  complete(res){}
-})
 
-//网络图片需先配置 download 域名才能生效。！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+//两个方法的结合使用
 wx.chooseImage({
   success (res) {
     wx.getImageInfo({
