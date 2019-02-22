@@ -1836,7 +1836,6 @@ Page({
 </view>
 ```
 
-
 ```css
 page{
     background-color: #FFFFFF;

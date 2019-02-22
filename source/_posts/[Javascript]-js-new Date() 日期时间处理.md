@@ -11,39 +11,47 @@ comments:
 ---
 ## 一、 前言
 
-new Date 类的所有内置方法，与拓展方法的列举，方便使用的时候查阅与快速引用。
+new Date 类的所有内置方法，与拓展方法的列举，方便使用的时候查阅与快速引用。[MDN 查看](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/setFullYear)
+
+更多的时间处理可以去看 dayjs 的使用的。
 
 ## 二、JavaScript Date 的内置方法
 
 ```JS
 //以下结果是2018-9-10得到的。
-var myDate = new Date();
+var d = new Date();
+d.setFullYear(year,month,date)  // year 是必填项，后面 2 个是可选项，这个方法取代了 setYear 方法，因为它可以有 3 个变量
+                                // 其中 year 对应的是就是 年份，month 对应的是 0-11,date 对应的是 1-31 ！！！！！！！！！！！！！只有月份是特殊的。
+                                // 例如 d.setFullYear(2019,2,19)  这里 d ：2019-03-19T12:33:32.107Z
 
-myDate.getYear();        //获取当前年份( 2 位)         //结果 118 后面两位是年份    //  ？？？？前面一个数字1是干嘛的
+var d = new Date() //今天
+d.setFullYear(2019, 2, 19)
+console.log(d);             // 2019-03-19T12:49:20.409Z
+d.setMonth(6)
+console.log(d);             // 2019-07-19T12:51:05.590Z
+d.setDate(32)
+console.log(d);             // 2019-08-31T12:51:05.590Z   为啥设置 32 然后天数是 1 然后月数 + 1
+// 就不要设置错误的过来就好了！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
 
-myDate.getFullYear();//获取完整的年份( 4 位,1970-????) //结果2018
+// 有设置函数也有获取函数，按照上面的变化
+console.log(d.getFullYear());            // 2019
+console.log(d.getMonth());               // 7    获取的是 月数，对应的值是 0-11     0  是 1 月
+console.log(d.getDate());                // 1    获取的是 天数，对应的值是 1-31     1  是 1 天
+console.log(d.getDay());                 // 4    获取的是 星期几，对应的值是 0-6    0  是 星期 1
+console.log(d.getTime());                // 1564664314855     获取当前时间(从1970.1.1开始的毫秒数) 会改变的，因为时间一直在走呀
+console.log(d.getHours());               // 20
+console.log(d.getMinutes());             // 59
+console.log(d.getSeconds());             // 42
+console.log(d.getMilliseconds());        // 656
+console.log(d.toLocaleDateString());     // 2019-8-1
+console.log(d.toLocaleString());         // 2019-8-1 20:59:42
+console.log(d.toLocaleTimeString());     // 20:59:42
 
-myDate.getMonth();//获取当前月份(0-11,0代表1月)        //结果9
 
-myDate.getDate();    //获取当前日期(1-31)              //结果10
-
-myDate.getDay();    //获取当前星期几(0-6,0代表星期天)   //结果3   // 0:星期天 1:星期一 2:星期二
-
-myDate.getTime(); //获取当前时间(从1970.1.1开始的毫秒数) //结果1539170207289
-
-myDate.getHours();       //获取当前小时数(0-23)         //结果19     2018-9-10 19:21得到的是19
-
-myDate.getMinutes();     //获取当前分钟数(0-59)        //结果21     2018-9-10 19:21得到的是21
-
-myDate.getSeconds();     //获取当前秒数(0-59)          //结果39     2018-9-10 19:21:39 得到的是39
-
-myDate.getMilliseconds();    //获取当前毫秒数(0-999)   //结果 733
-
-myDate.toLocaleDateString();  //获取当前日期           //结果 10/10/2018
-
-myDate.toLocaleString();        //获取日期与时间       //结果 10/10/2018, 19:21:39
-
-myDate.toLocaleTimeString();     //获取当前时间        //结果  19:21:39
+var day = new Date('9102-02-02T12:51:05.590Z')
+console.log(day.toLocaleDateString());//9102-2-2
+day = new Date('August 19, 1975 23:15:30')
+console.log(day.toLocaleString());//1975-8-19 23:15:30
 ```
 
 ## 三、 JavaScript Date 的原型方法扩展

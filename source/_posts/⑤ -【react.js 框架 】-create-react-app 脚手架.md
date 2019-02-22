@@ -126,35 +126,40 @@ React Developer Tools : an extension available for Chrome , Firefox , and as a s
 
 ```BASH
 # 完整构建过程
-# 创建应用 应用名称 my-app 最好使用正确的路径 my-app 为自定义名称
+# ① 创建应用 应用名称 my-app 最好使用正确的路径 my-app 为自定义名称
 $ create-react-app my-app         # 使用 npm 初始化项目，用这个好了，不要搞其他什么特殊
 $ yarn create react-app my-app    # 使用 yarn 初始化项目
 $ npx create-react-app my-app     # 使用 npx 初始化项目
 
-# 进入项目!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!这个很重要，很重要，很重要，很很重要!!!!!!!!!!
+# ② 进入项目!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!这个很重要，很重要，很重要，很很重要!!!!!!!!!!
 $ cd my-app
-# 开启/运行项目，start 之后浏览器就会打开一个窗口，不打开就自己复制链接去打开一个窗口
+
+# ③ 开启/运行项目，start 之后浏览器就会打开一个窗口，不打开就自己复制链接去打开一个窗口
 $ npm start    # 开始使用，当然 cnpm start，pnpm start，yarn start 都行的
 $ yarn start   # 这里还是使用 yarn 吧，命令行都是使用 yarn 安装的，很快，并且也提示 yarn start
 
 # 先 start 之后再来安装下面的东西吧，要保证自己每步写的代码都没有问题，写了很多，才发现一堆的错误，会很头疼的。
 
-# ② 路由
+# ④ 路由
 # $ npm install --save react-router 这个已经过时
 $ npm install --save react-router-dom
 $ yarn add react-router-dom # yarn 安装法
-# ③ 动画
+# ⑤ 动画（看自己是否需要八）
 $ yarn add react-transition-group # 网址 https://reactcommunity.org/react-transition-group/
 $ npm install react-transition-group --save #安装动画插件 yarn 的好处就是不需要 --save 了
 $ yarn add react-motion
 $ npm install --save react-motion # 安装动画插件 使用 https://github.com/chenglou/react-motion
-# ④ 请求，拦截器
+
+# ⑥ 请求，拦截器
 $ yarn add axios            # 使用 yarn 安装 axios
-# ⑤ ui 组件库 蚂蚁金服 antd design
+
+# ⑦ ui 组件库 蚂蚁金服 antd design
 $ npm install antd --save
 $ yarn add antd
 
+
 # 实践之后发现使用 npm 好多错误，还是用 yarn 好了!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+
 
 # 直接用 scss 文件之后， yarn start 会提示安装的。
 # $ npm install sass-loader node-sass --save-dev # 安装 scss ？？？？？不对
@@ -749,7 +754,7 @@ src/
 import React from 'react';// 导入 react.js
 import ReactDOM from 'react-dom';// 导入 react-dom
 import './index.css';//导入 index 对应的 css 文件
-import App from './App';// 导入 app 组件
+import App from './App';// 导入 app 组件                路径需要响应的修改！！！！！！！！！！！！！！！！！！
 import * as serviceWorker from './serviceWorker';//导入服务器
 
 ReactDOM.render(<App />, document.getElementById('root'));// 将 app 组件渲染到 html 中
@@ -783,10 +788,10 @@ code {
 
 ```js
 import React, { Component } from 'react';// 为什么导入的是 { Component }
-import logo from './logo.svg';// 导入 图片
+import logo from './logo.svg';// 导入 图片                      路径需要响应的修改！！！！！！！！！！！！！！！！！！
 import './App.css';//导入 css 文件
 
-class App extends Component { // 这里创建组件，怎么又变成 Component 了，不是 React.Component 的么？？看不懂
+class App extends Component { // 这里创建组件，怎么又变成 Component 了，不是 React.Component 的么，因为 ES6 的解构赋值
   render() {
     return (
       <div className="App">
@@ -837,7 +842,7 @@ export default App;
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {/*  这里是什么了?????? */
+@keyframes App-logo-spin {/*animation 的关键帧   */
   from {
     transform: rotate(0deg);
   }
@@ -1065,14 +1070,14 @@ self.addEventListener('fetch', (event) => {
 
 ### 4.6.4 生命周期
 
-sw 的说明周期主要包括三个阶段: install、active、working。
+sw（ service worker ） 的说明周期主要包括三个阶段: install、active、working。
 下面这张图说明各个阶段完成的工作:
 ![Y](http://zhenhua-lee.github.io/img/service-work/sw-lifecycle.png)
 
 ### 4.6.5 事件机制
 
-sw 本质上也是一个 worker，所以 sw 开发也是建立在事件的基础上，通过事件机制完成相关业务逻辑的处理。
-其中 sw 里面的事件在原始事件对象 EVENT,进行了拓展，例如 fetch event 里面拥有 respondWith、waitUtil 方法。
+sw （ service worker ）本质上也是一个 worker，所以 sw 开发也是建立在事件的基础上，通过事件机制完成相关业务逻辑的处理。
+其中 sw （ service worker ）里面的事件在原始事件对象 EVENT,进行了拓展，例如 fetch event 里面拥有 respondWith、waitUtil 方法。
 
 ### 4.6.6 补充介绍: Cache API
 
@@ -1170,7 +1175,7 @@ it('renders without crashing', () => {// 渲染没有崩溃
 }
 ```
 
-# 六、自己添加的框架思想!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# 六、自己添加的框架思想!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 [官网网址](https://react.docschina.org/docs/faq-structure.html)
 
