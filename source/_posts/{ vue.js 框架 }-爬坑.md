@@ -2,7 +2,7 @@
 title: 'vue.js--[爬坑集合]'
 date: '2018/8/19 23:57:28'
 categories:
-  - ④  vue.js
+  - ④ vue.js
   - vue.js 框架学习
 updated:
 tags:

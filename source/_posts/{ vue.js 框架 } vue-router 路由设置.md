@@ -2,7 +2,7 @@
 title: 'vue-router--[小白入门篇、速学篇]'
 date: '2018/8/19 23:57:28'
 categories:
-  - ④  vue.js
+  - ④ vue.js
   - vue-router 路由设置
 updated:
 tags:

@@ -1,8 +1,8 @@
 ---
-title: 'vue.js--[ 父子组件传值，非父子组件传值]'
+title: 'vue.js--[ 父子组件传值，非父子组件传值，兄弟姐妹传值]'
 date: '2018/8/19 23:57:28'
 categories:
-  - ④  vue.js
+  - ④ vue.js
   - vue.js 框架学习
 updated:
 tags:
@@ -13,31 +13,35 @@ comments:
 
 vue.js 框架中组件之间的传值方法。
 
-- prop 属性  父传【值】给子组件  在父组件的子组件标签中 设置 prop 属性，名称可以不是 props
-- emit 事件  子传【值】给父组件
-- eventBus  各个组件之间传【值】【方法】调用
-- url 路由  路由传值，页面传值
-- Storage  缓存传值
-- vuex 状态管理器 共同使用的数据保存在 store 中
-- this.$ref 子传【值】【方法】给父组件
-- slot 插槽传值  在子组件中设置 prop 属性，名称一定是 props ，它代表的是 传了一个 slot 插槽 文本对象，可以获取对应值
+1.prop 属性  父传【值】给子组件  在父组件的子组件标签中 设置 prop 属性，名称可以不是 props
+2.emit 事件  子传【值】给父组件
+3.eventBus  各个组件之间传【值】【方法】调用     **（订阅模式 $emit 负责发布消息， $on 负责消费消息）**
+4.url 路由  路由传值，页面传值
+5.Storage  缓存传值
+6.vuex 状态管理器 共同使用的数据保存在 store 中
+7.this.$root.xxx        获取根组件的实例方法属性                           （所有父组件）
+  this.$parent.xxx      获取 父 组件的实例方法属性   传【值】【方法】给子组件 （直接父组件）
+  this.$ref.refName.xxx 获取 孙子 组件的实例方法属性 传【值】【方法】给父组件 （所有子组件+孙子组件）
+  this.$children.xxx    获取 子   组件的实例方法属性 传【值】【方法】给父组件 （直接子组件）             不保证顺序，不是响应式的
+8.slot 插槽传值  在子组件中设置 prop 属性，名称一定是 props ，它代表的是 传了一个 slot 插槽 文本对象，可以获取对应值
 
-## 二、父子组件传值 props 与 emit
+## 二、prop（父-子）
 
-### 2.1 props  父 => 子（绑定属性传值）（传的是对象或者是数组的话 子组件改变值会改变父组件的值）
+### 2.1 父组件传递 prop 各种数据类型的传递（数字，字符串，布尔值，对象，数组）
 
-#### 2.1.1 各种数据类型的传递（数字，字符串，布尔值，对象，数组）
-
-其中，对象与数组是特殊的。
-注意在 JavaScript 中对象和数组是通过引用传入的，所以对于一个数组或对象类型的 prop 来说，**在子组件中改变这个对象或数组本身将会影响到父组件的状态。** ?????如果洗完改变父组件的值呢，遍历给中间变量来使用咯。
+其中，对象与数组是特殊的。注意在 JavaScript 中对象和数组是通过引用传入的，所以对于一个数组或对象类型的 prop 来说，
+**在子组件中改变这个对象或数组本身将会影响到父组件的状态。** 所以不要试图在子组件去修改父组件传递过来的 prop 属性值。
 
 如果传递的参数很多，推荐使用 json 数组 {} 的形式？？？？？比如说例子的
 
 ```HTML
 <!-- 父组件 -->
+<!-- 不管传递的是静态值还是动态值，都要使用 ：绑定 ！！！！！！！！！！！！！！！！！！！！！！！！！！！！-->
 <template>
   <div class="home">
     <blog-post v-bind:likes="42"></blog-post>
+    <blog-post :likes="42"></blog-post>  <!-- 省略写法！！！！！！！！！！！！！！！！！！！！！！！！！！-->
+
     <blog-post v-bind:likes="post.likes"></blog-post> <!-- 用一个变量进行动态赋值。-->
 
     <blog-post is-published></blog-post> <!-- 包含该 prop 没有值的情况在内，都意味着 `true`。-->
@@ -78,7 +82,7 @@ export default {
 </script>
 ```
 
-#### 2.1.2 定义子组件，子组件通过 props 方法获取父组件传递过来的值。props 中可以定义能接收的数据类型，如果不符合会报错。
+### 2.2 子组件接受 prop（可以设置接受的要求）
 
 如果不考虑数据类型，直接 `props:["number","string"]` 就可以了,中括号包裹，多个值使用，分隔。
 
@@ -128,10 +132,6 @@ export default {
           return ['success', 'warning', 'danger'].indexOf(value) !== -1
         }
       }
-
-
-
-
     /* 这个 prop 用来传递一个初始值；这个子组件接下来希望将其作为一个本地的 prop 数据来使用。
     在这种情况下，最好定义一个本地的 data 属性并将这个 prop 用作其初始值：
     props: ['initialCounter'],
@@ -140,7 +140,6 @@ export default {
         counter: this.initialCounter
       }
     } */
-
 
     /* 这个 prop 用来传递一个初始值；这个子组件接下来希望将其作为一个本地的 prop 数据来使用。
     在这种情况下，最好定义一个本地的 data 属性并将这个 prop 用作其初始值：
@@ -154,7 +153,7 @@ export default {
 </script>
 ```
 
-#### 2.8 假如接收的参数 是动态的，比如 input输入的内容 v-model的形式
+### 2.3 假如接收的参数 是动态的，比如 input输入的内容 v-model的形式
 
 传递的参数名称 支持驼峰命名
 
@@ -193,34 +192,34 @@ export default {
 </script>
 ```
 
-#### 2.9 父子组件传值，数据是异步请求，有可能数据渲染时报错
+### 2.4 父子组件传值，数据是异步请求，有可能数据渲染时报错
 
 原因：异步请求时，数据还没有获取到但是此时已经渲染节点了
-解决方案：可以在 父组件需要传递数据的节点加上  v-if = false，异步请求获取数据后，v-if = true
+解决方案：可以在 父组件需要传递数据的节点加上  v-if = false，异步请求获取数据后，v-if = true ？？？？？？？？看不动什么意思？？？
 
-### 2.2 emit   子 => 父（事件触发传值）
+### 2.5 .sync 异步（实现 prop 传值 父子组件的 MVVM ：但是这样并不好，所以不建议使用）
 
-```HTML
-<!-- 子组件 -->
-<template>
-  <div class="children ">
-    <button @click="toParent"></button>
-  </div>
-</template>
-<script>
-  export default{
-    methods:{
-      this.$emit('child-event',"我是 子组件 传给 父组件 的内容")
-    }
-  }
-</script>
-```
+不要试图在子组件中修改从父组件中获取的 prop 值，这样会报错的。可以使用下面的获取实例方法的办法来替代 prop 传值。
+
+- this.$root.xxx        获取根组件的实例方法属性                           （所有父组件）
+- this.$parent.xxx      获取 父 组件的实例方法属性 传【值】【方法】给子组件   （直接父组件）
+- this.$ref.refName.xxx 获取 孙子 组件的实例方法属性 传【值】【方法】给父组件 （所有子组件+孙子组件）
+- this.$children.xxx    获取 子   组件的实例方法属性 传【值】【方法】给父组件 （直接子组件）
+
+## 三、$emit  （子 => 父）（在父组件自定义事件 触发传值）
+
+这里使用的是 v-on 自定义事件（省略写法 @）
+当然想在组件根元素上使用原生事件，可以使用 .native 修饰符。？？？？不懂
+
+另外子组件调用父组件事件则可以使用 $parent 或者 $root
+
+### 3.1 例子一
 
 ```HTML
 <!-- 父组件 -->
 <template>
-  <div class="parent ">
-    <children @child-event='parentEvent'></children>
+  <div class="parent">
+    <children @child-event='parentEvent'></children><!-- 在这里传的值不需要 显性的写出来！！！！！！！！！！！！！！！
     <!-- child-event 这里是子组件 methods 中定义的方法名（要一致），
     就是监听子组件数据变化执行的父组件函数的。（parentEvent 这里是触发的父组件的函数方法） 
     这里只能用连字符号，不能驼峰。那就不要连字都不要驼峰不就别这么麻烦了 -->
@@ -241,7 +240,83 @@ export default {
   }
 ```
 
-## 三、路由传值 url 带参数    【适用于所有组件之间】
+```HTML
+<!-- 子组件 -->
+<template>
+  <div class="children ">
+    <button @click="toParent"></button>
+  </div>
+</template>
+<script>
+  export default{
+    methods:{
+      toParent(){
+        this.$emit('child-event',"我是 子组件 传给 父组件 的内容")
+      }
+    }
+  }
+</script>
+```
+
+### 3.2 例子二
+
+```HTML
+<!-- 父组件 -->
+<template>
+  <div class="parent">
+    <p>{{ total }}</p>
+    <!--父组件通过 v-on 在子组件使用的地方监听子组件触发的事件：
+      increment 是子组件中的事件，意思就是在子组件中 increment 执行的时候，执行父组件中的 incrementTotal 方法 -->
+    <button-counter v-on:increment="incrementTotal"></button-counter>
+    <button-counter v-on:increment="incrementTotal"></button-counter>
+  </div>
+</template>
+<script>
+  import children f rom 'components/children'
+  export default{
+    data(){
+      return{
+        total: 0
+      }
+    },
+    components:{
+      Children
+    },
+    methods:{
+      incrementTotal(arg) {
+        this.total += 1
+      }
+    }
+  }
+```
+
+```HTML
+<!-- 子组件 -->
+<template>
+  <div class="children ">
+    <button v-on:click="increment">{{ counter }}</button>
+  </div>
+</template>
+<script>
+  export default{
+    data(){
+      return{
+        counter: 0
+      }
+    },
+    methods:{
+      increment() {
+        this.counter += 1
+        this.$emit('increment')//子组件中使用 $emit() 主动抛出事件
+         //传递参数
+         //this.$emit('increment',arg)
+      }
+    }
+  }
+</script>
+```
+
+## 四、路由传值 url 带参数    【适用于所有组件之间】
 
 ### 3.1 `<router-link>` 标签传参（写在 html 中）
 
@@ -369,7 +444,7 @@ export default new Router ( {
     }
  ```
 
-## 四、Storage 缓存传值    【适用于所有组件之间】
+## 五、Storage 缓存传值    【适用于所有组件之间】
 
 [Storage](http://www.cnblogs.com/st-leslie/p/5617130.html)，学习  Session Storage（程序退出销毁） 和 Local Storage（长期保存） 的区别。
 
@@ -384,21 +459,24 @@ sessionStorage.setItem('缓存名称', JSON.stringify(orderData)) // 保存值
 onst dataB = JSON.parse(sessionStorage.getItem('缓存名称')) // 取值
 ```
 
-## 五、 非父子组件传值 eventBus.js （小项目少页面用eventBus，大项目多页面使用 vuex）
+## 六、eventBus.js 兄弟姐妹 & 父子 通通可用（小项目少页面用 事件巴士 eventBus，大项目多页面使用 vuex）
 
-### 5.1 创建一个 eventBus.js 文件来 定义一个新的vue实例专门用于传递数据，并导出
+目前中央通信是解决兄弟间通信，祖父祖孙间通信的最佳方法，
+当然兄弟姐妹都可以的话，肯定不仅限于此，也可以解决父组件子组件间的相互通信的啦。
+
+### 6.1 例子一（订阅模式 $emit 负责发布消息， $on 负责消费消息）
+
+>创建一个 eventBus.js 文件来 定义一个新的vue实例专门用于传递数据，并导出
 
 ![TU](http://liuxmoo.foryung.com/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20181205135131.png)
 
 ```JS
-/* eventBus.js 的内容如下即可*/
+/* eventBus.js 的内容如下即可，网上有很复杂的，*/
 import Vue from 'vue'
 export default new Vue()
 ```
 
-### 5.2 组件 A 使用 eventBus.js 给组件 B传值
-
-定义传递的方法名和传输内容，**点击事件 methods 中** 或  **钩子函数** 触发  `eventBus.$emit` 事件
+> 发送事件的组件：组件 A 使用 eventBus.js 给组件 B 传值
 
 ```html
 <!-- componentA.vue -->
@@ -414,13 +492,14 @@ export default{
   methods: {
     emitToB(){
       eventBus.$emit('eventFromA', '我是 组件A 传递给 组件B 的数据')//定义方法名，以及传输的数据
+      //定义传递的方法名和传输内容，点击事件 methods 中或 钩子函数触发 eventBus.$emit 事件
     }
   }
 }
 </script>
 ```
 
-enentBus 是一个另一个新的 Vue 实例，区分两个 this 所代表得 vue 实例
+>组件内监听事件：enentBus 是一个另一个新的 Vue 实例，区分两个 this 所代表得 vue 实例
 
 ```html
 <!-- componentB.vue -->
@@ -455,7 +534,46 @@ export default{
 </script>
 ```
 
-## 六、 vuex 状态管理传值（小项目少页面用eventBus，大项目多页面使用 vuex）(就是解决多页面使用同一个值的问题的)
+### 6.2 例子二(这个其实是 this.$root 的方法，不是 eventBus 模式）
+
+```JS
+//一般在 vue 的开发中都是模块化开发，所以当涉及到兄弟组件之间的通信的时候，我们可以在入口文件中事先声明一个全局的事件巴士（即一个全局的供 vue 实例），
+// 然后通过他来传导数据。
+// The Vue build version to load with the `import` command
+// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
+import Vue from 'vue';
+import App from './App';
+import FastClick from 'fastclick';
+import router from './router';
+import Vue_resource from 'vue-resource';
+import axios from 'axios';
+import './common/style/index.less';
+Vue.config.productionTip = false;
+FastClick.attach(document.body);
+Vue.prototype.$http = axios;
+/* eslint-disable no-new */
+new Vue({
+    el: '#app',
+    router,
+    render: h => h(App),
+    data: {
+        eventHub: new Vue()
+    }
+});
+router.push('/goods');
+```
+
+```JS
+//全局的使用该实例，进行数据的传输
+//在组件a中触发事件add，并且传递参数1
+this.$root.eventHub.$emit('add',1);
+//在组件b中监听事件的触发，并处理参数
+this.$root.eventHub.$on('add',function(data) {
+  //...
+})
+```
+
+## 七、vuex 状态管理传值 兄弟姐妹 & 父子 通通可用（小项目少页面用eventBus，大项目多页面使用 vuex）(就是解决多页面使用同一个值的问题的)
 
 父子组件传值可以很容易办到 props 就可以解决，但是兄弟组件间传值（兄弟组件下又有父子组件），或者大型 spa 单页面框架项目，页面多并且一层嵌套一层的传值，异常麻烦，用 vuex 来维护共有的状态或数据会显得得心应手。因为vuex 主要就是做数据交互。对于大型应用，用 vuex 再方便不过了。
 
@@ -655,9 +773,18 @@ export default {
 </style>
 ```
 
-## 七、this.$ref.xxx.bbb() && this.$ref.xxx.ccc 方法调用与传值 父组件调用子组件，子组件传值给父组件
+## 八、root、parent、ref、children 传递实例方法属性
 
-用于子组件：父组件 访问 子组件实例 或 子元素
+- this.$root.xxx        获取根组件的实例方法属性                           （所有父组件）
+- this.$parent.xxx      获取 父 组件的实例方法属性 传【值】【方法】给子组件   （直接父组件）
+- this.$ref.refName.xxx 获取 孙子 组件的实例方法属性 传【值】【方法】给父组件 （所有子组件+孙子组件）
+- this.$children.xxx    获取 子   组件的实例方法属性 传【值】【方法】给父组件 （直接子组件）
+
+### 8.1 this.$root
+
+### 8.2 this.$parent
+
+### 8.3 this.$ref
 
 尽管存在 prop 和事件，prop 父传子，事件 子传父。有的时候你仍可能需要在 JavaScript 里直接访问一个子组件。为了达到这个目的，你可以通过 ref 特性为这个子组件赋予一个 ID 引用。例如：
 
@@ -701,4 +828,9 @@ export default {
 </script>
 ```
 
-## 八 、slot 传值
+### 8.4 this.$children
+
+父组件可以通过 $children，获取到所有的直接子组件，不包括孙组件；
+需要注意 $children 并不保证顺序，也不是响应式的。？？？？？什么意思，没有看懂
+
+## 九 、slot 传值

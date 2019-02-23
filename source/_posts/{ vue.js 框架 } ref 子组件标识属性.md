@@ -4,7 +4,7 @@ date: '2018/8/19 23:57:28'
 tags:
   - interceptor 请求拦截器
 categories:
-  - ④  vue.js
+  - ④ vue.js
   - vue.js 框架学习
 updated:
 comments:

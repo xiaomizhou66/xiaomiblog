@@ -2,7 +2,7 @@
 title: 'vue【1】--[ slot 组件内容分发]'
 date: '2018/8/19 23:57:28'
 categories:
-  - ④  vue.js
+  - ④ vue.js
   - vue.js 框架学习
 updated:
 tags:
