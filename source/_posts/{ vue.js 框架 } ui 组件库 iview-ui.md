@@ -309,7 +309,9 @@ e,"id":"data-v-5e4cad4c","scoped":true,"hasInlineConfig":false}!less-loader?{"so
 npm install style-loader --save
 ```
 
-## 十、各个组件的使用补充
+
+
+## 十、各个组件的使用补充!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!(官网写的太简单了)
 
 官网没有对每个组件的，每个属性，时间，或者方法进行完善，对于一些组件使用起来会遇到各种坑，因此这章就是对组件的补充的。
 
@@ -410,4 +412,184 @@ data() {
     }
   }
 </script>
+```
+
+### 10.3 upload 组件
+
+#### 10.3.5 上传图片
+
+```HTML
+<template>
+     <div class="demo-upload-list" v-for="item in uploadList"> <!--这个 uploadlist 指的是用于展示的，额外加的 一个数据 -->
+        <template v-if="item.status === 'finished'"> <!--这个 条件也是可以自己去修改的 -->
+            <img :src="item.url">
+            <div class="demo-upload-list-cover">
+                <Icon type="ios-eye-outline" @click.native="handleView(item.name)"></Icon>
+                <Icon type="ios-trash-outline" @click.native="handleRemove(item)"></Icon>
+            </div>
+        </template>
+        <template v-else>
+            <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
+        </template>
+    </div>
+    <Modal title="查看图片" v-model="visible">
+        <!-- <img :src="'https://o5wwk8baw.qnssl.com/' + imgName + '/large'" v-if="visible" style="width: 100%"> -->
+        <img :src="url" v-if="visible" style="width: 100%">
+    </Modal>
+    <Upload
+        ref="upload"
+        :show-upload-list="false"
+        :default-file-list="defaultList"  // 这里的 defaultList 指的是 upload 组件默认已上传到服务端的文件列表，这个数据的数据格式 iview 规定好的。
+        :on-success="handleSuccess"
+        :format="['jpg','jpeg','png']"
+        :max-size="2048"
+        :on-format-error="handleFormatError"
+        :on-exceeded-size="handleMaxSize"
+        :before-upload="handleBeforeUpload"
+        :on-progress="handleProgresseUpload"
+        name="image"                      // 例子里没有这个属性 ，默认值是 file，要注意跟自己后端连接起来，响应的更新属性值
+        multiple                          // 是否支持多选文件,默认值是 false，根据我们的后端接口来确定是否是多选的。
+        type="drag"
+        //action="//jsonplaceholder.typicode.com/posts/"  // 这是 http 请求的接口，还是写到 data 里面去比较好吧，还有 headers 的请求头设置呢。 -->
+        :action="httpData.url"
+        :headers="httpData.headers"
+        style="display: inline-block;width:58px;">
+        <div style="width: 58px;height:58px;line-height: 58px;">
+            <Icon type="ios-camera" size="20"></Icon>
+        </div>
+    </Upload>
+</template>
+
+<script>
+    export default {
+        data () {
+            return {
+              // 上传图片请求数据
+                httpData:{
+                  url:'',// 后端接口，注意这里不是用 axios 来请求的，这里就要写上完整的 接口地址
+                  headers:{
+                    // 根据后端接口写上要求的请求头内容
+                    Authorization: localStorage.getItem("token")
+                  }
+                },
+                // 这里是 iview 规定了数据项 的数据（已经上传到 服务端的数据），数据格式就是 {name:'',url:''}
+                defaultList: [],
+                imgName: '',
+                visible: false,
+                // 这里是用于展示文件 的数据，如果 defaultList 已经满足要求的话，就可以不需要这个了的。
+                // 假设我们不只是要 名称与 url 链接图片，还要创建时间呀，等等，就需要一个中间值了，就是接收后端的 返回
+                uploadList: []
+            }
+        },
+        mounted () {
+            this.uploadList = this.$refs.upload.fileList;// 加载的时候讲数据给它？？？？为啥？？？？？？？？？？？？？？
+        }
+        methods: {
+            //before-upload 钩子的 函数：上传文件之前的钩子，参数为上传的文件 file，若返回 false 或者 Promise 则停止上传
+            handleBeforeUpload (file) {
+               // 假设上传需要动态改变附带的参数 data 及上传的路径 url ？但 before-upload 动态改变时，子组件中参数未改变时已执行上传操作？
+               //let researchId = this.activeUploadId;
+               // this.uploadUrl = 'api?research_id=' + researchId + '&filetype=' + file.name.split('.')[1];
+               // this.uploadData = {
+               //     role: patient,
+               //     abc: file
+               // };
+               // let promise = new Promise((resolve) => {
+               //     this.$nextTick(function () {
+               //         resolve(true);
+               //     });
+               // });
+               // return promise; //通过返回一个promis对象解决
+                const check = this.uploadList.length < 5;
+                if (!check) {
+                    this.$Notice.warning({
+                        title: '最多只能上传 5 张图片'
+                    });
+                }
+                return check;
+            },
+            //文件上传时的钩子，返回字段为 event, file, fileList
+            handleProgresseUpload(){
+              //
+            },
+            // 文件上传成功时的钩子，返回字段为 response, file, fileList
+            handleSuccess (res, file) {
+              // res 是后端返回的数据，返回上传文件对应的数据
+              // file 上传文件的信息
+              // fileList 上传文件列表的信息（假设后端可以上传多份文件，前端也设置了 multiple 为 ture）
+              // 因为上传过程为实例，这里模拟添加 url，就不要管下面这 2 行就好了，这个是 iview 用来展示用的
+              // file.url = 'https://o5wwk8baw.qnssl.com/7eb99afb9d5f317c912f08b5212fd69a/avatar'
+              // file.name = '7eb99afb9d5f317c912f08b5212fd69a'
+              var tFile = {
+                  name: res.fileName,
+                  url: res.url
+              };
+              this.defaultList.push(tFile);// 上传成功，还要把上传成功的文件添加到 默认已上传列表 defaultList 中
+              //this.addproductFormData.images.push(res.id); 如果我们是某个表单需要使用到上传的数据，那么就是需要给数据给这个 表单中的数据咯。
+            },
+            //文件格式验证失败时的钩子，返回字段为 file, fileList
+            handleFormatError (file) {
+                this.$Notice.warning({
+                    title: '文件格式不正确',
+                    desc: '文件 ' + file.name + ' 格式不正确，请上传 jpg 或 png 格式的图片'
+                });
+            },
+            //文件超出指定大小限制时的钩子，返回字段为 file, fileList
+            handleMaxSize (file) {
+                this.$Notice.warning({
+                    title: '超出文件大小限制',
+                    desc: '文件  ' + file.name + '太大，不能超过 2M。'
+                });
+            },
+            // 查看文件
+            handleView (name) {
+                this.imgName = name;
+                this.visible = true;
+            },
+            // 移除文件：// 从 upload 实例删除数据
+            handleRemove (file) {
+                const fileList = this.$refs.upload.fileList;
+                this.$refs.upload.fileList.splice(fileList.indexOf(file), 1);
+            }
+        }
+    }
+</script>
+<style>
+    .demo-upload-list{
+        display: inline-block;
+        width: 60px;
+        height: 60px;
+        text-align: center;
+        line-height: 60px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        overflow: hidden;
+        background: #fff;
+        position: relative;
+        box-shadow: 0 1px 1px rgba(0,0,0,.2);
+        margin-right: 4px;
+    }
+    .demo-upload-list img{
+        width: 100%;
+        height: 100%;
+    }
+    .demo-upload-list-cover{
+        display: none;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0,0,0,.6);
+    }
+    .demo-upload-list:hover .demo-upload-list-cover{
+        display: block;
+    }
+    .demo-upload-list-cover i{
+        color: #fff;
+        font-size: 20px;
+        cursor: pointer;
+        margin: 0 2px;
+    }
+</style>
 ```

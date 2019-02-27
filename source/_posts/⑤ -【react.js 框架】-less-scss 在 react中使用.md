@@ -3,7 +3,7 @@ title: react 中使用 less 或者 scss
 date: '2018/8/18 21:57:28'
 categories:
   - ⑤ react.js
-  - less/scss
+  - less/scss 在 react 中使用
 updated:
 tags:
 comments:
@@ -11,7 +11,12 @@ comments:
 
 # 一、前言
 
-其实 create-react-app 2.0 已经不需要这么麻烦了，不需要做下面的工作了。但是问题是 它是在 2018年10月1日 发布的，不知道现在是否已经可以使用了，这个还是大家都用，都熟练的时候再用好了。
+
+<div style="color:red;font-size:18px;">
+其实 create-react-app 2.0 已经不需要这么麻烦了，不需要做下面的工作了。2.0 版本的脚手架已经默认的制作 css 的预处理了，不需要再进行下面麻烦的操作了，下面的操作还是留着吧！！！！！！！！！！1
+</div>
+
+但是问题是 它是在 2018年10月1日 发布的，不知道现在是否已经可以使用了，这个还是大家都用，都熟练的时候再用好了。
 [react 官网博客页面 create-react-app 2.0](https://react.docschina.org/blog/2018/10/01/create-react-app-v2.html)
 
 # 二、react 中使用 less

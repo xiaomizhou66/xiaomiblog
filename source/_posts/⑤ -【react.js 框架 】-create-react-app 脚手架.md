@@ -127,7 +127,7 @@ React Developer Tools : an extension available for Chrome , Firefox , and as a s
 ```BASH
 # 完整构建过程
 # ① 创建应用 应用名称 my-app 最好使用正确的路径 my-app 为自定义名称
-$ create-react-app my-app         # 使用 npm 初始化项目，用这个好了，不要搞其他什么特殊
+$ create-react-app my-app         # 用这个好了，不要搞其他什么特殊,避免发生错误
 $ yarn create react-app my-app    # 使用 yarn 初始化项目
 $ npx create-react-app my-app     # 使用 npx 初始化项目
 
@@ -141,10 +141,11 @@ $ yarn start   # 这里还是使用 yarn 吧，命令行都是使用 yarn 安装
 # 先 start 之后再来安装下面的东西吧，要保证自己每步写的代码都没有问题，写了很多，才发现一堆的错误，会很头疼的。
 
 # ④ 路由
-# $ npm install --save react-router 这个已经过时
-$ npm install --save react-router-dom
+# $ npm install --save react-router 这个已经过时，不适用了，现在用的是 4.0 + 版本的
+$ npm install --save react-router-dom # 4.0 + 版本使用的是 react-router-dom
 $ yarn add react-router-dom # yarn 安装法
-# ⑤ 动画（看自己是否需要八）
+
+# ⑤ 官方动画（看自己是否需要，也可以自己做，或者是网上大神的开源项目使用）
 $ yarn add react-transition-group # 网址 https://reactcommunity.org/react-transition-group/
 $ npm install react-transition-group --save #安装动画插件 yarn 的好处就是不需要 --save 了
 $ yarn add react-motion
@@ -158,11 +159,11 @@ $ npm install antd --save
 $ yarn add antd
 
 
-# 实践之后发现使用 npm 好多错误，还是用 yarn 好了!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+# 实践之后发现使用 npm 好多错误（版本问题啊，等等），还是用 yarn 好了!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
 # 直接用 scss 文件之后， yarn start 会提示安装的。
-# $ npm install sass-loader node-sass --save-dev # 安装 scss ？？？？？不对
+# $ npm install sass-loader node-sass --save-dev # 安装 scss
 # $ yarn add sass-loader node-sass # yarn 的好处，
 # create-react-app 2.0 已经默认的是支持 css 预处理器了，但是还是要安装 node-sass，只是不需要配置了。
 $ yarn add node-sass # 只需要安装 node-sass 不需要 sass-loader ，否则会报出下面的错误
@@ -179,6 +180,12 @@ $ yarn eject  # 用 yarn 来运行，其实 2.0 版本的脚手架不需要这�
 # 打包应用，开发完之后，打包 disc 文件夹部署上线
 $ pnpm run build
 $ yarn build
+
+
+# 如果是下载或者克隆别人的项目！不要忘记这个步骤啦，不然报错了还以为浪费时间
+# 还原依赖
+$ yarn install # 用 yarn 吧。
+$ npm install
 ```
 
 **还可以引人其他的工具库:**

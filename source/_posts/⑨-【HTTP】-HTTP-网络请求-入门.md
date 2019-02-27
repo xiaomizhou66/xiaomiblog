@@ -295,3 +295,22 @@ HTTP响应报文首部
 - 实体首部字段
 
 ## 五、HTTP 背景，web、网络基础 TCP/IP
+
+
+
+## 十、bug
+
+### 10.1
+
+```BASH
+Uncaught (in promise) DOMException: Failed to execute 'open' on 'XMLHttpRequest': '' is not a valid HTTP method.
+    at dispatchXhrRequest (webpack-internal:///./node_modules/axios/lib/adapters/xhr.js:45:13)
+    at new Promise (<anonymous>)
+    at xhrAdapter (webpack-internal:///./node_modules/axios/lib/adapters/xhr.js:12:10)
+    at dispatchRequest (webpack-internal:///./node_modules/axios/lib/core/dispatchRequest.js:59:10)
+```
+
+是因为在 ajax 请求，或者是 axios 封装的请求中，url 或者是 method 写了 ''。
+没有写到的代码就先不要把 请求先写了，会报各种的错误。
+
+这个错误有的时候回说是 url 的问题，可能是填写的 url 不完整，没有 http 或者 https ，或者是缺少其他的。

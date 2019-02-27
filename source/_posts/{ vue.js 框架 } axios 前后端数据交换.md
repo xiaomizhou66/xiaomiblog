@@ -385,7 +385,7 @@ axios.get('/user/12345')
 
 ### 6.3 拦截器 在请求或响应被 then 或 catch 处理前拦截它们（在 then，catch 之前发生）
 
-#### 6.3.1 添加拦截器？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？
+#### 6.3.1 添加拦截器
 
 ```JS
 // 添加请求拦截器
@@ -409,7 +409,7 @@ axios.interceptors.response.use(function (response) {
 
 ```JS
 //bigdata 项目中的设置
-// interceptor/index.js 文件
+// interceptor.js 文件
 import axios from 'axios'
 import Router from 'router'
 
@@ -1016,3 +1016,20 @@ download(index) {
 ```
 
 ### 10.4 下导出 导出内容，导出页面的内容（当然这个是不请求的）
+
+## 十五、bug
+
+### 15.1
+
+```BASH
+Uncaught (in promise) DOMException: Failed to execute 'open' on 'XMLHttpRequest': '' is not a valid HTTP method.
+    at dispatchXhrRequest (webpack-internal:///./node_modules/axios/lib/adapters/xhr.js:45:13)
+    at new Promise (<anonymous>)
+    at xhrAdapter (webpack-internal:///./node_modules/axios/lib/adapters/xhr.js:12:10)
+    at dispatchRequest (webpack-internal:///./node_modules/axios/lib/core/dispatchRequest.js:59:10)
+```
+
+是因为在 ajax 请求，或者是 axios 封装的请求中，url 或者是 method 写了 ''。
+没有写到的代码就先不要把 请求先写了，会报各种的错误。
+
+这个错误有的时候回说是 url 的问题，可能是填写的 url 不完整，没有 http 或者 https ，或者是缺少其他的。

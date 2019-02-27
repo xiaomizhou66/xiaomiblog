@@ -18,24 +18,76 @@ comments:
 
 阿里矢量图：[网址](http://www.iconfont.cn)
 
-## 二、官网提供的使用方法
+## 三、jquery.js 使用阿里图标
+
+### 3.1.1 结合 jquery-ui
+
+## 四、vue.js 使用阿里图标
 
 阿里图标：[地址](http://www.iconfont.cn/collections/index?spm=a313x.7781069.1998910419.4&type=1)
 阿里图标使用方法：[官方使用教程](http://www.iconfont.cn/help/detail?spm=a313x.7781069.1998910419.d8d11a391&helptype=code)，
 
-但是大多为 web 端方法，小程序不能直接使用。教程中只是给了我们 3 中使用的方法，但是并没有具体到其他场合应该怎么使用。
+### 4.1
 
-## 三、各种场合使用阿里图标
+>Unicode
 
-### 3.1 jquery.js
+>Font class
 
-#### 3.1.1 结合 jquery-ui
+兼容性良好，支持 ie8+，及所有现代浏览器。
+相比于 unicode 语意明确，书写更直观。可以很容易分辨这个 icon 是什么。
+因为使用 class 来定义图标，所以当要替换图标时，只需要修改 class 里面的 unicode 引用，就是修改 icon-xxx 这些。
+不过因为本质上还是使用的字体，**所以多色图标还是不支持的。**
 
-### 3.2 vue.js 使用阿里图标
+```BASH
+# ① 第一步：拷贝项目下面生成的 fontclass 代码：
+#          vue-cli2 项目框架中引入使用：在 src 目录下的 index.html 文件中 link 标签引入
+#          vue-cli3 项目框架中引入使用：在 public 目录下的 index.html 文件中 link 标签引入
+# ② 第二步：挑选相应图标并获取类名，应用于页面：
+#         <i class="iconfont icon-xxx"></i>   这里是在 html 中直接使用的 , 修改 icon-xxx 来改成需要的图标。
+
+# 在 UI 框架中，有的时候我们不能直接在 template 中直接的使用 <i class="iconfont icon-xxx"></i>
+```
+
+>Symbol
+
+这是一种全新的使用方式，应该说这才是未来的主流，也是平台目前推荐的用法。相关介绍可以参考这篇文章 这种用法其实是做了一个svg的集合，与上面两种相比具有如下特点：
+
+支持多色图标了，不再受单色限制。
+通过一些技巧，支持像字体那样，通过 font-size,color 来调整样式。
+兼容性较差，支持 ie9+,及现代浏览器。
+浏览器渲染 svg 的性能一般，还不如 png。
+
+```BASH
+# ① 第一步：拷贝项目下面生成的 symbol 代码：：
+#          vue-cli2 项目框架中引入使用：在 src 目录下的 index.html 文件中 script 标签引入
+#          vue-cli3 项目框架中引入使用：在 public 目录下的 index.html 文件中 script 标签引入
+# ② 第二步：第二步：加入通用css代码（引入一次就行）：
+#          vue-cli2 项目框架中引入使用：在 src 目录下的 index.html 文件
+#          vue-cli3 项目框架中引入使用：在 public 目录下的 index.html 文件中
+#         <style type="text/css">
+#           .icon {
+#              width: 1em; height: 1em;
+#              vertical-align: -0.15em;
+#              fill: currentColor;
+#              overflow: hidden;
+#           }
+#         </style>
+# ③ 第三步：挑选相应图标并获取类名，应用于页面：
+#         <svg class="icon" aria-hidden="true">
+#             <use xlink:href="#icon-xxx"></use>
+#         </svg>
+
+# 在 UI 框架中，有的时候我们不能直接在 template 中直接的使用 <i class="iconfont icon-xxx"></i>
+```
 
 #### 3.2.1 vue && element-ui 使用 阿里矢量图
 
 #### 3.2.2 vue && iview-ui 使用 阿里矢量图
+
+
+
+## 五、小程序使用阿里妈妈图标
+
 
 ### 3.3 微信小程序
 
@@ -125,11 +177,6 @@ From server 127.0.0.1
 重新添加了图标，不要忘记重新生成新的代码，置换新的代码。 `@font-face` 的链接是更新的。
 
 #### 3.3.2 微信小程序 && mpvue 使用 阿里矢量图
-
-## 二、小程序使用阿里妈妈图标
-
-
-
 
 
 
