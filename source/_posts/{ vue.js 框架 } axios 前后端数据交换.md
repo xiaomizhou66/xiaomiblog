@@ -878,6 +878,170 @@ methods: {
       }
 ```
 
+### 10.5 上传图片，并且展示出来
+
+```HTML
+<template>
+    <div class="demo-upload-list" v-for="item in uploadList">
+        <template v-if="item.status === 'finished'">
+            <img :src="item.url">
+            <div class="demo-upload-list-cover">
+                <Icon type="ios-eye-outline" @click.native="handleView(item.url)"></Icon>
+                <Icon type="ios-trash-outline" @click.native="handleRemove(item)"></Icon>
+            </div>
+        </template>
+        <template v-else>
+            <Progress v-if="item.showProgress" :percent="item.percentage" hide-info></Progress>
+        </template>
+    </div>
+    <Upload
+        ref="upload"
+        :show-upload-list="false"
+        :default-file-list="defaultList"
+        :format="['jpg','jpeg','png']"
+        :max-size="2048"
+        :on-format-error="handleFormatError"
+        :on-exceeded-size="handleMaxSize"
+        :before-upload="handleBeforeUpload"
+        multiple
+        type="drag"
+        :action="uploadConfig.url"
+        :headers="uploadConfig.headers"
+        :on-success="handleSuccess"
+        style="display: inline-block;width:58px;">
+        <div style="width: 58px;height:58px;line-height: 58px;">
+            <Icon type="ios-camera" size="20"></Icon>
+        </div>
+    </Upload>
+    <Modal title="查看大图" v-model="modalViewBigImg.visible">
+        <img :src="modalViewBigImg.bigUrl" v-if="visible" style="width: 100%">
+    </Modal>
+</template>
+<script>
+    export default {
+        data () {
+            return {
+                // 上传图片请求接口配置数据
+                uploadConfig: {
+                  url: "//api.talcoding.com/v1/images",
+                  headers: {
+                    Authorization: localStorage.getItem("token")
+                  }
+                },
+                // 这个是上传的图片的列表，格式的 iview 规定的，可以增加属性但是，但是没有必要去改这个
+                // name 属性的名就是  name ，不能改成 fileName 或者其他的
+                defaultList: [
+                  //defaultList:[{
+                  //  name:'',
+                  //  url:''
+                  //}]
+                ],
+                // 查看大图数据
+                modalViewBigImg:{
+                  visible: false,
+                  bigUrl:''
+                }
+                // 展示图片列表的数据，里面的属性有 defaultList 里面是没有的 status，showProgress 都是辅助展示用的，根据自己需求
+                uploadList: []
+                // 如果这里是添加产品，获取是其他东西的页面，图片作为其中一个属性，要新增一个 data 对象方式新的数据，用于提交后端啦。
+                // 例如 addproductFormData:{}
+            }
+        },
+        mounted () {
+          this.uploadList = this.$refs.upload.fileList;//展示用的图片赋值，为什么要在这里赋值呀？？？？？？？？？？？？？？？？
+        }
+        methods: {
+            // 选择的图片后缀，格式不正确
+            handleFormatError (file) {
+                this.$Notice.warning({
+                    title: '文件格式不正确',
+                    desc: '文件 ' + file.name + ' 格式不正确，请上传 jpg 或 png 格式的图片。'
+                });
+            },
+            // 选择的文件大小限制
+            handleMaxSize (file) {
+                this.$Notice.warning({
+                    title: '超出文件大小限制',
+                    desc: '文件 ' + file.name + ' 太大，不能超过 2M。'
+                });
+            }
+            // 上传之前的钩子
+            handleBeforeUpload () {
+                const check = this.uploadList.length < 5;
+                if (!check) {
+                    this.$Notice.warning({
+                        title: '最多只能上传 5 张图片。'
+                    });
+                }
+                return check;
+            },
+            // 上传成功,就是上传到服务器，后端了
+            handleSuccess (res, file) {
+            // console.log(res, "RES");  后端返回的上传的图片数据
+            // console.log(file, "file"); 而 file 是 1 个文件信息列表                               file(上传文件)
+            // console.log(fileList, "fileList"); 最后 fileList 是上传的文件信息列表                 fileList(上传文件 List)
+            // res 就是后端返回的数据，数据格式，属性什么的都是后端规定的，前端要根据业务要求去修改数据，
+              var f1 = {
+                name: res.fileName,//假设后端返回的数据是 fileName 的属性吧，就要这样来自己创建一个 f1 对象
+                url: res.url,
+              };
+              this.defaultList.push(f1);// 这个需要提供么，数据应该是用来列出上传的文件列表用的，与 :show-upload-list="false" 这个搭配使用的吧？
+              //this.addproductFormData.images.push(res.id); 假设我们后端使用的数据创建产品，还要在这里赋值数据，根据前后端的数据啦
+            },
+            // 查看大图
+            handleView (url) {
+                this.modalViewBigImg.bigUrl = url
+                this.visible = true;
+            },
+            // 移除展示的图片，注意这个不是删除后端服务器的照片，只是删除这里的图片
+            handleRemove (file) {
+              const fileList = this.$refs.upload.fileList;
+              this.$refs.upload.fileList.splice(fileList.indexOf(file), 1);
+            }
+        }
+    }
+</script>
+<style>
+    .demo-upload-list{
+        display: inline-block;
+        width: 60px;
+        height: 60px;
+        text-align: center;
+        line-height: 60px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        overflow: hidden;
+        background: #fff;
+        position: relative;
+        box-shadow: 0 1px 1px rgba(0,0,0,.2);
+        margin-right: 4px;
+    }
+    .demo-upload-list img{
+        width: 100%;
+        height: 100%;
+    }
+    .demo-upload-list-cover{
+        display: none;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0,0,0,.6);
+    }
+    .demo-upload-list:hover .demo-upload-list-cover{
+        display: block;
+    }
+    .demo-upload-list-cover i{
+        color: #fff;
+        font-size: 20px;
+        cursor: pointer;
+        margin: 0 2px;
+    }
+</style>
+
+```
+
 ### 10.3 下载 触发浏览器的下载功能 来下载文件（后端保存的是文件路径）
 
 #### 10.3.1 下载

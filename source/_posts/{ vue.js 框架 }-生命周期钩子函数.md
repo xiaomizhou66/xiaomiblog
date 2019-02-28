@@ -211,6 +211,23 @@ beforeMount 在有了 render function 的时候才会执行，当执行完 rende
 比如子级的初始化钩子函数（ beforeCreate 、 created 、 mounted ）都是在父级的 created 和 mounted 之间调用的，
 这实际上说明等到子级准备好了，父级才会将自己挂载到上一层 DOM 树中去，从而保证界面上不会闪现脏数据。
 
+> 路由切换时，组件生命周期的执行（就不考虑 update 了）
+
+可以看到，从 A 组件切换到 B 组件时
+A beforeCreate
+A created
+A beforeMount
+A mounted
+要是 A update 就是在这里
+就是在这个时候 从 A 切换到 B 页面的。
+B beforeCreate
+B created
+B beforeMount
+A beforeDestroy
+A destroyed
+B mounted，
+要是 B update 就是在这里，然后再切换别的就是
+
 ## 三、实际应用
 
 根据第二章的总结，对照 DOM 事件的捕获和冒泡过程来看：

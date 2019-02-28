@@ -459,7 +459,9 @@ sessionStorage.setItem('缓存名称', JSON.stringify(orderData)) // 保存值
 onst dataB = JSON.parse(sessionStorage.getItem('缓存名称')) // 取值
 ```
 
-## 六、eventBus.js 兄弟姐妹 & 父子 通通可用（小项目少页面用 事件巴士 eventBus，大项目多页面使用 vuex）
+## 六、eventBus.js （貌似这个办法并不 ok？？？？）
+
+兄弟姐妹 & 父子 通通可用（小项目少页面用 事件巴士 eventBus，大项目多页面使用 vuex）
 
 目前中央通信是解决兄弟间通信，祖父祖孙间通信的最佳方法，
 当然兄弟姐妹都可以的话，肯定不仅限于此，也可以解决父组件子组件间的相互通信的啦。
@@ -474,6 +476,16 @@ onst dataB = JSON.parse(sessionStorage.getItem('缓存名称')) // 取值
 /* eventBus.js 的内容如下即可，网上有很复杂的，*/
 import Vue from 'vue'
 export default new Vue()
+```
+
+```JS
+// 也可以在 main.js 中写
+Vue.prototype.$eventBus = new Vue()
+```
+
+```JS
+//还看到有这样在 main.js 使用的，看不懂
+window.eventBus = new Vue()
 ```
 
 > 发送事件的组件：组件 A 使用 eventBus.js 给组件 B 传值
@@ -534,7 +546,165 @@ export default{
 </script>
 ```
 
-### 6.2 例子二(这个其实是 this.$root 的方法，不是 eventBus 模式）
+### 6.2 eventBus 传值遇到的问题
+
+#### 6.2.1 如果使用 eventBus 传值，并且路由有变化就会发现自己获取到的值无法渲染到页面上（eventBus传值问题，可以控制台打印，但是无法渲染）
+
+```JS
+//A.vue  传值
+//编辑商品
+  beforeCreate() {
+    console.log("A beforeCreate");
+  },
+  created() {
+    console.log("A created");
+  },
+  beforeMount() {
+    console.log("A beforeMount");
+  },
+  mounted() {
+    console.log("A mounted");
+  },
+  beforeDestroy() {
+    console.log("A beforeDestroy");
+  },
+  destroyed() {
+    console.log("A destroyed");
+  },
+  methods: {
+    toUserPage() {
+      this.$router.push("/users");// 注意到这里的路由发生变化，就是跳转到 B 页面去了！！！！！！！！！！！非常的重要
+      eventBus.$emit("postData", "dataFromA->B");//这里 dataFromA->B 是传过去的数据
+    }
+  }
+```
+
+```JS
+<div>{{eventBusData}}</div>
+//B.vue 接受值
+  data(){
+    return{
+      eventBusData:'这里是原来 B 原来的值，我看能不能传过来了'
+    }
+  }
+  beforeCreate() {
+    console.log("B beforeCreate");
+  },
+  created() {
+    console.log("B created");
+    this.getDataFromA()
+  },
+  beforeMount() {
+    console.log("B beforeMount");
+  },
+  mounted() {
+    console.log("B mounted");
+  },
+  beforeDestroy() {
+    console.log("B beforeDestroy");
+  },
+  destroyed() {
+    console.log("B destroyed");
+  },
+  methods: {
+    getDataFromA() {
+      var that = this;
+      eventBus.$on("postData", val => {
+        that.eventBusData = val;
+        console.log(that.eventBusData, "这个 this.eventBusData 是函数里的"); // 会发现这个都没有在控制台打印出来，根本不执行啊
+        console.log(val, "这个 val 是函数里的"); // 这个也不执行啊
+      });
+      console.log(that.eventBusData, "这个 this.eventBusData 是函数外面的"); // 这个可以执行， 但是值是 B 页面的 data 值
+    }
+  }
+```
+
+上面我们可以看出，我们的值是传到了需要接受值的页面了没有错，确实是可以 console.log 出来了，但是呢却又发现自己没法使用传过来的值。
+值是传成功了，console.log 打印出来也是正确的，只是在 eventBus.$on 监听里面可以用，外面就无法使用了，更不要说是在 mounted 与 created 中 log 了。
+错误了，无法渲染到页面上，页面获取不到数据。
+
+```JS
+//  得到的结果是
+//  A beforeCreate
+//  A created
+//  A beforeMount
+//  A mounted
+//  在这里从 A 跳转到 B 页面
+//  B beforeCreate
+//  B created
+//  这里是原来 B 原来的值，我看能不能传过来了 这个 this.eventBusData 是函数外面的
+//  B beforeMount
+//  A beforeDestroy
+//  A destroyed
+//  B mounted
+
+// 页面渲染的是 这里是原来 B 原来的值，我看能不能传过来了,并不是我们传过来的值。不是我们希望的
+```
+
+>错误原因如下：
+就是 vue 生命周期的问题
+在 A.vue 中的那两行代码，首先用 eventBus 传值，随后跳转路由，值是传过去了，但是路由的跳转使得页面重新渲染了一下，一夜回到解放前，值就没有了。因为vue-router在切换时，先加载新的组件，等新的组件渲染好但是还没挂在前，销毁旧的组件，然后再挂载组件。
+
+解决办法：在组件销毁之前将 数据传递出去。在已經用到 vue-router 並且需要跨组件传值的情境，還是用 vuex 好。在这里就说一下方法好了。
+
+```JS
+// A 组件修改如下
+  beforeCreate() {
+    console.log("A beforeCreate");
+  },
+  created() {
+    console.log("A created");
+  },
+  beforeMount() {
+    console.log("A beforeMount");
+  },
+  mounted() {
+    console.log("A mounted");
+  },
+  beforeDestroy() {
+    console.log("A beforeDestroy");
+    eventBus.$emit("postData", "dataFromA->B");// 在销毁之前将触发事件，将数据传递出去，但是这样是不是不好呀？z
+    // 这样一来只要离开这个 页面组件， 就会触发传值，性能怎么样？
+  },
+  destroyed() {
+    console.log("A destroyed");
+  },
+  components: {
+    // HelloWorld
+  },
+  methods: {
+    toUserPage() {
+      this.$router.push("/users");
+    }
+  }
+```
+
+```JS
+//   这样之后得到的结果
+
+//   A beforeCreate
+//   A created
+//   A beforeMount
+//   A mounted
+//   B beforeCreate
+//   B created
+//   这里是原来 B 原来的值，我看能不能传过来了 这个 this.eventBusData 是函数外面的
+//   B beforeMount
+//   A beforeDestroy
+//   dataFromA->B 这个 this.eventBusData 是函数里的
+//   dataFromA->B 这个 val 是函数里的
+//   A destroyed
+//   B mounted
+```
+
+问题：看上面的周期执行，不是先到 B created 之后 A 才会 destroyed 销毁么？为什么直接在 methods 里面触发就不行？？？传值就不成功呢？？？奇怪了呢？？？，
+     是因为原来
+就是因为 B 组件实在 mounted 才会渲染完成么？
+一定要在别的地方触发，那这样一来，页面传值一大堆，性能不是就受到影响了么？？？？好吧就不要用这个方式传值好了，太难了吧？？
+关键点：
+     现在穿的是一个字符串，如果要传的是列表中的一个数据，要对应起来的，用这个方法就传递不了对应的数据了呢？？？就是说这个方法不适用。
+
+### 6.5 例子二(这个其实是 this.$root 的方法，不是 eventBus 模式）
 
 ```JS
 //一般在 vue 的开发中都是模块化开发，所以当涉及到兄弟组件之间的通信的时候，我们可以在入口文件中事先声明一个全局的事件巴士（即一个全局的供 vue 实例），
