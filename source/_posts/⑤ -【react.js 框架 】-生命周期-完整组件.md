@@ -1,5 +1,5 @@
 ---
-title: react.js--生命周期 与 对应周期函数
+title: react.js--生命周期 与 对应周期函数，完整组件
 date: '2018/8/19 23:57:28'
 tags:
   - react.js 生命周期
@@ -49,10 +49,13 @@ React生命周期主要包括三个阶段：**初始化阶段**、**运行中阶
 ```BASH
 # 一、初始化阶段
 static defaultProps={} # 设置组件的默认属性
-constructor()          # 设置组件的初始化状态
+constructor(props){
+  super(props);
+                            # 设置组件的初始化状态
                             # props 可以不写在小括号中（官网是写的），它是隐式的传参
                             # 如果不初始化状态,不绑定方法，则不需要为 React 组件实现构造函数。
-static getDerivedStateFromProps() # 用来替代 react v16.3 中舍弃的周期
+}
+static getDerivedStateFromProps(props, state) # 用来替代 react v16.3 中舍弃的周期
                                   # 组件  实例化后  和  接受新属性 时将会调用 getDerivedStateFromProps。
                                   # 它应该返回 一个对象 来更新状态，或者返回 null 来表明新属性 不需要 更新任何状态。
                                   # 注意，如果父组件导致了组件的重新渲染，即使属性没有更新，这一方法也会被调用。
@@ -70,8 +73,8 @@ componentDidMount()  # 组件已经被渲染到页面中后触发：此时页面
                     # componentWillReceiveProps()  # react 16 已经舍弃了
 shouldComponentUpdate(nextProps, nextState)      #  当组件接收到新属性，或者组件的状态发生改变时触发。组件首次渲染时并不会触发
                     # componentWillUpdate()      # react v16.3 舍弃了
-getDerivedStateFromProps(prevProps, prevState)   # 在最新的渲染输出提交给DOM前将会立即调用。
-                    # 将传入的 props 更新到 state 上
+getSnapshotBeforeUpdate(prevProps, prevState)   # 在最新的渲染输出提交给 DOM 前将会立即调用。
+                    # 组件可以在可能更改之前从DOM捕获一些信息（例如滚动位置）。此生命周期返回的任何值都将作为参数传递给 componentDidUpdate()。
 componentDidUpdate(prevProps, prevState, snapshot)  # 组件被更新完成后触发。
                     # 页面中产生了新的DOM的元素，可以进行DOM操作
                     # 如果shouldComponentUpdate()返回false，则 componentDidUpdate() 不会被调用。
@@ -82,9 +85,11 @@ componentWillUnmount()      #在组件被卸载和销毁之前立刻调用。 �
                         # 可以在该方法里处理任何必要的清理工作，例如解绑定时器，取消网络请求，清理任何在 componentDidMount 环节创建的 DOM 元素。
 
 # 四、错误处理：
-static getDerivedStateFromError()
+static getDerivedStateFromError(error)
 componentDidCatch(error, info)
 ```
+
+# 三、生命周期完整的，组件实例
 
 ```JS
 import React from 'react'
