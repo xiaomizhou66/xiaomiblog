@@ -10,6 +10,8 @@ comments:
 ---
 ## 一、Vuex 是什么
 
+这篇文章的挺清晰的[地址](https://blog.csdn.net/sinat_36263705/article/details/80733199)
+
 vuex 是一个专为 Vue.js 应用程序开发的状态管理模式。它采用集中式存储管理应用的所有组件的状态，并以相应的规则保证状态以一种可预测的方式发生变化。Vuex 也集成到 Vue 的官方调试工具 vue-devtools。提供了诸如零配置的 time-travel 调试、状态快照导入导出等高级调试功能。
 
 Vuex 是专门为 Vue.js 设计的状态管理库，以利用 Vue.js 的细粒度数据响应机制来进行高效的状态更新。
@@ -63,6 +65,77 @@ new Vue({
 说白了 vuex 是用来管理那些在多个组件中需要使用到的数据的。在大型应用设计上我们用 vuex 来管理那些多个页面需要使用到的数据。
 也就是说小型设计就没有必要用了， eventBus.js 就可以解决数据公用问题了。
 也不是什么数据都放在 vuex 来管理，  vuex 管理的数据越少才越好。
+
+## 二、应该使用 vuex 的情况！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+
+根据 vue 传值的，学习，我们知道传值的方法非常的多，要适合的去选择传值的方式，有的情况下有的传值方式就是行不通的。
+
+- localstorage 本地缓存，可以保存，但是它只能保存 JSON 字符串，如果是对象的话还需要 JS 对象与 JSON 字符串之间的转化来转化去的。
+- 小项目有的时候我们希望使用 eventBus 来传值，但是会发现，旧组件页面 会被销毁，新组件页面 获取不到传递过来的值。旧组件不会被销毁的情况使用 eventBus 比较好。
+虽然我们可以在旧页面销毁之前去截取数据，但是总感觉不太好。
+
+<div style="color:red;font-size:20px;">下面的例子是看的网上别人的，不一定正确，要自己去琢磨的</div>
+
+## 2.1 组件会被销毁
+
+>场景：
+
+假如有这样一个组件，他是弹窗，有一些复选框和输入框，用户会选择和填写信息；然后这个弹窗会被关闭和打开，由于业务需要，这个弹窗输入的内容，希望关闭后可以保留，在重新打开后，内容依然存在。
+
+>解决办法：
+
+我们可以考虑将值存在父组件中，也就是说，实际修改的是父组件的值；
+存在比如 sessionStorage、cookies之类的里面，在 created 时从中读取，destroyed的时候写入其中；
+可以存到 global-event-bus 里面；
+  但事实上，最好的还是存在 Vuex 里：
+  可以直接通过 $store.state 来调用，通过 commit() 来修改值；
+  也可以在 created 的时候，读取存在 state 里面的值，在 destroyed 的时候，写回 state；
+  这样处理的优点是 **解耦**，不跟其他组件打交道。
+
+## 2.2 组件基于数据而创建
+
+>场景：
+
+用户登录后，读取权限配置表，这显然是一个异步操作；
+这个配置表可能会影响很多页面。比如被影响的组件的加载条件，例如是 v-if="$store.state.userInfo.superVIP；
+那么：因为读取权限配置表这个异步操作，可能影响多个组件，而这些组件之间的关系，显然是不可预料的（即不一定是在同一个父组件下面）；
+那么这个异步操作，写在某一个组件里就不太合适（因为其他组件读取这个组件很不方便，即使他是根组件）；
+
+>解决办法：
+
+一个妥协的解决办法，是写在 global-event-bus 里面来实现(就是全局 eventBus)；但是显然，更好的解决办法是写在 vuex 里面更专业一些；
+
+问题：其实这个场合看不懂，还没有去看，就是做 VIP 用户的情况咯，不知道使用 localstorage 可行不？
+
+## 2.3 多对多事件——多处触发，影响多处
+
+>场景：
+
+假如有一个事件，比如：切换页面显示风格，他将改变某一个变量的值；
+当该变量为 true 时，那么页面风格为白天（主要影响 v-bind:style 的值）；
+当该变量为 false 时，那么页面风格为晚上（同上）；
+在多个地方可以切换这个页面风格开关；
+毫无疑问，这个变量将影响多个地方的 v-bind:style 的值；
+这就是 多对多 场景；
+那么：
+无论这个变量放在哪个组件里，其他组件调用他都是很麻烦的事情；
+即使存于根组件，然后通过 this.$root.xx 来获取这个变量，也是很麻烦的，而且很丑陋；
+
+>解决办法：
+
+如果不使用 Vuex，那么我们可能会去考虑使用 global-event-bus 来存储这个变量，并使用它；
+这不是不可以，但不优雅，而且管理麻烦；
+而使用 Vuex，那么这就是一件很方便的事情了；
+我们可以通过 $store.state.xxx 来获取这个变量的值；
+通过 $store.getters.yyy 来获取某些基于这个值的，表示通用样式（例如黑底白字）的对象；
+通过 $store.commit() 来提交修改（比如在某些情况下可以禁止修改）；
+甚至可以通过 $store.dispatch() 来获取其他风格的样式，并通过 $store.state 和 $store.getters 来返回新风格的样式；
+
+## 2.10 总结
+
+总而言之，假如你需要 **数据** 和 **组件** 分离，分别处理，那么使用 Vuex 是非常合适的。？？？？不太懂？？？？？？
+相反，如果不需要分离处理，那么不使用 Vuex 也没关系。
+比如某个数据只跟某组件打交道，是强耦合的。那么这个数据就应该存放在该组件的 data 属性中。
 
 ## 三、安装/引入
 
@@ -174,7 +247,7 @@ new Vue({
 </script>
 ```
 
-## 四、vuex 具体使用
+## 四、vuex 具体使用学习
 
 **vuex 管理数据 store.js文件** **.vue 文件中 template 调用数据**
 
@@ -184,252 +257,6 @@ new Vue({
 - 你不能直接改变 store 中的状态。改变 store 中的状态的唯一途径就是显式地提交 (commit) mutation。这样使得我们可以方便地跟踪每一个状态的变化，从而让我们能够实现一些工具帮助我们更好地了解我们的应用。
 
 script 中改写后 ，再在 template 调用。在第三章中我们子组件 .vue 文件，是 template 直接去调用 store.js 文件数据与 mutations 方法,这个状态是在 store.js 中的，在 .vue 文件的 data 中是不存在的。这样如果我们需要在 .vue 文件中多处调用同一个状态数据或者方法的话，就要写很多遍 this.$store.state.XXXX  ，this.$store.commit('xxx'),这样会很麻烦，我们可以现在 .vue 文件中用 computed 属性选项来改写 state 之后，再在 template 中调用。说白了，这样做的目的就是为了简化 template 中的调用 store.js 状态。
-
-### 4.1 store 与 .vue 组件之间的完整使用
-
-#### 4.1.1 例子一
-
-```JS
-//store.js文件
-import Vue from 'vue';
-import Vuex from 'vuex';
-
-Vue.use(Vuex)
-// 如果在模块化构建系统中，请确保在开头调用了 Vue.use(Vuex),也就是上面 3 句
-
-const state={
-    count:1,  //这里写一些状态数据（就是类似组件中的 data(){return{//}} ） 中的数据
-    todos: [
-      { id: 1, text: '...', done: true },
-      { id: 2, text: '...', done: false }
-    ],
-    name:'xiaomi',
-    cartCount: 0
-}
-
-// 类似 .vue 中的 methods【mutations 是同步的】
-const mutations={
-    add(state){  //这里写一些方法，用来改变 state 中的状态值!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-      state.count++;//store 中的状态的唯一途径就是显式地提交 (commit) mutation
-                    // 提交(commit) mutation 改变 state 中的值。
-    },
-    reduce(state){
-      state.count--;
-    },
-    increment (state) { //在这里面的方法都是同步进行的
-      state.count++
-    },
-    updateName(state,newName){//state 是必填的参数，就是原来的状态值，newName 是 在组件中 commit 提交的时候传递过来的值。
-      state.name = newName;
-    },
-    updateCartCount(state,newCartCount) {//newCartCount 是传递过来的值
-　　　state.cartCount += newCartCount;
-　　}
-}
-
-// 类似 .vue 中的 methods【actions 是异步的】
-const actions={ //这里写一些方法，用来改变 state 中的状态值，在这里面的方法是异步进行的!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  addAction (context) {
-    context.commit('add', 10) // 这里的 'add' 是 mutations 中的方法名称啦
-                              // dispatch 一个 action，action 中在 commit一个 mutation,在 mutation 中改变 state 中的值。
-    setTimeOut(()=>{context.commit(reduce)},3000);
-    console.log('我先执行完，因为在这里允许前面的人没有做完，我也可以开始了，我要的时间短，我就先完成了');
-    //console.log 先执行完毕，然后 setTimeOut(()=>{context.commit(reduce)},3000);才会被执行完，
-    //事实上 setTimeOut 代码是先执行的，然后他执行时间比较长，后面的一个输出的执行时间比较短，后面一句都//比前面一句先执行完成了。
-    //关于执行时间的问题可以查看 JavaScript 中代码的执行时间问题。
-  },
-  reduceAction ({commit}) {
-    commit('reduce')// 这里的 'reduce' 是 mutations 中的方法名称啦
-  },
-  increment (context) { //①参数 context：上下文对象
-    context.commit('increment') // 这里的 'increment' 是 mutations 中的方法名称啦
-  },
-  updateName(context) {
-    context.commit("updateName");// 这里的 'updateName' 是 mutations 中的方法名称啦
-  },
-  updateCartCount(context) {
-    context.commit("updateCartCount");// 这里的 'updateName' 是 mutations 中的方法名称啦
-  }
-}
-
-/* ES6/ES2015 的写法，
-actions: {
-  increment ({ commit }) {//②参数{commit}：直接把 commit 对象传递过来，方法体逻辑和代码更清晰明了。
-    commit('increment')
-  }
-}
-*/
-
-const getters={ //这些写一下方法过滤 state 状态的数据
-  const getters={
-    count:state=>state.count+10 //ES6 的写法，注意 ES6 返回值不能是赋值的形式，只能这样写
-    //而不能写成state.count+=10 因为箭头后面就是返回值啊，
-  },
-  doneTodos: state => {
-    return state.todos.filter(todo => todo.done)
-    //返回值state.todos.filter(todo => todo.done)
-  }
-}
-
-export default new Vuex.Store({
-  state,
-  mutations,
-  getters
-})
-```
-
-```JS
-//组件中：
-methods: {
-    increment(){
-      this.$store.dispatch("updateUserInfo", 'nick');  
-      //this.$store.commit("increment", 'nick');
-    },
-    decrement() {
-      this.$store.dispatch("updateCartCount", 1);  
-      // this.$store.commit("decrement", 1);
-    }
-}
-```
-
-```html
-<!-- //.vue 子组件 -->
-<!-- commit   => mutation  //用来触发同步操作的方法 -->
-<!-- dispatch => action    //用来触发异步操作的方法 
-具体的区别请查阅下面 4.4 -->
-
-<template>
-
-  <div class="count">  {{msg}} is {{count}}  years old !</div>
-    <!-- count 不需要这样麻烦的调用了 this.$store.state.count -->
-
-  <button @click="this.add(10)">加</button><!-- 注意因为是用 main.js 引入的，不要忘记使用this. -->
-  <!-- 不需要这样麻烦的调用了 this.$store.commit('add',10) -->
-  <button @click="this.reduce(19)">减</button>
-  <!-- 不需要这样麻烦的调用了 this.$store.commit('reduce',19) -->
-
-  <h3>{{this.donecount}}</h3>
-  <h3>{{this.doneTodost}}</h3>
-
-  <button @click="this.increment">自增</button>
-  <!-- 不需要这样麻烦的调用了 this.$store.dispatch('increment') -->
-  <button @click="this.addAction">这里每次增加 10</button>
-  <!-- 不需要这样麻烦的调用了 this.$store.dispatch('addAction') -->
-  <button @click="this.addAction(10)">这里每次增加 20</button>
-  <!-- 不需要这样麻烦的调用了 this.$store.dispatch('addAction',10) -->
-  <button @click="this.reduceAction"></button>
-
-  <button @click="save">原方法直接用，不需要 this</button>
-</template>
-
-<script>
-import { mapState, mapMutations,mapGetters, mapActions} from 'vuex' //导入 mapGetters 对象
-export default {
-  name: 'Count', // 这里是组件名称，给 template 中的 class 没有关系，原名为 HelloWorld
-  data () {
-    return{
-      msg:'xiaomi'
-    }
-  },
-  computed:{
-    newmsg(){ //原生 computed 计算属性方法
-      //
-    },
-    ...mapState(['count']), //改写 store.js 的 state 状态(和原生的计算属性并列显示)
-    ...mapGetters([  //数组赋值改写
-      'donecount',
-      'doneTodos'
-    ])
-  },
-  methods:{
-    ...mapMutations([
-      'add', // 将 `this.add(n)` 映射为 `this.$store.commit('add',n)`
-      'reduce' // 将 `this.reduce(n)` 映射为 `this.$store.commit('reduce',n)`
-    ]),
-    ...mapActions([ //数组赋值
-      'increment', // 将 `this.increment(n)` 映射为 `this.$store.dispatch('increment',n)`
-      'addAction',
-      'reduceAction'
-    ]),
-    save(){ //.vue 文件的原方法
-      /*执行语句*/
-      // 上面的 ... 都是为了方便在 html，也就是 template 中去使用这个 mapState, mapMutations,mapGetters, mapActions
-      // 如果需要在 methods 中的原方法，就比如这个 save() 原组件内的方法中去 commit 或者是 dispatch 也是一样的使用呀。
-      this.add(33)// 去使用 mapMutations 提交 commit 一个 add 方法到 store
-    }
-  }
-</script>
-```
-
-#### 4.1.2 例子二
-
-```JS
-//store.js 这个是 vue-cli3 中的，
-// 使用的也是 ES6 的写法
-import Vue from 'vue'
-import Vuex from 'vuex'
-
-Vue.use(Vuex)
-
-export default new Vuex.Store({
-  state: {
-  },
-  mutations: {
-    increment(state,n){
-　　　　state.count+=n;
-　　},
-    ADD_NUM:(state,n)=>{
-　　　　state.data = n;
-　　},
-    SET: (state, productObj) => {
-      state.updateProductFormData = productObj
-    }
-  // 一般来说把 mutations 中的携程常量，全都大写，可以有下划线
-  },
-  actions: {
-    incrementAction({commit},count){// {commit} 是 ES6 的写法
-　　　commit('ADD_NUM',count.num)// 因为传入的 count 是对象，所以这里是 count.num
-　　},
-    //currentProduct 是传递过来的值
-    setCurrentProductAction({
-      commit
-    }, currentProduct) {
-      commit('SET', currentProduct)
-    }
-  },
-  getters:{}
-})
-```
-
-```JS
-//.VUE 组件中使用（这里是没有使用简化的方法的，只是为了学习一下使用，还是要学会用 ... 简化方法）
-methods:{
-　　add(){
-　　　　this.$store.commit('increment',10)
-　　},
-    add1(){
-　　　　this.$store.dispatch('incrementAction',{num:1})//这里传过去的数据是 {num:1} 对象
-　　}
-}
-```
-
-```BASH
-# {commit} es6 中函数的参数是一个对象，函数中用的是对象中的一个方法，是可以通过对象的解构赋值直接获取到该方法的
-
-# 因为 actions 中的函数中 commit mutation, 所以会获取到一个默认的参数 context,它是一个 store 的实例，通过它可以获取到 store 的属性和方法，
-# 如 context.state 获取 state 属性，context.commit 执行 commit命令。所以把 
-
-# ES5 写法
-increment(context,count){
-　　context.commit('ADD_NUM',count.num)
-}
-
-# 简写成 ES6 写法
-increment({commit},count){
-　commit('ADD_NUM',count.num)
-}
-```
- 
 
 ### 4.2 具体的介绍：state，getters，mutations，actions 的四个办法
 
@@ -732,20 +559,6 @@ export default new Vuex.Store({
 
 其实 vuex 也要适当的用直接传递参数会比这个好用多
 
-### 4.4 mutations 与 actions 的区别
-
-```TEXT
-commit    => mutation  //用来触发同步操作的方法
-            如果想改变 vuex 的store 中的状态的
-            唯一方法是提交 (commit) mutation
-
-dispatch  => action   //用来触发异步操作的方法
-            如果想在 action 中改变 store 中的状态，
-            先要 dispatch 一个 action，action 中在 commit一个 mutation,在 mutation 中改变 store 中的值。
-```
-
-
-
 ## 五、**JavaScript 的常见的算法类型执行时间**
 
 ```BASH
@@ -756,20 +569,428 @@ dispatch  => action   //用来触发异步操作的方法
 # O(n2)     平方      总执行时间和值的数量有关，每个值至少要获取 n 次。例如：插入排序|
 ```
 
-## 六、使用过程的坑/与自己的犯错
+## 六、vuex 与 .vue 的配合 完成的使用例子！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
 
-### 6.1 调用 mutations 方法错误
+store 与 .vue 组件之间的完整使用
+
+### 6.1 例子一
 
 ```JS
- [Vue warn]: Error in mounted hook: "SyntaxError: Unexpected token u in JSON at position 0"
+//store.js文件
+import Vue from 'vue';
+import Vuex from 'vuex';
+
+Vue.use(Vuex)
+// 如果在模块化构建系统中，请确保在开头调用了 Vue.use(Vuex),也就是上面 3 句
+
+const state={
+    count:1,  //这里写一些状态数据（就是类似组件中的 data(){return{//}} ） 中的数据
+    todos: [
+      { id: 1, text: '...', done: true },
+      { id: 2, text: '...', done: false }
+    ],
+    name:'xiaomi',
+    cartCount: 0
+}
+
+// 类似 .vue 中的 methods【mutations 是同步的】
+const mutations={
+    add(state){  //这里写一些方法，用来改变 state 中的状态值!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      state.count++;//store 中的状态的唯一途径就是显式地提交 (commit) mutation
+                    // 提交(commit) mutation 改变 state 中的值。
+    },
+    reduce(state){
+      state.count--;
+    },
+    increment (state) { //在这里面的方法都是同步进行的
+      state.count++
+    },
+    updateName(state,newName){//state 是必填的参数，就是原来的状态值，newName 是 在组件中 commit 提交的时候传递过来的值。
+      state.name = newName;
+    },
+    updateCartCount(state,newCartCount) {//newCartCount 是传递过来的值
+　　　state.cartCount += newCartCount;
+　　}
+}
+
+// 类似 .vue 中的 methods【actions 是异步的】
+const actions={ //这里写一些方法，用来改变 state 中的状态值，在这里面的方法是异步进行的!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  addAction (context) {
+    context.commit('add', 10) // 这里的 'add' 是 mutations 中的方法名称啦
+                              // dispatch 一个 action，action 中在 commit一个 mutation,在 mutation 中改变 state 中的值。
+    setTimeOut(()=>{context.commit(reduce)},3000);
+    console.log('我先执行完，因为在这里允许前面的人没有做完，我也可以开始了，我要的时间短，我就先完成了');
+    //console.log 先执行完毕，然后 setTimeOut(()=>{context.commit(reduce)},3000);才会被执行完，
+    //事实上 setTimeOut 代码是先执行的，然后他执行时间比较长，后面的一个输出的执行时间比较短，后面一句都//比前面一句先执行完成了。
+    //关于执行时间的问题可以查看 JavaScript 中代码的执行时间问题。
+  },
+  reduceAction ({commit}) {
+    commit('reduce')// 这里的 'reduce' 是 mutations 中的方法名称啦
+  },
+  increment (context) { //①参数 context：上下文对象
+    context.commit('increment') // 这里的 'increment' 是 mutations 中的方法名称啦
+  },
+  updateName(context) {
+    context.commit("updateName");// 这里的 'updateName' 是 mutations 中的方法名称啦
+  },
+  updateCartCount(context) {
+    context.commit("updateCartCount");// 这里的 'updateName' 是 mutations 中的方法名称啦
+  }
+}
+
+/* ES6/ES2015 的写法，
+actions: {
+  increment ({ commit }) {//②参数{commit}：直接把 commit 对象传递过来，方法体逻辑和代码更清晰明了。
+    commit('increment')
+  }
+}
+*/
+
+const getters={ //这些写一下方法过滤 state 状态的数据
+  const getters={
+    count:state=>state.count+10 //ES6 的写法，注意 ES6 返回值不能是赋值的形式，只能这样写
+    //而不能写成state.count+=10 因为箭头后面就是返回值啊，
+  },
+  doneTodos: state => {
+    return state.todos.filter(todo => todo.done)
+    //返回值state.todos.filter(todo => todo.done)
+  }
+}
+
+export default new Vuex.Store({
+  state,
+  mutations,
+  actions,
+  getters
+})
+```
+
+```JS
+//组件中：
+methods: {
+    increment(){
+      this.$store.dispatch("updateUserInfo", 'nick');  
+      //this.$store.commit("increment", 'nick');
+    },
+    decrement() {
+      this.$store.dispatch("updateCartCount", 1);  
+      // this.$store.commit("decrement", 1);
+    }
+}
+```
+
+```html
+<!-- //.vue 子组件 -->
+<!-- commit   => mutation  //用来触发同步操作的方法 -->
+<!-- dispatch => action    //用来触发异步操作的方法 
+具体的区别请查阅下面 4.4 -->
+
+<template>
+
+  <div class="count">  {{msg}} is {{count}}  years old !</div>
+    <!-- count 不需要这样麻烦的调用了 this.$store.state.count -->
+
+  <button @click="this.add(10)">加</button><!-- 注意因为是用 main.js 引入的，不要忘记使用this. -->
+  <!-- 不需要这样麻烦的调用了 this.$store.commit('add',10) -->
+  <button @click="this.reduce(19)">减</button>
+  <!-- 不需要这样麻烦的调用了 this.$store.commit('reduce',19) -->
+
+  <h3>{{this.donecount}}</h3>
+  <h3>{{this.doneTodost}}</h3>
+
+  <button @click="this.increment">自增</button>
+  <!-- 不需要这样麻烦的调用了 this.$store.dispatch('increment') -->
+  <button @click="this.addAction">这里每次增加 10</button>
+  <!-- 不需要这样麻烦的调用了 this.$store.dispatch('addAction') -->
+  <button @click="this.addAction(10)">这里每次增加 20</button>
+  <!-- 不需要这样麻烦的调用了 this.$store.dispatch('addAction',10) -->
+  <button @click="this.reduceAction"></button>
+
+  <button @click="save">原方法直接用，不需要 this</button>
+</template>
+
+<script>
+import { mapState, mapMutations,mapGetters, mapActions} from 'vuex' //导入 mapGetters 对象
+export default {
+  name: 'Count', // 这里是组件名称，给 template 中的 class 没有关系，原名为 HelloWorld
+  data () {
+    return{
+      msg:'xiaomi'
+    }
+  },
+  computed:{
+    newmsg(){ //原生 computed 计算属性方法
+      //
+    },
+    ...mapState(['count']), //改写 store.js 的 state 状态(和原生的计算属性并列显示)
+    ...mapGetters([  //数组赋值改写
+      'donecount',
+      'doneTodos'
+    ])
+  },
+  methods:{
+    ...mapMutations([
+      'add', // 将 `this.add(n)` 映射为 `this.$store.commit('add',n)`
+      'reduce' // 将 `this.reduce(n)` 映射为 `this.$store.commit('reduce',n)`
+    ]),
+    ...mapActions([ //数组赋值
+      'increment', // 将 `this.increment(n)` 映射为 `this.$store.dispatch('increment',n)`
+      'addAction',
+      'reduceAction'
+    ]),
+    save(){ //.vue 文件的原方法
+      /*执行语句*/
+      // 上面的 ... 都是为了方便在 html，也就是 template 中去使用这个 mapState, mapMutations,mapGetters, mapActions
+      // 如果需要在 methods 中的原方法，就比如这个 save() 原组件内的方法中去 commit 或者是 dispatch 也是一样的使用呀。
+      this.add(33)// 去使用 mapMutations 提交 commit 一个 add 方法到 store
+    }
+  }
+</script>
+```
+
+### 6.2 例子二
+
+```JS
+//store.js 这个是 vue-cli3 中的，
+// 使用的也是 ES6 的写法
+import Vue from 'vue'
+import Vuex from 'vuex'
+
+Vue.use(Vuex)
+
+export default new Vuex.Store({
+  state: {
+  },
+  mutations: {
+    increment(state,n){
+　　　　state.count+=n;
+　　},
+    ADD_NUM:(state,n)=>{
+　　　　state.data = n;
+　　},
+    SET: (state, productObj) => {
+      state.updateProductFormData = productObj
+    }
+  // 一般来说把 mutations 中的常量，全都大写，可以有下划线，不是，这个去看 types 吧，是常量
+  },
+  actions: {
+    incrementAction({commit},count){// {commit} 是 ES6 的写法
+　　　commit('ADD_NUM',count.num)// 因为传入的 count 是对象，所以这里是 count.num
+　　},
+    //currentProduct 是传递过来的值
+    setCurrentProductAction({
+      commit
+    }, currentProduct) {
+      commit('SET', currentProduct)
+    }
+  },
+  getters:{}
+})
+```
+
+```JS
+//.VUE 组件中使用（这里是没有使用简化的方法的，只是为了学习一下使用，还是要学会用 ... 简化方法）
+methods:{
+　　add(){
+　　　　this.$store.commit('increment',10)
+　　},
+    add1(){
+　　　　this.$store.dispatch('incrementAction',{num:1})//这里传过去的数据是 {num:1} 对象
+　　}
+}
+```
+
+```BASH
+# {commit} es6 中函数的参数是一个对象，函数中用的是对象中的一个方法，是可以通过对象的解构赋值直接获取到该方法的
+
+# 因为 actions 中的函数中 commit mutation, 所以会获取到一个默认的参数 context,它是一个 store 的实例，通过它可以获取到 store 的属性和方法，
+# 如 context.state 获取 state 属性，context.commit 执行 commit命令。所以把
+
+# ES5 写法
+increment(context,count){
+　　context.commit('ADD_NUM',count.num)
+}
+
+# 简写成 ES6 写法
+increment({commit},count){
+　commit('ADD_NUM',count.num)
+}
+```
+
+## 七、mutations 与 actions 的区别 与 实际应用场景！！！！！！！！！！！！！！！！！！
+
+一些比较复杂的学习：[地址](https://blog.csdn.net/wopelo/article/details/80285167)
+
+```TEXT
+commit    => mutation  //用来触发同步操作的方法
+            如果想改变 vuex 的store 中的状态的
+            唯一方法是提交 (commit) mutation
+
+dispatch  => action   //用来触发异步操作的方法
+            action 主要处理的是异步的操作，mutation 必须同步执行，而 action 就不受这样的限制，也就是说 action 中我们既可以处理同步，也可以处理异步的操作
+            如果想在 action 中改变 store 中的状态，
+            先要 dispatch 一个 action，action 中在 commit一个 mutation,在 mutation 中改变 store 中的值。（action 改变状态，最后是通过 mutation 提交）
+
+  action    处理异步数据最终提交到数据库
+  mutation  用来同步数据做业务的处理 ( vuex 中 store 数据改变唯一的方法就是 mutation)
+  Action    提交的是 mutation，而不是直接变更状态。
+```
+
+```JS
+mutations: {
+  someMutation (state) {
+    api.callAsyncMethod(() => {
+      state.count++ //这句代码在这里是不会被执行的
+    })
+  }
+}
+// 在这个 mutations 中 someMutaion 函数里面是有一个回调函数的，是异步的。内部的代码块是不会被执行到的。
+
+// 我们都知道 任何回调函数 中进行的状态改变都是无法追踪的,  devtools 会对 mutations 的每一条提交做记录,
+// 记录上一次提交之前和提交之后的状态,在上面的例子中无法实现捕捉状态,因为在执行 mutations 时,内部回调函数还没有执行,所以此时无法捕捉状态.
+
+
+//为了解决 mutations 只有同步的问题,提出了 actions(异步),专门用来解决 mutations 只有同步无异步的问题.
+//（mutations 与 actions 最终的目的都是为了改变 state 状态中的值，只是 actions 需要更多的一个步骤而已，它需要通过去调用 mutations 来改变 state）
+```
+
+## 八、store.js 的完整使用 ！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+
+上面我们是学会了 vuex 如何使用，但是如果是在一个大型项目中，我们都是多人开发的，会不利于管理。
+
+- 通常就会用一个方法定义一个常量，也就是 types。
+- 还有上面的 module 分模块进行的
+
+### 8.1 types 常量
+
+```JS
+//在需要多人协作的项目中，我们可以使用常量代替 mutation 事件类型。这在各种 Flux 实现中是很常见的模式。同时把这些常量放在单独的文件中可以让协作开发变得清晰。
+
+
+//store.js 这个是 vue-cli3 中的，使用的也是 ES6 的写法
+import Vue from 'vue'
+import Vuex from 'vuex'
+
+Vue.use(Vuex)
+
+// 如果在模块化构建系统中，请确保在开头调用了 Vue.use(Vuex),也就是上面 3 句
+
+
+// 常量，通常会放到另外的文件里面，然后再引进来
+const types = {
+  SET_TARGET_USER: "SET_TARGET_USER" //详细资料
+};
+
+
+export default new Vuex.Store({
+  state: {
+    //用户初始化的状态
+    targetUser: {} //用户详细资料数据
+  },
+  getters:{
+    //获取到用户状态, 实时监听 state 值的变化(最新状态)
+    targetUser: state => state.targetUser
+  }
+  mutations: {
+    //自定义改变state初始值的方法
+    [types.SET_TARGET_USER](state, targetUser) {
+    if (targetUser) {
+      state.targetUser = targetUser; //如果 targetUser 有内容就赋给状态信息
+    } else {
+      //如果没内容就给 targetUser 赋空对象
+      state.targetUser = {};
+    }
+  },
+  actions: {
+    //这里面的方法是用来异步触发 mutations 里面的方法, context 与 store 实例具有相同方法和属性
+    setGargetUser({ commit }, targetUser) {
+      commit(types.SET_TARGET_USER, targetUser);
+      // localStorage.setItem("SET_TARGET_USER", JSON.stringify(targetUser));
+    }
+  }
+})
+```
+
+### 8.2 module
+
+```JS
+//store.js文件（这里是写在一个页面上的，实际开发中会分开成为几个文件，然后引入这里来。）
+import Vue from 'vue';
+import Vuex from 'vuex';
+
+Vue.use(Vuex)
+// 如果在模块化构建系统中，请确保在开头调用了 Vue.use(Vuex),也就是上面3句
+
+
+// 常量
+const types = {
+  SET_TARGET_USER: "SET_TARGET_USER" //详细资料
+};
+
+
+const moduleA={
+  state:{
+    //用户初始化的状态
+    targetUser: {} //用户详细资料数据
+  },
+  mutations: {
+    //自定义改变 state 初始值的方法
+    [types.SET_TARGET_USER](state, targetUser) {
+    if (targetUser) {
+      state.targetUser = targetUser; //如果 targetUser 有内容就赋给状态信息
+    } else {
+      //如果没内容就给 targetUser 赋空对象
+      state.targetUser = {};
+    }
+  },
+  getters: {
+    //获取到用户状态,//实时监听state值的变化(最新状态)
+    targetUser: state => state.targetUser
+  },
+  actions: {
+    //这里面的方法是用来异步触发mutations里面的方法,context与store 实例具有相同方法和属性
+    setGargetUser({ commit }, targetUser) {
+      commit(types.SET_TARGET_USER, targetUser);
+      // localStorage.setItem("SET_TARGET_USER", JSON.stringify(targetUser));
+    }
+  }
+}
+
+const moduleB={
+  state: { ... },
+  mutations: {... },
+  getters: { ... },
+  actions: {
+    increment (context) { //①参数 context：上下文对象
+      context.commit('increment')
+    }
+  },
+}
+export default new Vuex.Store({
+  modules:{
+    a:moduleA,
+    b:moduleB
+  }
+})
+
+//store.state.a // -> moduleA 的状态
+//store.state.b // -> moduleB 的状态
+```
+
+## 十、使用过程的坑/与自己的犯错
+
+### 10.1 调用 mutations 方法错误
+
+```BASH
+ [Vue warn]: Error in mounted hook: "SyntaxError: Unexpected token u in JSON at position 0" # 在 mounted 钩子的时候出错
 
 found in
 
----> <Home> at src\components\home.vue
+---> <Home> at src\components\home.vue # 在 home.vue 组件出错
        <App> at src\App.vue
          <Root>
-vue.esm.js?efeb:1741 SyntaxError: Unexpected token u in JSON at position 0
-    at JSON.parse (<anonymous>)
+vue.esm.js?efeb:1741 SyntaxError: Unexpected token u in JSON at position 0 # 在位置 0 的 JSON 中出现意外的标记 u
+    at JSON.parse (<anonymous>) # JSON 数据解析出错 JSON.parse
     at Store.gettabledata (store.js?0dc8:23)
     at wrappedMutationHandler (vuex.esm.js?358c:697)
     at commitIterator (vuex.esm.js?358c:389)
@@ -783,6 +1004,6 @@ vue.esm.js?efeb:1741 SyntaxError: Unexpected token u in JSON at position 0
 
 **填坑**
 
-问题解析：在位置 0 的 JSON 中出现意外的标记 u
+主要是好好的看报错信息，这样就可以看到我们错误的地方是哪里了，缩小错误的范围了。
 
-### 6.2 调用 mutations 方法错误
+### 10.2

@@ -387,6 +387,8 @@ axios.get('/user/12345')
 
 #### 6.3.1 添加拦截器
 
+这个链接可以学习一下：[地址](https://www.cnblogs.com/zhoulifeng/p/9858605.html),不一定好，但是可以学习到一点东西
+
 ```JS
 // 添加请求拦截器
 axios.interceptors.request.use(function (config) {
@@ -413,6 +415,8 @@ axios.interceptors.response.use(function (response) {
 import axios from 'axios'
 import Router from 'router'
 
+
+// 请求拦截：
 axios.interceptors.request.use((config) => {
   // 发送请求之前给 token 再其他的请求中就不需要给 token 了
   const token = localStorage.getItem('token');
@@ -425,14 +429,16 @@ axios.interceptors.request.use((config) => {
   return Promise.reject(error)
 })
 
+// 响应拦截
 axios.interceptors.response.use((res) => {
   return res;
 }, (error) => {
   console.error('response interceptor: ', error)
-  if (error.response.status) {
-    switch (error) {
+  var status = error.response.status
+  if (status) {
+    switch (status) {
       case 401:
-        Router.replace('/login');
+        Router.replace('/login');// token 失效了，跳转登录页面重新登录
     }
   }
   return Promise.reject(error);
@@ -452,6 +458,24 @@ axios.interceptors.request.eject(myInterceptor);
 var instance = axios.create();
 instance.interceptors.request.use(function () {/*...*/});
 ```
+
+#### 6.3.4 刷新 token，判断 token 是否过期，刷新 token
+
+>如何判断 token 是否过期
+
+逻辑是后端做的啦，给前端一个判断 token ，前端将 token 传给后端，后端判断 token 是否过期。返回状态码，让前端调用获取状态码来得知是否过期。
+如果过期了就要重新登录，没有过期（但是后端都对 token 的时间是有限制的）就要用旧的 token 换换取新的 token。
+
+> 刷新 token
+
+为什么需要刷新 token? 因为出于安全性的考虑,一般是一天或几个小时更新 token，看项目需要。
+比如说，一个网站的后端 token 的有效时间是 1 个小时，用户使用的时间是几个小时， 都有在用的，就要开发人员去换取新的 token，
+总不能让用户一个小时就去登录一次，这样用户体验很不好。（开发者通过代码刷新 token）
+
+实现方法一：
+在发送任何一次请求时，如果需要更新 token,响应体中后端的同学给我返回了 token 这个字段，token 出现在了响应体中，
+说明这时候是需要刷新 token 的（其他非刷新 token 的请求时是没有 token 字段的），这时用 localStorage 保存最新 token，
+自动覆盖掉原来旧的 token，这样下次再调用新接口时用的就是最新的 token 了，这样用户也感知不到 token 更新的过程。
 
 ## 七、axios 实例
 
