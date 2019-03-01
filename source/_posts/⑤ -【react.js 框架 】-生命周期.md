@@ -78,8 +78,8 @@ componentWillUnmount()      #在组件被卸载和销毁之前立刻调用。 �
                         # 可以在该方法里处理任何必要的清理工作，例如解绑定时器，取消网络请求，清理任何在 componentDidMount 环节创建的 DOM 元素。
 
 # 四、错误处理：
-                        static getDerivedStateFromError()
-                        componentDidCatch(error, info)
+static getDerivedStateFromError()
+componentDidCatch(error, info)
 ```
 
 ```JS
