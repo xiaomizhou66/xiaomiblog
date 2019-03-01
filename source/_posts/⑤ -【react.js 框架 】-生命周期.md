@@ -31,11 +31,15 @@ class Greeting extends React.Component {
 
 ![tu](https://upload-images.jianshu.io/upload_images/4118241-d979d05af0b7d4db.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/488/format/webp)
 
-官网生命周期图纸，也就是上面的周期有的已经被废弃了，最新的周期看下面的图片。就是官网中新的周期图，就是下面的图片。（官网有点。。。。）
+<div style="color:red;">官网生命周期图纸，也就是上面的周期已经被废弃了，最新的周期看下面的图片（就是官网中新的周期图）。（官网有点乱。。。。）
+</div>
 
 >常用的周期
+
 ![tu](http://liuxmoo.foryung.com/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20190301150349.png)
+
 >完整的周期
+
 ![tu](http://liuxmoo.foryung.com/%E5%BE%AE%E4%BF%A1%E6%88%AA%E5%9B%BE_20190301150338.png)
 
 官网最新的生命周期，[文档解析](https://reactjs.org/docs/react-component.html)
