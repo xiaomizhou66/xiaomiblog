@@ -416,10 +416,10 @@ import axios from 'axios'
 import Router from 'router'
 
 
-// 请求拦截：
+// 请求拦截：判断 token 是否即将过期，然后请求刷新 token
 axios.interceptors.request.use((config) => {
   // 发送请求之前给 token 再其他的请求中就不需要给 token 了
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem('token');   // 发送请求之前给 token 再其他的请求中就不需要给 token 了
   if (token) {
     config.headers.Authorization = `Code ${token}`;
   }
@@ -429,16 +429,16 @@ axios.interceptors.request.use((config) => {
   return Promise.reject(error)
 })
 
-// 响应拦截
+// 响应拦截，对过期的 token 拦截
 axios.interceptors.response.use((res) => {
   return res;
 }, (error) => {
   console.error('response interceptor: ', error)
-  var status = error.response.status
+  let status = error.response.status
   if (status) {
     switch (status) {
       case 401:
-        Router.replace('/login');// token 失效了，跳转登录页面重新登录
+        Router.replace('/login');// token 失效了，跳转登录页面重新登录，过期重新登录
     }
   }
   return Promise.reject(error);

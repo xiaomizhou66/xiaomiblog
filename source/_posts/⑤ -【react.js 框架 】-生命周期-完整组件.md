@@ -103,8 +103,8 @@ class Counter extends React.Component {
       age:23
     };
     // Counter.defaltProps={name:'sls'} 或者默认属性是这样写，在 class 类外面写
-    constructor() {
-      super();//super(props) 在任何其他语句之前调用。否则，this.props 将在构造函数中未定义，这可能导致错误。
+    constructor(props){
+    super(props);//super(props) 在任何其他语句之前调用。否则，this.props 将在构造函数中未定义，这可能导致错误。
       // ②②②② 、加载默认状态：设置组件的初始化状态
       this.state = {
         number: 0,

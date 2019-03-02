@@ -38,14 +38,14 @@ console.log(d.getFullYear());            // 2019
 console.log(d.getMonth());               // 7    获取的是 月数，对应的值是 0-11     0  是 1 月
 console.log(d.getDate());                // 1    获取的是 天数，对应的值是 1-31     1  是 1 天
 console.log(d.getDay());                 // 4    获取的是 星期几，对应的值是 0-6    0  是 星期 1
-console.log(d.getTime());                // 1564664314855     获取当前时间(从1970.1.1开始的毫秒数) 会改变的，因为时间一直在走呀
-console.log(d.getHours());               // 20
-console.log(d.getMinutes());             // 59
-console.log(d.getSeconds());             // 42
-console.log(d.getMilliseconds());        // 656
-console.log(d.toLocaleDateString());     // 2019-8-1
-console.log(d.toLocaleString());         // 2019-8-1 20:59:42
-console.log(d.toLocaleTimeString());     // 20:59:42
+console.log(d.getTime());                // 1564664314855     获取当前时间(从1970.1.1开始的毫秒数) 会改变的，因为时间一直在走呀，这个  时间 搓
+console.log(d.getHours());               // 20                  （当前时间 2019-8-1 20:59:42）
+console.log(d.getMinutes());             // 59                  （当前时间 2019-8-1 20:59:42）
+console.log(d.getSeconds());             // 42                  （当前时间 2019-8-1 20:59:42）
+console.log(d.getMilliseconds());        // 656                 （当前时间 2019-8-1 20:59:42）
+console.log(d.toLocaleDateString());     // 2019-8-1            （当前时间 2019-8-1 20:59:42）
+console.log(d.toLocaleString());         // 2019-8-1 20:59:42   （当前时间 2019-8-1 20:59:42）
+console.log(d.toLocaleTimeString());     // 20:59:42             (当前时间 2019-8-1 20:59:42）
 
 
 var day = new Date('9102-02-02T12:51:05.590Z')
