@@ -32,6 +32,7 @@ console.log(d);             // 2019-07-19T12:51:05.590Z
 d.setDate(32)
 console.log(d);             // 2019-08-31T12:51:05.590Z   为啥设置 32 然后天数是 1 然后月数 + 1
 // 就不要设置错误的过来就好了！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+d.setTime()
 
 // 有设置函数也有获取函数，按照上面的变化
 console.log(d.getFullYear());            // 2019
@@ -44,7 +45,7 @@ console.log(d.getMinutes());             // 59                  （当前时间 
 console.log(d.getSeconds());             // 42                  （当前时间 2019-8-1 20:59:42）
 console.log(d.getMilliseconds());        // 656                 （当前时间 2019-8-1 20:59:42）
 console.log(d.toLocaleDateString());     // 2019-8-1            （当前时间 2019-8-1 20:59:42）
-console.log(d.toLocaleString());         // 2019-8-1 20:59:42   （当前时间 2019-8-1 20:59:42）
+console.log(d.toLocaleString());         // 2019-8-1 20:59:42 / 2019/8/1 下午8:58:34 视本地电脑环境时间而定  （当前时间 2019-8-1 20:59:42）
 console.log(d.toLocaleTimeString());     // 20:59:42             (当前时间 2019-8-1 20:59:42）
 
 
@@ -52,6 +53,28 @@ var day = new Date('9102-02-02T12:51:05.590Z')
 console.log(day.toLocaleDateString());//9102-2-2
 day = new Date('August 19, 1975 23:15:30')
 console.log(day.toLocaleString());//1975-8-19 23:15:30
+```
+
+```JS
+// 将时间戳 1564664314855 转化为 2019-8-1 20:58:34 格式
+var d = new Date() //今天
+d.setTime(1564664314855)
+// 有设置函数也有获取函数，按照上面的变化
+console.log(d.toLocaleString()); // 2019-8-1 20:58:34
+```
+
+```JS
+// 将  时间戳 (毫秒：1564664314855) 格式化
+var d = new Date(1564664314855)
+console.log(d.toLocaleString()); // 2019-8-1 20:58:34
+```
+
+```JS
+// 将 (秒：1551591644) 格式化
+var d = new Date(1551591644*1000)// 先转化为 时间戳， new Date 知道是什么。
+console.log(d.toLocaleString()); // 2019-8-1 20:58:34
+//                                  2019/8/1 下午8:58:34
+//                                   后面这个函数，会根据系统（电脑系统）的时间设置格式来显示的，可以自己去规定
 ```
 
 ## 三、 JavaScript Date 的原型方法扩展

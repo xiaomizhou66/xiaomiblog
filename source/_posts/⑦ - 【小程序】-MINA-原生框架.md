@@ -265,17 +265,17 @@ Page({
 //index.js
 Page({
   data: {
-    text: 'init data',
+    msg: 'msg',
     num: 0,
-    array: [{text: 'init data'}],
+    array: [{textArr: 'init data'}],
     object: {
       text: 'init data'
     }
   },
   changeText: function() {
-    // this.data.text = 'changed data'  // bad, it can not work
+    // this.data.text = 'changed data'  // bad, it can not work，不能这样直接修改，需要使用 setData 来修改才会生效的
     this.setData({
-      text: 'changed data'
+      msg: 'changed data'
     })
   },
   changeNum: function() {
@@ -287,13 +287,20 @@ Page({
   },
   changeItemInArray: function() {
     // you can use this way to modify a danamic data path
+    // 可以使用字符串的办法去构造 数组 或者 对象中的某个字段，这样做通常比修改整个对象或数组更好
+    // 当然如果整个数组或者对象都需要修改的话就直接修改整个就 ok）
     this.setData({
-      'array[0].text':'changed data'
+      'array[0].textArr':'changed data'//构造数组中 项 中的 对象下的 textArr 字段
+    })
+  },
+  changeArray:function(){
+    this.setData({
+      array: newArry//对整个数组的值都需要改变的话，就直接这样改变就好了，对象也是一眼的道理。
     })
   },
   changeItemInObject: function(){
     this.setData({
-      'object.text': 'changed data'
+      'object.text': 'changed data' // 构造 object 对象中的 text
     });
   },
   addNewField: function() {

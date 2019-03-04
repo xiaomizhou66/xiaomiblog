@@ -52,6 +52,17 @@ $ yarn publish # 发布一个包到包管理器；
 $ yarn remove  # 从当前包里移除一个未使用的包。
 ```
 
+```BASH
+$ npm install taco --save-dev
+# 等价于
+$ yarn add taco --dev
+
+
+$ npm install taco --global
+# 等价于
+$ yarn global add taco
+```
+
 ## 四、cnpm 淘宝镜像安装
 
 淘宝镜像，但是很多时候总是出现包安装不完全的现象，还是不了吧！

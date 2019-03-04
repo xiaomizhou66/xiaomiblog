@@ -78,6 +78,9 @@ import store from './store'
 import iView from 'iview' //导入iview-ui
 import 'iview/dist/styles/iview.css' //导入iview.css
 import axios from 'axios'
+import {
+  Message
+} from 'iview'
 
 Vue.config.productionTip = false
 Vue.use(iView); //全局使用iview
@@ -97,6 +100,7 @@ let tokenAxios = axios.create({
 axios.interceptors.request.use((config) => {
   //const token = localStorage.getItem('token');
   let sessionToken = JSON.parse(localStorage.getItem("sessionToken")) || ''
+  // if (token) {
   if (sessionToken) {
     let expire = new Date(sessionToken.expire).getTime()
     let now = new Date().getTime() //2019-03-02T06:35:07.854Z 改格式
@@ -115,10 +119,13 @@ axios.interceptors.request.use((config) => {
           localStorage.setItem("sessionToken", JSON.stringify(res.data))
         })
       }
-      config.headers.Authorization = `Code ${sessionToken.token}`;
-      // 如果有 token 就会带上 token，至于带上的 token 是否过期就让后端逻辑去判断，在响应的时候做拦截
     }
+    config.headers.Authorization = `Code ${sessionToken.token}`;
+    //config.headers.Authorization = `${token}`;
+    // 如果有 token 就会带上 token，至于带上的 token 是否过期就让后端逻辑去判断，在响应的时候做拦截
   }
+
+  console.log(config);
 
   return config;
 }, (error) => {
@@ -133,13 +140,14 @@ axios.interceptors.response.use((res) => {
   return res;
 }, (error) => {
   console.error('response interceptor: ', error)
-  let status = error.response.status
+  var status = error.response.status
   if (status) {
     switch (status) {
       case 401:
-        this.$Message.error("登录 token 过期，请重新登录")
-        router.replace('/login'); //页面跳转，router.replace 不会计入 history
+        Message.error("登录 token 过期，请重新登录")// 注意这里的写法是 Message.error ！！！！！！不要有 this
+        router.push('/login'); //页面跳转，router.replace 不会计入 history
         // 在 .vue 的 js 中用的是 this.$router.replace('/login')
+        // 注意写法是 router.push('/login') ！！！！！！！！！！！！！！！！！！！！！！！！！！！！不要有 this
     }
   }
   return Promise.reject(error);

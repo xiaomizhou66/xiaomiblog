@@ -247,7 +247,8 @@ const request = wx.request({
   },
   method:'GET',//HTTP 请求方法          默认值为 'GET'                否 ,和法制学习 http 文档，看后端给的文档
   dataType:'json',//返回的数据格式      默认值   'json'               否
-  //返回的数据为 JSON 格式，返回后会对返回的数据进行一次 JSON.parse，其他格式不对返回的内容进行 JSON.parse
+  //返回的数据为 JSON 格式，返回后自行会对返回的数据进行一次 JSON.parse，不需要开发者去解析（只有 JSON 格式）
+  // 其他格式不对返回的内容进行 JSON.parse
   responseType:'text',//响应的数据类型  默认值   'text'               否
   //① text  响应的数据为文本, ② arraybuffer 响应的数据为 ArrayBuffer
   success (res) {
@@ -255,6 +256,12 @@ const request = wx.request({
     console.log(res.statusCode)//200 开发者服务器返回的 HTTP 状态码
     console.log(res.header)//{} 开发者服务器返回的 HTTP Response Header
   },
+  // 或者是可以写成下面这样的箭头函数
+  // success:(res)=>{
+  //   console.log(res.data)//string/Object/Arraybuffer  开发者服务器返回的数据
+  //   console.log(res.statusCode)//200 开发者服务器返回的 HTTP 状态码
+  //   console.log(res.header)//{} 开发者服务器返回的 HTTP Response Header
+  // }
   fail(res){
     //
   }/* ,
@@ -264,10 +271,26 @@ const request = wx.request({
 })
 ```
 
-##### 2.3.1.1 ArrayBuffer 对象
+##### 2.3.1.1 ArrayBuffer 对象(就是各种类数组对象)
 
 [ArrayBuffer 对象 网址](http://es6.ruanyifeng.com/#docs/arraybuffer)是 JavaScript 操作二进制数据的一个接口，
 代表内存之中的一段二进制数据，可以通过“视图”进行操作。“视图”部署了数组接口，这意味着，可以用数组的方法操作内存。
+
+rrayBuffer 有两种视图，一种是 TypedArray 视图，另一种是 DataView 视图。
+
+```TEXT
+目前，TypedArray 视图一共包括 9 种类型，每一种视图都是一种构造函数。
+
+Int8Array：         8 位有符号整数，长度 1 个字节。
+Uint8Array：        8 位无符号整数，长度 1 个字节。
+Uint8ClampedArray： 8 位无符号整数，长度 1 个字节，溢出处理不同。
+Int16Array：        16 位有符号整数，长度 2 个字节。
+Uint16Array：       16 位无符号整数，长度 2 个字节。
+Int32Array：        32 位有符号整数，长度 4 个字节。
+Uint32Array：       32 位无符号整数，长度 4 个字节。
+Float32Array：      32 位浮点数，长度 4 个字节。
+Float64Array：      64 位浮点数，长度 8 个字节。
+```
 
 ##### 2.3.1.2 http 文档学习请求头
 
@@ -336,6 +359,12 @@ wx.chooseImage({
         console.log(res.data)//''  开发者服务器返回的数据
         console.log(res.statusCode)//200 开发者服务器返回的 HTTP 状态码
       },
+    // 或者是可以写成下面这样的箭头函数
+    // success:(res)=>{
+    //   console.log(res.data)//string/Object/Arraybuffer  开发者服务器返回的数据
+    //   console.log(res.statusCode)//200 开发者服务器返回的 HTTP 状态码
+    //   console.log(res.header)//{} 开发者服务器返回的 HTTP Response Header
+    // }
       fail(res){
         //
       }/* ,
@@ -427,6 +456,12 @@ const socketTask = wx.connectSocket({
   success(){
     //
   },
+    // 或者是可以写成下面这样的箭头函数
+    // success:(res)=>{
+    //   console.log(res.data)//string/Object/Arraybuffer  开发者服务器返回的数据
+    //   console.log(res.statusCode)//200 开发者服务器返回的 HTTP 状态码
+    //   console.log(res.header)//{} 开发者服务器返回的 HTTP Response Header
+    // }
   fail(){
     //
   }/* ,
@@ -449,6 +484,12 @@ wx.onSocketOpen((res)=> {
       wx.sendSocketMessage({
         data:msg,// string/ArrayBuffer  需要发送的内容   必填
         success(){},//
+            // 或者是可以写成下面这样的箭头函数
+        // success:(res)=>{
+        //   console.log(res.data)//string/Object/Arraybuffer  开发者服务器返回的数据
+        //   console.log(res.statusCode)//200 开发者服务器返回的 HTTP 状态码
+        //   console.log(res.header)//{} 开发者服务器返回的 HTTP Response Header
+        // }
         fail(){},//
         complete(){}
       })
@@ -461,6 +502,12 @@ wx.onSocketOpen((res)=> {
     code:1000,//一个数字值表示关闭连接的状态号，表示连接被关闭的原因。 默认值 1000，表示正常关闭连接  否
     reason:'',//一个可读的字符串，表示连接被关闭的原因。这个字符串必须是不长于 123 字节的 UTF-8 文本（不是字符） 否
     success(){},
+    // 或者是可以写成下面这样的箭头函数
+    // success:(res)=>{
+    //   console.log(res.data)//string/Object/Arraybuffer  开发者服务器返回的数据
+    //   console.log(res.statusCode)//200 开发者服务器返回的 HTTP 状态码
+    //   console.log(res.header)//{} 开发者服务器返回的 HTTP Response Header
+    // }
     fail(){},
     complete(){}
   })
@@ -507,6 +554,12 @@ const socketTask = wx.connectSocket({
   success(){
     //
   },
+    // 或者是可以写成下面这样的箭头函数
+    // success:(res)=>{
+    //   console.log(res.data)//string/Object/Arraybuffer  开发者服务器返回的数据
+    //   console.log(res.statusCode)//200 开发者服务器返回的 HTTP 状态码
+    //   console.log(res.header)//{} 开发者服务器返回的 HTTP Response Header
+    // }
   fail(){
     //
   }/* ,
@@ -530,6 +583,12 @@ socketTask.onOpen((res)=>{
       socketTask.send({
         data:msg,// string/ArrayBuffer  需要发送的内容   必填
         success(){},//
+            // 或者是可以写成下面这样的箭头函数
+            // success:(res)=>{
+            //   console.log(res.data)//string/Object/Arraybuffer  开发者服务器返回的数据
+            //   console.log(res.statusCode)//200 开发者服务器返回的 HTTP 状态码
+            //   console.log(res.header)//{} 开发者服务器返回的 HTTP Response Header
+            // }
         fail(){},//
         complete(){}
       })
@@ -542,6 +601,12 @@ socketTask.onOpen((res)=>{
     code:1000,//一个数字值表示关闭连接的状态号，表示连接被关闭的原因。 默认值 1000，表示正常关闭连接  否
     reason:'',//一个可读的字符串，表示连接被关闭的原因。这个字符串必须是不长于 123 字节的 UTF-8 文本（不是字符） 否
     success(){},
+    // 或者是可以写成下面这样的箭头函数
+    // success:(res)=>{
+    //   console.log(res.data)//string/Object/Arraybuffer  开发者服务器返回的数据
+    //   console.log(res.statusCode)//200 开发者服务器返回的 HTTP 状态码
+    //   console.log(res.header)//{} 开发者服务器返回的 HTTP Response Header
+    // }
     fail(){},
     complete(){}
   })
@@ -591,6 +656,12 @@ wx.getAvailableAudioSources({
   success(res){
     //res.audioSources:['']//支持的音频输入源列表，可在 RecorderManager.start() 接口中使用。
   },
+    // 或者是可以写成下面这样的箭头函数
+    // success:(res)=>{
+    //   console.log(res.data)//string/Object/Arraybuffer  开发者服务器返回的数据
+    //   console.log(res.statusCode)//200 开发者服务器返回的 HTTP 状态码
+    //   console.log(res.header)//{} 开发者服务器返回的 HTTP Response Header
+    // }
   fail(res){
   },//
   complete(res){}//

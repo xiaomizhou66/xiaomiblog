@@ -29,13 +29,37 @@ Markdown写博文时，插入图片不能直接从本地上传，需要挂图片
 <img src="http://liuxmoo.foryung.com/2222.jpg" height="300px" alt="图片说明" >
 </div>
 
+```BASH
+<div align="center">
+<img src="http://liuxmoo.foryung.com/2222.jpg" height="300px" alt="图片说明" >
+</div>
+```
+
+<hr/>
+
 <div align="left">
 <img src="http://liuxmoo.foryung.com/2222.jpg" height="300px" alt="图片说明" >
 </div>
 
+```BASH
+<div align="left">
+<img src="http://liuxmoo.foryung.com/2222.jpg" height="300px" alt="图片说明" >
+</div>
+```
+
+<hr/>
+
 <div align="right">
 <img src="http://liuxmoo.foryung.com/2222.jpg" height="300px" alt="图片说明" >
 </div>
+
+```BASH
+<div align="right">
+<img src="http://liuxmoo.foryung.com/2222.jpg" height="300px" alt="图片说明" >
+</div>
+```
+
+<hr/>
 
 如果使用的是 markdown 的方法来插入图片的话，注意 div 要与 markdown 的语法要有一行的空行，不然会得到的是文本，没法显示图片的。
 
@@ -44,6 +68,15 @@ Markdown写博文时，插入图片不能直接从本地上传，需要挂图片
 ![头像](http://liuxmoo.foryung.com/%E4%B8%80%E5%AF%B8%E7%85%A7.jpg)
 
 </div>
+
+```BASH
+# 下面的代码中是空行
+<div align="right">
+
+![头像](http://liuxmoo.foryung.com/%E4%B8%80%E5%AF%B8%E7%85%A7.jpg)
+
+</div>
+```
 
 ## 2.3 多张张图片并排显示
 
@@ -69,3 +102,25 @@ https://mazhuang.org/2017/09/01/markdown-odd-skills/
 但是导出pdf 之后，图片位置就不对了啊!!!!!!!!!!!!!!!!!!!!!
 
 使用插件来直接导出就是正确的了，那个 typora 是又问题的。[Markdown pdf](https://blog.csdn.net/wrx331/article/details/66977715)，直接在文档区域右键就可以导出来了
+
+# 三、文字排版
+
+## 2.1 文字颜色
+
+>使用 html 标签
+
+```HTML
+<div style="color:red;">11</div>
+```
+
+<div style="color:red;">11</div>
+
+<hr/>
+
+> 如果要求不高的话直接使用 `` 反引号就好了
+
+```BASH
+这里是 `重点` 的东西
+```
+
+这里是 `重点` 的东西

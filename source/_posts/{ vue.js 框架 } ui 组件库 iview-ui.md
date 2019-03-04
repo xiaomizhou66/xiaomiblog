@@ -356,6 +356,18 @@ methods:{
 }
 ```
 
+### 10.1 按钮 中使用 阿里图库
+
+```HTML
+<Button type="primary" shape="circle" icon="ios-search"></Button>
+<!-- 这里是 iview 自己的图标  icon="ios-search" 以属性的方式使用-->
+
+<!-- 这里是使用阿里图库 -->
+<Button type="primary" size="small" style="margin-right: 5px" @click="show(index)">
+  <i class="iconfont icon-fengjin"></i> 查看
+</Button>
+```
+
 ### 10.2 menu 导航栏
 
 #### 10.2.1 Menu methods 导航栏的方法
