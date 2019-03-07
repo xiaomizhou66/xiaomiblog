@@ -115,3 +115,95 @@ updateActiveName  //手动更新当前选择项，注意要在 $nextTick 里调�
   }
 </script>
 ```
+
+## 3.2 tag 标签的问题
+
+Tag 标签上面绑定时间不要忘记使用  .native 属性，不然时间没法执行。
+
+```HTML
+<template slot-scope="{ row }" slot="state">
+  <div v-if="row.shelf">
+    <Tag color="primary">已上架</Tag>|
+    <Tag @click.native="toUnShelf(row)">下架</Tag>
+  </div>
+  <div v-else>
+    <Tag color="default">已下架</Tag>|
+    <Tag @click.native="toShelf(row)">上架</Tag>
+  </div>
+</template>
+
+<script>
+// 商品上架
+toShelf(row) {
+  row.shelf = true;
+  console.log("上架");
+  // let updateData = {
+  //   shelf: true
+  // };
+  // this.updateProduct(row.id, updateData);
+},
+// 商品下架
+toUnShelf(row) {
+  row.shelf = false;
+  // let updateData = {
+  //   shelf: false
+  // };
+  // this.updateProduct(row.id, updateData);
+  console.log("下架");
+}
+</script>
+```
+
+## 3.3 table 表格的问题
+
+```HTML
+    <Table
+      @on-select="selectProduct"              //选中 某一项 时触这个事件
+      @on-select-cancel="cancelSelectProduct" //取消 选中 某一项 时触发
+      @on-selection-change="selectChange"     //选中 或 取消选中 某一项 时触发
+      :border="true"
+      ref="selection"
+      :columns="productTableColumns"
+      :data="productTableData.products"
+      stripe
+      :loading="pageData.isLoading"
+    >XXXXXX</table>
+<script>
+  selectProduct(selection,row){
+    //selection 已选项数据,包括刚刚选择的 row 数据
+    //row：刚选择的项数据
+  },
+  cancelSelectProduct(selection,row){
+    //selection 已选项数据,已经去掉了 取消的 row 选项
+    //row： 刚 取消 的项数据
+  },
+  selectChange(selection){
+    //selection 已选项数据
+    // 选中或者取消选中都会触发这个事件
+  }
+  on-select-all-cancel//在多选模式下有效，点击取消全选时触发 (就是点击表格左上角的全选 选择框 触发的事件)
+  selection//已选项数据
+  on-selection-change//在多选模式下有效，只要选中项发生变化时就会触发 (就是点击表格左上角的全选 选择框 触发的事件)
+  selection//已选项数据
+</script>
+```
+
+如果不希望直接勾选表格左上角的按钮来全选，取消全选的话，这样来做
+
+1. 给 table 一个 ref 特性 ref="selection"
+2. 代码如下
+
+```HTML
+  <Button type="primary" size="large" @click="selectAll(true)">
+    <Icon type="icon-SelectAll"/>全选
+  </Button>
+  <Button type="primary" size="large" @click="selectAll(false)">
+    <Icon type="icon-quxiaoquanxuan"/>取消全选
+  </Button>
+<script>
+  // 选择全部
+  selectAll(status) {
+    this.$refs.selection.selectAll(status);
+  },
+</script>
+```

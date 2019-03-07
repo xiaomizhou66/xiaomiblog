@@ -428,13 +428,13 @@ data() {
 
 ### 10.3 upload 组件
 
-#### 10.3.5 上传图片
+#### 10.3.5 上传图片 ！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
 
 ```HTML
 <template>
      <div class="demo-upload-list" v-for="item in uploadList"> <!--这个 uploadlist 指的是用于展示的，额外加的 一个数据 -->
         <template v-if="item.status === 'finished'"> <!--这个 条件也是可以自己去修改的 -->
-            <img :src="item.url">
+            <img :src="item.url"><!--这里直接使用 item.url 是错误的！！！！！！！！！！！！！！！！还有一层 response 才会到 url 这一层-->
             <div class="demo-upload-list-cover">
                 <Icon type="ios-eye-outline" @click.native="handleView(item.name)"></Icon>
                 <Icon type="ios-trash-outline" @click.native="handleRemove(item)"></Icon>
@@ -459,12 +459,12 @@ data() {
         :on-exceeded-size="handleMaxSize"
         :before-upload="handleBeforeUpload"
         :on-progress="handleProgresseUpload"
-        name="image"                      // 例子里没有这个属性 ，默认值是 file，要注意跟自己后端连接起来，响应的更新属性值
+        :name="uploadConfig.name"                      // 例子里没有这个属性 ，默认值是 file，要注意跟自己后端连接起来，响应的更新属性值
         multiple                          // 是否支持多选文件,默认值是 false，根据我们的后端接口来确定是否是多选的。
         type="drag"
         //action="//jsonplaceholder.typicode.com/posts/"  // 这是 http 请求的接口，还是写到 data 里面去比较好吧，还有 headers 的请求头设置呢。 -->
-        :action="httpData.url"
-        :headers="httpData.headers"
+        :action="uploadConfig.url"
+        :headers="uploadConfig.headers"
         style="display: inline-block;width:58px;">
         <div style="width: 58px;height:58px;line-height: 58px;">
             <Icon type="ios-camera" size="20"></Icon>
@@ -477,7 +477,7 @@ data() {
         data () {
             return {
               // 上传图片请求数据
-                httpData:{
+                uploadConfig:{
                   url:'',// 后端接口，注意这里不是用 axios 来请求的，这里就要写上完整的 接口地址
                   headers:{
                     // 根据后端接口写上要求的请求头内容
@@ -493,10 +493,20 @@ data() {
                 uploadList: []
             }
         },
+        created(){
+          this.getUploadConfig()
+        },
         mounted () {
             this.uploadList = this.$refs.upload.fileList;// 加载的时候讲数据给它？？？？为啥？？？？？？？？？？？？？？
         }
         methods: {
+            // 获取上传图片的 请求配置!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 不要忘记在 created 去调用这个函数
+            getUploadConfig(){
+              this.uploadConfig.name = 'image'
+              this.uploadConfig.url = 'https://api.talcoding.com/v1/images'
+              let sessionToken = JSON.parse(localStorage.getItem("sessionToken"));
+              this.uploadConfig.headers.Authorization = `Code ${sessionToken.token}`;
+            },
             //before-upload 钩子的 函数：上传文件之前的钩子，参数为上传的文件 file，若返回 false 或者 Promise 则停止上传
             handleBeforeUpload (file) {
                // 假设上传需要动态改变附带的参数 data 及上传的路径 url ？但 before-upload 动态改变时，子组件中参数未改变时已执行上传操作？
@@ -526,7 +536,15 @@ data() {
             },
             // 文件上传成功时的钩子，返回字段为 response, file, fileList
             handleSuccess (res, file) {
-              // res 是后端返回的数据，返回上传文件对应的数据
+              // res 是后端返回的数据，返回上传文件对应的数据 ！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+              // 注意一个问题，是 iview 的 res 不需要 res.data 它直接就是后端返回的数据本身!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+              // 不需要像其他的接口那样去获取 res.data 才得到我们要的数据！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+              // res= {
+              //      fileName: "微信截图_20190214220147.png"
+              //      id: "5c7f836adce08a0005c99b5a"
+              //      key: "5c7f836adce08a0005c99b5a/微信截图_20190214220147.png"
+              //      url: "https://sources.talcoding.com/5c7f836adce08a0005c99b5a/%E5%BE%AE%E4%BF%A1%E6%88%AA%png"
+              //    }
               // file 上传文件的信息
               // fileList 上传文件列表的信息（假设后端可以上传多份文件，前端也设置了 multiple 为 ture）
               // 因为上传过程为实例，这里模拟添加 url，就不要管下面这 2 行就好了，这个是 iview 用来展示用的
@@ -536,8 +554,36 @@ data() {
                   name: res.fileName,
                   url: res.url
               };
-              this.defaultList.push(tFile);// 上传成功，还要把上传成功的文件添加到 默认已上传列表 defaultList 中
-              //this.addproductFormData.images.push(res.id); 如果我们是某个表单需要使用到上传的数据，那么就是需要给数据给这个 表单中的数据咯。
+              this.defaultList.push(f1);// 这个需要提供么？
+              // 数据应该是用来列出上传的文件列表用的，与 :show-upload-list="false" 这个搭配使用，不需要的话就不需要在这里额外的赋值了
+              // defaultList 如果我们有需求的话，需要在这里赋值！！！！！！！！！！！！！！！！！！
+
+              //this.addproductFormData.images.push(res.id); 假设我们后端使用的数据创建产品，还要在这里赋值数据，（其实
+              // 我们也应该直接冲 uploadlist 去获取值给到 form 的值，这样我们删除的话就只需要删除一个地方就 ok 了。）
+              // res 就是后端返回的数据，数据格式，属性什么的都是后端规定的，前端要根据业务要求去修改数据，
+              // 这个 form 的值其实应该直接从 uploadlist 中去获取,因为 uploadlist 就是我们的值啊，它的 response 字段就包含了图片的信息。
+              // 外层还有其他的信息
+
+              //uploadlist = [{
+              //  name: "微信截图_20190214220147.png"
+              //  percentage: 100
+              //  response:
+              //    {
+              //      fileName: "微信截图_20190214220147.png"
+              //      id: "5c7f836adce08a0005c99b5a"
+              //      key: "5c7f836adce08a0005c99b5a/微信截图_20190214220147.png"
+              //      url: "https://sources.talcoding.com/5c7f836adce08a0005c99b5a/%E5%BE%AE%E4%BF%A1%E6%88%AA%png"
+              //    }
+              //  showProgress: (...)
+              //  size: 468927
+              //  status: "finished"
+              //  uid: 1551860582546
+              //}]
+                    // 看到后端返回来的数据，我们发现我们的 url 数据是嵌套在 response 对象里面的，html 中的就错误了
+                    // 直接 item.url 是错误的，需要 item.response.url，这样属性 . 了太多层次了！！！！！！！！！！！！！！！！！！！
+                    // 如果我们不需要 status showProgress 这些字段的话就不要去直接使用官方 uploadlist 这个字段
+                    // 可以在 success 这个钩子函数自己去构造自己的数据
+              // defaultlist 需要在这里赋值，其实也可以把 uploadlist 那里获取 name 与 url 字段赋值给 defaultlist
             },
             //文件格式验证失败时的钩子，返回字段为 file, fileList
             handleFormatError (file) {

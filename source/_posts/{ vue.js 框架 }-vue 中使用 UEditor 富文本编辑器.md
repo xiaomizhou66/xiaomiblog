@@ -133,7 +133,7 @@ Uncaught TypeError: 'caller', 'callee', and 'arguments' properties may not be ac
 　　　　query: {
 　　　　presets: ['es2015']
 　　}}]
-3. 或者就 注释 serverUrl 字段（如果不注释还会报上传文件地址错误的问题），不要了啊！！
+3. 或者就 注释 serverUrl 字段（如果不注释还会报上传文件地址错误的问题），当然不能注释！就是需要可以填写图片的好么！
 
 # 三、百度 UEditor 组件化使用
 
@@ -188,18 +188,6 @@ Uncaught TypeError: 'caller', 'callee', and 'arguments' properties may not be ac
 ```
 
 ## 3.2 在 页面或者其他组件使用 Ueditor 组件
-
-```HTML
-<template>
-  <ueditor :content=content1 :config=config :id="ue1"></ueditor>  //使用
-</template>
-
-<script>
-    import ueditor from '../components/Ue/Ue.vue'  //路径还是按照自己的路径来
-    export default {
-    }
-</script>
-```
 
 ```HTML
 <template>
