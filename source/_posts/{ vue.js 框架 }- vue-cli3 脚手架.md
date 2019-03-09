@@ -84,9 +84,9 @@ $ yarn add iview # 下载 iview 这个 ui 框架，框架都是选择的，选�
 $ cnpm install axios        # 下载前后端数据交互应用
 $ yarn add axios            # 使用 yarn
 
-$ npm install normalize.css # 浏览器兼容 css 文件
-$ npm i v-charts echarts -S # 图表 ui 组件库
-$ npm install --save dayjs  # 日期时间处理，dayjs 库
+$ yarn add normalize.css # 浏览器兼容 css 文件
+$ yarn add v-charts echarts # 图表 ui 组件库
+$ yarn add dayjs  # 日期时间处理，dayjs 库
 
 $  yarn serve # 开启服务，运行
 $  yarn build # 打包

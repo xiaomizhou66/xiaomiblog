@@ -1265,6 +1265,51 @@ download(index) {
 
 ### 10.4 下导出 导出内容，导出页面的内容（当然这个是不请求的）
 
+## 十一、promise 与 axios 的结合使用
+
+```JS
+removeProductBatch() {
+  let idArr = this.productSelectID;
+  // 生成一个 Promise 对象的数组
+  idArr.map(element =>
+    axios({
+      url: `/products/${element}`,
+      method: "DELETE"
+    }).then(() => {
+      this.getProducts();// 这个函数调用一定要放在 then 里面，不然就没法调用成功
+      // 但是放在这里，这个循环就会执行很多次这个函数，显然是不合理的
+      this.$Message.success("删除成功");
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  );
+  //this.getProducts();// 这个函数调用一定要放在 then 里面，不然就没法调用成功。放在这里 这个函数调用就是不成功的
+},
+```
+
+```JS
+removeProductBatch() {
+  let idArr = this.productSelectID;
+  // 生成一个 Promise 对象的数组
+  const promises = idArr.map(element =>
+    axios({
+      url: `/products/${element}`,
+      method: "DELETE"
+    })
+  );
+  // 数组作为  Promise.all 的参数
+  Promise.all(promises)
+    .then(() => {
+      this.getProducts();// 放在这里，就只会执行一次了
+      this.$Message.success("删除成功");
+    })
+    .catch(err => {
+      console.log(err);
+    });
+},
+```
+
 ## 十五、bug
 
 ### 15.1
