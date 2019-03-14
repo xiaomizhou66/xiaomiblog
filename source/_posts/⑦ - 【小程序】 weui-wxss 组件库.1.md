@@ -305,6 +305,8 @@ Page({
 
 建议采用小程序原生的 [wx.previewImage](https://developers.weixin.qq.com/miniprogram/dev/api/wx.previewImage.html) 来实现。
 
+wx.previewImage：在新页面中全屏预览图片。预览的过程中用户可以进行保存图片、发送给朋友等操作。
+
 #### 3.2.5 List 列表
 
 <div style="width:50%; float:left;margin:5px 0;">

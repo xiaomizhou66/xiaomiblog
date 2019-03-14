@@ -424,9 +424,9 @@ import "zrender/lib/svg/svg"
     :set-option-opts="true"
     :not-set-unchange="['dataZoom']"
     :log="false"
-    :mark-line=""
-    :mark-area=""
-    :mark-point=""
+    :mark-line="markLine"
+    :mark-area="markArea"
+    :mark-point="markPoint"
     :loading="false"                  # 使用这个属性的话要加载样式 import 'v-charts/lib/style.css'
     :data-empty="false"  # 使用这个属性的话要加载样式 import 'v-charts/lib/style.css'
     :before-config="beforeConfig"
@@ -465,6 +465,31 @@ export default {
         axisLine: { show: false }
       }
     }
+    this.markLine={
+      data: [
+        {
+          name: '平均线',
+          type: 'average'
+        }
+      ]
+    }
+    this.markPoint={
+      data: [
+        {
+          name: '最大值',
+          type: 'max'
+        }
+      ]
+      // data: [
+      //   {
+      //     name: '最大值',
+      //     type: 'max',//最小值是min
+      //     symbolSize: 60,//标记大小
+      //     symbol: 'rect',//标记形状
+      //     symbolOffset: [0, '-50%']//标记位置坐标
+      //   }
+      // ]
+    }
     this.lineExtend={
       // init 附加参数，参考文档 https://echarts.baidu.com/api.html#echarts.init
       // grid: [object, array],
@@ -481,14 +506,21 @@ export default {
         data:['销量']
       },
       // xAxis: [object, array],   x 轴上的数据
+      // yAxis: [object, array],  y 轴上的数据
       xAxis: {
         data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
       },
       xAxis: {type: 'category'},
-      // yAxis: [object, array],  y 轴上的数据
+      'xAxis.0.axisLabel.show': false,//x轴标签不显示
+      'yAxis.0.axisLabel.show': false,//y轴标签不显示
+      'xAxis.0.splitLine.show': false//x轴表格线不显示
       yAxis: {},
       // radar: object,
       // tooltip: object,
+      tooltip (v) {
+        v.trigger = 'none'//提示线不显示
+        return v
+      },
       // axisPointer: object,
       // brush: [object, array],
       // geo: object,
@@ -505,7 +537,13 @@ export default {
         {type: 'bar'},
         {type: 'bar'},
         {type: 'bar'}
-      ]
+      ],
+      series (v) {
+        v.forEach(i => {
+          i.barWidth = 20//柱状图柱子宽度
+        })
+        return v
+      },
       // backgroundColor: [object, string], 背景颜色设置
       // textStyle: object,
       // animation: object
@@ -534,7 +572,24 @@ export default {
 ## 4.1 基本属性（含有 公有属性+私有属性）
 
 * width  图表宽度 默认值 auto                     （公有属性，所有图表都有的属性）
-                ???????????? 可以取值 百分比么？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？？
+                可以设置为百分比的，但是不要忘记设置父元素的宽度，否则设置的 百分比没有效果的。
+                width  这是 canvas 标签的宽度
+                   `<div class="overview-charts">`
+                      `<ve-histogram`
+                      `width="100%"`
+                      `:data="histogramChartData"`
+                      `:settings="histogramSettings"`
+                      `:extend="histogramExtend"`
+                      `:theme="histogramTheme"`
+                      `></ve-histogram>`
+                   `</div>`
+                    .overview-charts{
+                      width：100%;
+                      .ve-histogram{
+                        width：100%;
+                        // 父元素设置 100%，`<ve-histogram>` 标签中设置的宽度属性是 canvas 的宽度
+                      }
+                    }
 * height 图表高度 默认值 400px                    （公有属性，所有图表都有的属性）
 * data   图表数据，写在组件 data return 里面的数据 （图表数据）
               columns（绑定的是写在 return 里面）
@@ -586,33 +641,44 @@ export default {
 
 ## 4.5 extend 属性
 
+```JS
+this.extend={
+  //grid: [object, array],
+  //colors: array,
+  //visualMap: [object, array],
+  //dataZoom: [object, array],  在使用 dataZoom 组件时，数据发生改变会引起 dataZoom 的重置，
+  //                            在组件上设置 :not-set-unchange="['dataZoom']" 即可解决这个问题。
+  //toolbox: [object, array],     需要引入模块    import "echarts/lib/component/toolbox";
+  //title: object,                需要引入标题模块 import "echarts/lib/component/title";
+  //legend: [object, array],
+  //xAxis: [object, array],
+  'xAxis.0.axisLabel.rotate': 45 // 横坐标的倾斜
+  //yAxis: [object, array],
+  //radar: object,
+  //tooltip: object,              需要引入模块    import "echarts/lib/component/tooltip";
+  //axisPointer: object,
+  //brush: [object, array],
+  //geo: object,
+  //timeline: [object, array],    需要引入模块    import "echarts/lib/component/timeline";
+  //graphic: [object, array],
+  //series: [object, array],
+  series: {
+    label: {
+      normal: {
+        show: true //显示指标数值
+      }
+    }
+  }
+  //backgroundColor: [object, string],
+  //textStyle: object,
+  //animation: object
+}
+```
+
 * extend `对已配置好`的内部属性进行单独的设置（ extend 为对象类型，对象内的属性可以是函数，也可以对象，也可以是其他类型的值）
           1. 当属性为函数时，设置的是函数的返回值
           2. 当属性为对象时，如果在 options 中对应的属性为对象(eg: tooltip)或包含对象的数组(eg: series)
               对应的配置会被合并，否则将直接 `覆盖` 对应的配置
-              this.extend={
-                grid: [object, array],
-                colors: array,
-                visualMap: [object, array],
-                dataZoom: [object, array],  在使用 dataZoom 组件时，数据发生改变会引起 dataZoom 的重置，
-                                            在组件上设置 :not-set-unchange="['dataZoom']" 即可解决这个问题。
-                toolbox: [object, array],     需要引入模块    import "echarts/lib/component/toolbox";
-                title: object,                需要引入标题模块 import "echarts/lib/component/title";
-                legend: [object, array],
-                xAxis: [object, array],
-                yAxis: [object, array],
-                radar: object,
-                tooltip: object,              需要引入模块    import "echarts/lib/component/tooltip";
-                axisPointer: object,
-                brush: [object, array],
-                geo: object,
-                timeline: [object, array],    需要引入模块    import "echarts/lib/component/timeline";
-                graphic: [object, array],
-                series: [object, array],
-                backgroundColor: [object, string],
-                textStyle: object,
-                animation: object
-              }
 
 ## 4.6 事件
 
@@ -685,7 +751,73 @@ export default {
 </style>
 ```
 
-## 4.7 events 事件属性的拓展（写在 methods 里面）
+# 五、几个属性的拓展
+
+## 5.1 私有属性 settings 配置项 拓展
+
+具体的就在各个图表的下面都有配置项的
+
+```HTML
+<template>
+  <ve-XXXX :data="chartData" :settings="chartSettings"></ve-XXXX>
+</template>
+
+<script>
+  export default {
+    data () {
+      this.chartSettings = {
+        // ① 【折线】
+        //dimension 用于指定维度,“维度” 指的是数据的属性，例如表格中的 “日期” 维度，表示生成的每组数据的日期。
+        dimension:['日期']
+        metrics: ['下单用户'],//  metrics 用于指定指标,“指标” 是量化衡量标准，例如表格中的 “访问用户” 和 “下单用户”。
+        // ② 设置指标的别名【折线】
+        labelMap: {
+          PV: '访问用户',
+          Order: '下单用户'
+        },
+        //设置指标的别名【折线】
+        legendName: {
+          '访问用户': '访问用户 total: 10000'
+        }
+        //③ 设置数据格式:基本类型【折线】
+        dataType: {
+          '访问用户': 'KMB',
+          '年龄': 'percent',
+          '下单用户': 'normal'
+        },
+        //设置数据格式:使用 numerify 格式【折线】
+        yAxisType: ['0,0a'],
+        xAxisType: 'value', // 设置横轴为连续的数值轴【折线】
+        xAxisType: 'time'//设置横轴为连续的时间轴
+
+        axisSite: { right: ['下单率'] },// 双 y 轴，将 下单率 放在 右边
+        yAxisType: ['KMB', 'percent'],  // 双 y 轴，左边的数值类型 KMB，右边的是 百分比
+        yAxisName: ['数值', '比率']     // 双 y 轴，左边的名称 数值，右边的是 比率
+
+        //设置数据格式:使用回调函数【折线】
+        dataType: function (v) {
+          return v + ' ￥'
+        },
+        //④ 堆叠面积图【折线】
+        stack: { '用户': ['访问用户', '下单用户'] },
+        area: true,
+      }
+      return {
+        chartData: {
+          columns: ['日期', '访问用户', '下单用户'],
+          rows: [
+            { '日期': '2018-05-22', '访问用户': 32371, '下单用户': 19810 },
+            { '日期': '2018-05-23', '访问用户': 12328, '下单用户': 4398 },
+            { '日期': '2018-05-24', '访问用户': 92381, '下单用户': 52910 }
+          ]
+        }
+      }
+    }
+  }
+</script>
+```
+
+## 5.5  events 事件属性的拓展（写在 methods 里面）
 
 ```HTML
 <ve-ring :settings="chartSettings" :events="{ click: clickHandler.bind(this, 1) }" :data="chartData" @ready="ready"></ve-ring>

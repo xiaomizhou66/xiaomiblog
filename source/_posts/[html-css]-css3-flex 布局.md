@@ -430,3 +430,123 @@ Webkit 内核的浏览器，必须加上-webkit前缀。
 ### 5.2 less 中 calc 公式使用
 
 less 中 calc 公式使用：[网址](https://liuxmoo.com/2018/09/30/20.2-less-calc/)
+
+## 六 两个 div 一个固定宽度，另一个填充满窗口 ！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+
+```html
+<div class="parents">
+   <div class="div1"></div>
+   <div class="div2"></div>
+</div>
+```
+
+```CSS
+.parents {
+    display: flex;  
+    height: 100px;
+    line-height: 100px;
+    background: pink;
+    text-align: center;
+
+    .div1 {
+      width: 100px;
+      height: 100%;
+      background: yellow;
+    }
+
+    .div2 {
+      flex: 1;
+      background: green;
+      height: 100%;
+    }
+}
+```
+
+```CSS
+.product-box {
+    width: 100%;
+    margin: 10rpx;
+    display: flex;
+    flex-direction: row;
+    align-items: center;/*flex 的子项在父元素中 垂直方向居中*/
+    text-align: center; /*元素 在 盒子中居中 ，可以被继承*/
+
+    image {
+      width: 100px; /*flex 的子项设置固定宽度，就不会缩放 flex:0*/
+    }
+
+    .groupProduct-name {
+      flex: 1;/*flex 的子项 设置为 1 表示的是会缩放*/
+    }
+
+    .price {
+      width: 100px;/*flex 的子项设置固定宽度，就不会缩放 flex:0*/
+    }
+}
+```
+
+## 七、felx 与 line-height
+
+![t](http://liuxmoo.foryung.com/1111111111111111111111111111111111111111111.png)
+
+```CSS
+.box {
+    width: 300px;
+    height: 100px;
+    display: flex;
+    flex-direction: row;
+    background: rosybrown;
+    justify-content: center;  /* 前面一个 div1 是固定的，只有两个子元素，这个属性值无效的*/
+    line-height: 100px; /*不要再父元素设置，会导致 div2 中的子元素发生错误，溢出父元素*/
+
+    .div1 {
+        width: 100px; /* 与下面的 flex:0 0 100px 等效*/
+        /* flex:0 0 100px; 设置固定的宽度，就不会随着父元素的宽度 弹性变化*/
+        height: 100%;
+        background: rgb(221, 34, 34);
+    }
+
+    .div2 {
+        flex: 1;
+        /* flex:1; 设置固定的宽度，就不会随着父元素的宽度 弹性变化*/
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        background: rgb(64, 66, 197);
+
+        .e1 {
+            width: 100%;
+            height: 50%;
+            background: rgb(182, 71, 185);
+        }
+
+        .e2 {
+            width: 100%;
+            height: 50%;
+            background: rgb(197, 195, 64);
+        }
+    }
+}
+```
+
+```HTML
+<div class="box">
+    <div class="div1">11</div>
+    <div class="div2">
+        <div class="e1">22221111</div>
+        <div class="e2">22222222</div>
+    </div>
+</div>
+```
+
+`题外学习：flex-direction:row; 是默认值，默认是横向弹性。！！！！！！！！！！！！！！！！！！！！！！！！！！！！记住`
+
+因为我们使用的 felx 是弹性的，又使用 line-height 的话，如果 flex-direction:column; 且 父元素设置了 line-height 那么就会发生错误。
+原因：弹性盒子在弹性方向上的长度值不是固定的，如果 felx 不会 0 的话。
+      line-height 是可以继承的，父元素设置了值，子元素就会继承，就会发生错误了。
+
+解决：line-height 不要轻易的给父元素上面设置。特别是使用 felx 布局的话。如果要让子元素垂直居中，可以在子元素去设置。
+      并且这里 div1 与 div2 给的都是 height: 100%; 占满了 box 父元素了。
+      而且 11 是 div1 的内容，11 的父元素是 div1 了，要居中也是相对于 div1 来说的。不要再 box 去设置。
+
+![t](http://liuxmoo.foryung.com/1111111111111111111111111111111111111111122.png)

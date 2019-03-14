@@ -2693,7 +2693,7 @@ menuButtonBoundingClientRect.bottom//number 下边界坐标，单位：px
 menuButtonBoundingClientRect.left//number   左边界坐标，单位：px
 ```
 
-#### 8.5.1 自定义导航栏
+#### 8.5.1 自定义导航栏(顶部导航条)
 
 [自定义导航栏](https://juejin.im/post/5c0dc99c5188257d5e39657c)
 
@@ -2701,7 +2701,7 @@ menuButtonBoundingClientRect.left//number   左边界坐标，单位：px
 
 wx.hideNavigationBarLoading 在当前页面隐藏导航条加载动画（就是一个加载转动圆圈）  三个回调函数
 wx.setNavigationBarColor    设置页面导航条颜色
-wx.setNavigationBarTitle    动态设置当前页面的标题
+wx.setNavigationBarTitle    动态设置当前页面的标题(顶部导航条)
 wx.showNavigationBarLoading 在当前页面显示导航条加载动画（就是一个加载转动圆圈）  三个回调函数
 
 ![加载动画](https://upload-images.jianshu.io/upload_images/5616361-bc8fb4a9c86743ca.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/320/format/webp)
@@ -2723,12 +2723,20 @@ wx.setNavigationBarColor({
     complete(res){}
 })
 
-wx.setNavigationBarTitle({
-  title: '当前页面',//页面标题  必填
-  success(res){},
-  fail(res){},
-  complete(res){}
-})
+onready(){
+  // wx.setNavigationBarTitle 一定要写在 onReady 方法中，因为这是页面才完全渲染完成。
+  // 通常在 onLoad 中我们是不能对 UI 进行操作的。
+  // 我们可以从 onLoad 中获取到一个动态变量，那如何将这个变量从 onLoad 中传递给 onReady 方法呢？
+  // 我们可以在 onLoad 中通过 this.setData({key: value}) 将这个变量传递给 data，在 onReady 中再通过 this.data.key 获得这个变量。
+  // 确定是写在 onready ？？  https://blog.csdn.net/m0_37893932/article/details/70155310 这个是写在 onload 有问题？？
+  wx.setNavigationBarTitle({
+    title: '当前页面',//页面标题  必填
+    success(res){},
+    fail(res){},
+    complete(res){}
+  })
+}
+
 ```
 
 ### 8.7 下拉刷新
@@ -2786,9 +2794,9 @@ wx.hideTabBarRedDot  隐藏 tabBar 某一项的右上角的红点
 wx.removeTabBarBadge 移除 tabBar 某一项右上角的文本
 wx.setTabBarBadge    为 tabBar 某一项的右上角添加文本
 wx.setTabBarItem     动态设置 tabBar 某一项的内容
-wx.setTabBarStyle
-wx.showTabBar
-wx.showTabBarRedDot
+wx.setTabBarStyle    动态设置 tabBar 的整体样式
+wx.showTabBar        显示 tabBar
+wx.showTabBarRedDot  显示 tabBar 某一项的右上角的红点
 
 ### 8.10 窗口（窗口尺寸变化处理）
 
@@ -4908,6 +4916,20 @@ Page({
 将经历过 的页面压入栈，后面就可以使用 wx.navigateBack 调用跳转回来。
 
 ```JS
+wx.navigateTo({
+  url: 'test?id=1'// test 是  test 的路径，例如    "pages/products/products"
+  //    url:"pages/products/products?id=1"
+})
+
+// test.js
+Page({
+  onLoad(option) {
+    console.log(option.query)
+  }
+})
+```
+
+```JS
 // A 页面 => B 页面
 // ①：原生写法
 wx.navigateTo({
@@ -4924,7 +4946,16 @@ wx.navigateTo({
   }
 })
 
+// B.js 页面
+//① mina 框架
+Page({
+  onLoad: function(option){
+    console.log(option.query)
+  }
+})
+```
 
+````js
 //wepy 框架 可以使用上面的方法，并且还封装了方法  注意这里没有 TO 了 哦!!!!!!!!!!!!!!!!!!!!!!!!!!
 //②：wepy 框架包装写法
   this.$navigate({
@@ -4948,14 +4979,6 @@ wx.navigateTo({
 ```
 
 ```JS
-// B.js 页面
-//① mina 框架
-Page({
-  onLoad: function(option){
-    console.log(option.query)
-  }
-})
-
 //② wepy 框架
 export default class Index extends wepy.page {
   onLoad(options) {
