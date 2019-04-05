@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="12293ce3-c519-47cc-80c6-4a3cd99319b2" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/source/_posts/[Javascript]-ES6-基础入门.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/[Javascript]-ES6-基础入门.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/{ vue.js 框架 }- vue-cli3 脚手架.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/{ vue.js 框架 }- vue-cli3 脚手架.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/⑤ -【react.js 框架 】-react-router v4 【react router dom】 路由.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/⑤ -【react.js 框架 】-react-router v4 【react router dom】 路由.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/⑩ - 【命令-工具】github==简单使用教程.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/_posts/⑩ -【命令-工具】github== 命令全解.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/source/_posts/⑦ - 【小程序】-MINA- 传值（url，缓存，路由栈，等等）.md" beforeDir="false" afterPath="$PROJECT_DIR$/source/_posts/⑦ - 【小程序】-MINA- 传值（url，缓存，路由栈，等等）.md" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -20,11 +16,15 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/source/_posts/⑩ - 【命令-工具】编辑器==ESlint-vscode㉖.md">
+        <entry file="file://$PROJECT_DIR$/source/_posts/⑦ - 【小程序】-MINA-template 模板与 component 组件.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="7353">
-                <caret line="387" column="46" selection-start-line="387" selection-start-column="46" selection-end-line="387" selection-end-column="46" />
+              <first_editor relative-caret-position="608">
+                <caret line="32" column="3" lean-forward="true" selection-start-line="32" selection-start-column="3" selection-end-line="32" selection-end-column="3" />
+                <folding>
+                  <element signature="n#!!doc" expanded="true" />
+                  <element signature="n#!!doc" expanded="true" />
+                </folding>
               </first_editor>
               <second_editor />
             </state>
@@ -32,12 +32,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/source/_posts/⑧-【JS 工具集-拓展语言】-dayjs==Js 库.md">
+        <entry file="file://$PROJECT_DIR$/source/_posts/⑦ - 【小程序】-mpvue-vue-cli 框架.md">
           <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
             <state split_layout="SPLIT">
-              <first_editor relative-caret-position="277">
-                <caret line="63" column="62" lean-forward="true" selection-start-line="63" selection-start-column="62" selection-end-line="63" selection-end-column="62" />
-              </first_editor>
+              <first_editor />
               <second_editor />
             </state>
           </provider>
@@ -62,7 +60,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="85" />
     <option name="y" value="25" />
     <option name="width" value="1750" />
@@ -129,16 +127,17 @@
       <workItem from="1547964784859" duration="1284000" />
       <workItem from="1547969913332" duration="6203000" />
       <workItem from="1548825067208" duration="9000" />
+      <workItem from="1554368701549" duration="117000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="7496000" />
+    <option name="totallyTimeSpent" value="7613000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="68" y="20" width="1400" height="796" extended-state="0" />
+    <frame x="-7" y="-7" width="1550" height="848" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.021994134" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.37450463" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -161,16 +160,7 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/source/_posts/⑩ -【命令-工具】github== 命令全解.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="-152">
-            <caret line="4" column="4" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="5" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/source/_posts/⑩ -【命令-工具】github== 命令全解.md" />
     <entry file="file://$PROJECT_DIR$/source/_posts/{ vue.js 框架 }- vue-cli3 脚手架.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
@@ -188,22 +178,44 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/source/_posts/⑧-【JS 工具集-拓展语言】-dayjs==Js 库.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="1531">
+            <caret line="134" column="62" lean-forward="true" selection-start-line="134" selection-start-column="62" selection-end-line="134" selection-end-column="62" />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/source/_posts/⑩ - 【命令-工具】编辑器==ESlint-vscode㉖.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="7353">
+          <first_editor relative-caret-position="575">
             <caret line="387" column="46" selection-start-line="387" selection-start-column="46" selection-end-line="387" selection-end-column="46" />
           </first_editor>
           <second_editor />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/source/_posts/⑧-【JS 工具集-拓展语言】-dayjs==Js 库.md">
+    <entry file="file://$PROJECT_DIR$/source/_posts/⑦ - 【小程序】-MINA-template 模板与 component 组件.md">
       <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
         <state split_layout="SPLIT">
-          <first_editor relative-caret-position="277">
-            <caret line="63" column="62" lean-forward="true" selection-start-line="63" selection-start-column="62" selection-end-line="63" selection-end-column="62" />
+          <first_editor relative-caret-position="608">
+            <caret line="32" column="3" lean-forward="true" selection-start-line="32" selection-start-column="3" selection-end-line="32" selection-end-column="3" />
+            <folding>
+              <element signature="n#!!doc" expanded="true" />
+              <element signature="n#!!doc" expanded="true" />
+            </folding>
           </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/source/_posts/⑦ - 【小程序】-mpvue-vue-cli 框架.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor />
           <second_editor />
         </state>
       </provider>

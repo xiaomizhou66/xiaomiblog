@@ -34,6 +34,29 @@ $ yarn global add @vue/cli # 当然这个需要先安装 yarn
 $ vue --version # 查看 vue-cli 的版本
 ```
 
+# 三、电脑同时安装 vue-cli3 与 vue-cli2
+
+因为 vue-cli3 会覆盖掉 vue-cli2，如果还希望使用 vue-cli2 的话就需要桥接工具
+
+```BASH
+ # 全局安装 桥接工具
+$ npm install -g @vue/cli-init
+
+$ # `vue init` 的运行效果将会跟 `vue-cli@2.x` 相同
+```
+
+```BASH
+λ npm install -g @vue/cli-init
+npm WARN deprecated coffee-script@1.12.7: CoffeeScript on NPM has moved to "coffeescript" (no hyphen)
+# coffee-script@1.12.7 已经被废弃了：已经被转移到 coffeescript 上面了
+#（注意 coffeescript 是没有 no hyphen 连接符的）
++ @vue/cli-init@3.5.1
+updated 103 packages in 14.284s
+
+# 解决办法
+$ npm install -g coffeescript # 全局安装 coffeescript
+```
+
 # 三、使用 vue-cli3 搭建项目
 
 [可以参考网上的教程来做](https://www.cnblogs.com/wisewrong/p/9740173.html)

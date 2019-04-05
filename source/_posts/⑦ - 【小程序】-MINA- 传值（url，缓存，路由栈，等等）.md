@@ -13,7 +13,10 @@ comments:
 
 官网路由文档[地址](https://developers.weixin.qq.com/miniprogram/dev/framework/app-service/route.html)
 
-# 二、url 传值
+# 二、url 传值（正向传值）
+
+- 用 navigator 标签（貌似有 bug ，还是算了吧！！）
+- wx.navigator 接口 （写在 JS 错了还能去调试，也可以传递更多的数据类型）
 
 ## 2.1 传字符串(事件 + onload 周期的配合)
 
@@ -71,9 +74,9 @@ Page({
   data:{
     id:''
   },
-  onLoad(option) {
-    //console.log(option.query) 这个 query 只的是参数名，就是穿过来的  alphaBeta，alphabeta，id，
-    // 直接 console.log(option.query) 肯定是 undefined 的呀！！！！！！！！！！！！！！！！！
+  onLoad(options) {
+    //console.log(options.query) 这个 query 只的是参数名，就是穿过来的  alphaBeta，alphabeta，id，
+    // 直接 console.log(options.query) 肯定是 undefined 的呀！！！！！！！！！！！！！！！！！
     this.setData({
       id: options.id
     })
@@ -211,14 +214,18 @@ onLoad: function (options) {
 缺点：
     1. url 传值要化为 JSON 字符串才能传值，不直传递对象
     2. JSON.stringify 不转义字符，它只返回字符串表示，当你在 url 中使用它时，你需要使用它来转义它 encodeURIComponent
-    3. JSON.parse 解析不了特殊的字符，例如 ？ /n  % 、 & 之类的字符，因此传递字符串的时候回遇到各种错误
-        特殊的字符需要编码
-        模拟机上，编码之后解析没有问题了，
-        但是在真机上，编码后的字符还是无法解析的
+    3. JSON.parse 解析不了特殊的字符，例如 ？ /n  % 、 & 之类的字符，因此传递字符串的时候回遇到各种错误,dddd特殊的字符需要编码
     4. 不能对整个对象使用 encodeURIComponent ，它只能使用在 url 字符串上面。虽然说 encodeURIComponent 方法 参数是包含 url 的参数，
         但是根据上面的使用也发现了，直接对整个对象是无效的，只能对 url 去使用。
 
+知识点学习
+[JSON.parse 知识](https://blog.csdn.net/u011277123/article/details/53055479)
+[encodeURIComponent 与 encodeURI 的区别](https://www.html.cn/archives/6954)
+[encodeURIComponent 方法使用](http://www.w3school.com.cn/js/jsref_encodeURIComponent.asp)
+
 ## 2.3 传递数组
+
+在 JS 中数组也是一种对象，传递的方法跟上面的对象是一样的，也需要注意看看传递的数组中的项是不是存在 url。需要编码的特殊字符串。
 
 # 三、 app.js 全局数据
 
@@ -330,32 +337,109 @@ Page({
 })
 ```
 
-# 四、路由栈 API 获取其他页面的方法
+# 四、页面栈 API 传值（反向传值）
+
+这个 API 接口不只是可以用来传递数据，还可以调用各个页面的方法。因为我们获取到的是 `实例本身`。!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 调用小程序提供的 API 接口 getCurrentPages()
 
 ```JS
-var pages = getCurrentPages() // 获取当前页面路由栈的信息
-var currentPage = pages[pages.length - 1] // 当前页面
-var prevPage = pages[pages.length - 2] // 上一个页面
+// B 当前的页面
+ data:{
+   id:'999'
+ },
+ toPageA(){
+    var pages = getCurrentPages() // 获取当前 路由栈中 全部界面, 然后把数据写入相应界面,
+    //                               getCurrentPages() 函数用于获取当前页面栈的实例，以数组形式按栈的顺序给出，第一个元素为首页，最后一个元素为当前页面。
+    //var currentPage  = pages[pages.length - 1]  //当前界面
+    var prePage = pages[pages.length - 2]         //上一个界面
+    var that = this // 一定要用这个，不然的话 this 就错误了，当然了如果传递的是静态就不用 this 就不要用 that 了
+    prePage.setData({
+     id: that.data.id,
+    })
+    prevPage.setData({
+      myData:{           //调用 前一个页面/上一个页面的 setData 将数据存在它的 myData 数据中
+        a:1,b:2
+      }
+    })
+ }
 
-// 调用 前一个页面/上一个页面的 setData 将数据存在它的 myData 数据中
-// 根据自己需求
-prevPage.setData({
-  myData:{
-    a:1,b:2
-  }
-})
+ // 在 A 界面需要接受 B 界面传过来值码如下：
+ // 这里要在 onShow 方法里面重新调用你的数据请求或是，为了验证是否传值成功，你可以打印验证
+ // 注：由于你从 B 界面返回 A 界面使用了 wx.navigateBack，所以当你回到 A 界面后 onLoad、onReady 方法不响应，onShow 方法响应，
+ // onLoad、onReady 后期只是初次渲染的时候使用调用 onShow 是每次显示该页面的时候调用
+ // 所以这里你需要特别注意--生命周期 与 路由接口 推入 【页面栈】 与否
+
+// A 前面页面
+  //生命周期函数--监听页面显示
+  onShow: function () {
+    //获取数据
+    this.gainData()
+    // 打印你的传值，这里是传递过来的值？？？？，是这样使用的么？？？后面再来看看吧，还没有使用!!!!!!!!!!!!!!!!!!!!!????????????????????????????????
+    console.log("res==", this.data.res)
+  },
 ```
 
 优点：
     比起全局数据存值的方法，这个方法逻辑上要清晰一些，也不存在对数据销毁有额外的管理工作。
 缺点：
-    ？？？？？可以调用下一个页面的 setData 存值么？不可以的话那就是说这个传值方法只能在返回页面的时候可以使用咯？？？
-    对路由栈的了解，有的方法的路由并不会推入到路由栈中。！！！！！！！！！！！！！
+    不可以调用下一个页面的 setData 存值么，所以这个是反向传值，只能是带数据回到原来的页面。
+    对页面栈的了解
+    生命周期要非常的了解，正确的选择。
 适用场合：
     之前访问过的页面
 
-# 五、缓存传值（区别于 web 页面的缓存传值）
+知识点：
+    1. 页面栈 [官方文档](https://developers.weixin.qq.com/miniprogram/dev/framework/app-service/route.html)
+    2. getCurrentPages(),函数用于获取当前页面栈的实例，以数组形式按栈的顺序给出，`第一个元素为首页，最后一个元素为当前页面`。
+        不要尝试修改页面栈，会导致路由以及页面状态错误。
+        不要在 App.onLaunch 的时候调用 getCurrentPages()，此时 page 还没有生成。也没有必要去使用这个！！！！
 
-小程序的缓存传值有自己的方法。
+```BASH
+# 页面栈 ！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+# 路由方式           页面栈表现
+
+# 初始化          新页面入栈
+# 打开新页面      新页面入栈
+# 页面重定向      当前页面出栈，新页面入栈
+# 页面返回        页面不断出栈，直到目标返回页
+# Tab 切换        页面全部出栈，只留下新的 Tab 页面 （这里的 tab 切换，其实是 tabbar 切换的意思！！！！！！！！！！！！官方文档也得让人误解！！！）
+# 重加载          页面全部出栈，只留下新的页面
+```
+
+```BASH
+# 路由方式
+# 对于路由的触发方式以及页面生命周期函数如下：
+# 路由方式    触发时机                                                                                      路由前页面    路由后页面
+
+# 初始化      小程序打开的第一个页面                                                                                        onLoad, onShow
+# 打开新页面  调用 API wx.navigateTo 或使用组件 <navigator open-type="navigateTo"/>                           onHide       onLoad, onShow
+# 页面重定向  调用 API wx.redirectTo 或使用组件 <navigator open-type="redirectTo"/>                           onUnload     onLoad, onShow
+# 页面返回    调用 API wx.navigateBack 或使用组件<navigator open-type="navigateBack">或用户按左上角返回按钮     onUnload     onShow
+# Tab 切换   调用 API wx.switchTab 或使用组件 <navigator open-type="switchTab"/> 或用户切换 Tab                   各种情况请参考下表
+# 重启动     调用 API wx.reLaunch 或使用组件 <navigator open-type="reLaunch"/>                                onUnload     onLoad, onShow
+```
+
+Tips:
+
+- navigateTo, redirectTo 只能打开非 tabBar 页面。
+- switchTab 只能打开 tabBar 页面。
+- reLaunch 可以打开任意页面。
+- 页面底部的 tabBar 由页面决定，即只要是定义为 tabBar 的页面，底部都有 tabBar。
+- 调用页面路由带的参数可以在目标页面的onLoad中获取。
+
+# 五、缓存传值
+
+每个微信小程序都可能用到本地缓存数据（小程序的缓存传值有自己的方法，区别于 web 页面的缓存传值）这里我们可以通过调用微信提供的方法：wx.setStorage、wx.setStorageSync、wx.getStorage、wx.getStorageSync、wx.clearStorage、wx.clearStorageSync、实现对数据本地缓存、获取、清除。
+
+官网文档：[缓存](https://developers.weixin.qq.com/miniprogram/dev/api/wx.setStorageSync.html)，
+          [最新文档](https://developers.weixin.qq.com/miniprogram/dev/framework/ability/storage.html)
+
+
+
+优点：
+
+缺点：
+    1. 本地数据存储的大小限制为 10MB
+    2. storage 以用户维度隔离，同一台设备上，A 用户无法读取到 B 用户的数据。
+    3. 如果用户储存空间不足，我们会清空最近最久未使用的小程序的本地缓存。我们不建议将关键信息全部存在 storage，以防储存空间不足或用户换设备的情况。
